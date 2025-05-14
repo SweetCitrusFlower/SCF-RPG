@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "example.h"
+#include "../../include/example.h"
 
 TEST(SuiteName, TestName) {
     EXPECT_EQ(doSomething(10), 10);

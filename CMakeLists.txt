@@ -138,7 +138,9 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         src/enemy.cpp
         include/enemy.h
         src/playable.cpp
-        include/playable.h)
+        include/playable.h
+        include/consumable.h
+)
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
 # NOTE: RUN_SANITIZERS is optional, if it's not present it will default to true

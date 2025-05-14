@@ -1,6 +1,6 @@
-#include "example.h"
+#include <iostream>
 
-// cppcheck-suppress unusedFunction
-int doSomething(int x) {
+int slay(const int x) {
+    std::cout << x + 3 << ' ';
     return x;
 }
