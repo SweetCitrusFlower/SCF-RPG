@@ -5,8 +5,7 @@
 
 #include "../src/weapon.cpp"
 #include "../src/armor.cpp"
-
-#include <cstring>
+#include "../src/consumable.cpp"
 
 class Entity {
 protected:
@@ -15,12 +14,12 @@ protected:
     int HitPointsMax = 0;
     int HitPointsCurrent = 0;
     int Gold = 0;
+    int Speed = 0;
 
     const char *Name = nullptr;
     const char *Description = nullptr;
     const Weapon *WeaponSlot = nullptr;
     const Armor *ArmorSlot = nullptr;
-    const std::vector<const Item&> *Inventory = nullptr;
 
     virtual ~Entity() = default;
 
@@ -30,78 +29,63 @@ public:
     [[nodiscard]] int GetHPMAX() const {return HitPointsMax;}
     [[nodiscard]] int GetHPCurrent() const {return HitPointsCurrent;}
     [[nodiscard]] int GetGold() const {return Gold;}
+    [[nodiscard]] int GetSpeed() const {return Speed;}
 
     [[nodiscard]] const char* GetName() const {return Name;}
     [[nodiscard]] const char* GetDesc() const {return Description;}
     [[nodiscard]] const Weapon* GetWeapon() const {return WeaponSlot;}
     [[nodiscard]] const Armor* GetArmor() const {return ArmorSlot;}
-    [[nodiscard]] const std::vector<const Item&>* GetInventory() const {return Inventory;}
 
     void SetAD(const int x) {AttackDamageBase = x;}
     void SetDEF(const int x) {DefenseBase = x;}
     void SetHPMAX(const int x) {HitPointsMax = x;}
     void SetHPCurrent(const int x) {HitPointsCurrent = x;}
     void SetGold(const int x) {Gold = x;}
+    void SetSpeed(const int x) {Speed = x;}
     void SetName(const char *name) {Name = name;}
     void SetDesc(const char *desc) {Description = desc;}
     void SetWeapon(const Weapon *W) {WeaponSlot = W;}
     void SetArmor(const Armor *A) {ArmorSlot = A;}
-    void AddItemToInventory(const Item& I) {
-        if (Inventory->capacity() == 9) {
-            std::cout << "Your inventory is full! Do you want to replace an item from your inventory?\n[Y/N] ";
-            const std::string response;
-            switch (static_cast<char>(std::strlen(response.c_str()) != 1) ? '0' : tolower(response[0])) {
-                case 'y' : {
-                    std::cout << "\nWhich item would you like to replace?\nEnter a number between 1 and 9.\n";
-                    int nr = 1;
-                    for (const auto& item : Inventory) {
-                        std::cout << nr++ << ". " << item->GetName() << std::endl;
-                    }
-                    nr = 0;
-                    std::cin >> nr;
-                    nr = (nr - 1) % 9 + 1;
-                    Inventory->erase(Inventory->begin() + nr);
-                    Inventory->insert(Inventory->begin() + nr, &I);
-                    std::cout << "Item replaced succesfully!" << std::endl;
-                    break;
-                }
-                default: {
-                    std::cout << "Response not recognized! ";
-                }
-                case 'n' : {
-                    std::cout << "Item not picked up." << std::endl;
-                    break;
-                }
-            }
-        }
-        else {
-            Inventory->insert(Inventory->begin(), &I);
-            std::cout << "Item \"" << I.GetName() << "\" added succesfully!" << std::endl;
-        }
-    };
+
+    Entity(const char* N, const int ADB, const int DEFB, const int HPM, const int GOLD, const int SPEED, const char* Desc, const Weapon* W, const Armor* A) {
+        SetAD(ADB);
+        SetDEF(DEFB);
+        SetHPMAX(HPM);
+        SetHPCurrent(HPM);
+        SetGold(GOLD);
+        SetSpeed(SPEED);
+        SetName(N);
+        SetDesc(Desc);
+        SetWeapon(W);
+        SetArmor(A);
+    }
+
+    Entity() : Entity(nullptr, 0,0,0,0,0,nullptr, nullptr, nullptr){}
 
     Entity(const Entity &E) {
-        this->AttackDamageBase = E.AttackDamageBase,
-        this->DefenseBase = E.DefenseBase,
-        this->HitPointsMax = E.HitPointsMax,
-        this->HitPointsCurrent = E.HitPointsCurrent,
-        this->Name = E.Name,
-        this->Description = E.Description,
-        this->WeaponSlot = E.WeaponSlot,
-        this->ArmorSlot = E.ArmorSlot;
+        SetAD(E.GetAD());
+        SetDEF(E.GetDEF());
+        SetHPMAX(E.GetHPMAX());
+        SetHPCurrent(E.GetHPCurrent());
+        SetGold(E.GetGold());
+        SetSpeed(E.GetSpeed());
+        SetName(E.GetName());
+        SetDesc(E.GetDesc());
+        SetArmor(E.GetArmor());
+        SetWeapon(E.GetWeapon());
     }
+
 
     Entity(Entity &&E) noexcept :
         AttackDamageBase(E.AttackDamageBase),
         DefenseBase(E.DefenseBase),
         HitPointsMax(E.HitPointsMax),
         HitPointsCurrent(E.HitPointsCurrent),
+        Speed(E.Speed),
         Name(E.Name),
         Description(E.Description),
         WeaponSlot(E.WeaponSlot),
         ArmorSlot(E.ArmorSlot) {}
-
-    Entity() = default;
 
     Entity& operator=(const Entity &E) {
         if(this == &E)
@@ -110,6 +94,7 @@ public:
         DefenseBase = E.DefenseBase;
         HitPointsMax = E.HitPointsMax;
         HitPointsCurrent = E.HitPointsCurrent;
+        Speed = E.Speed;
         Name = E.Name;
         Description = E.Description;
         WeaponSlot = E.WeaponSlot;
@@ -124,6 +109,7 @@ public:
         DefenseBase = E.DefenseBase;
         HitPointsMax = E.HitPointsMax;
         HitPointsCurrent = E.HitPointsCurrent;
+        Speed = E.Speed;
         Name = E.Name;
         Description = E.Description;
         WeaponSlot = E.WeaponSlot;

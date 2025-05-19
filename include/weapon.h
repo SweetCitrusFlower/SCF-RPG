@@ -17,7 +17,6 @@ public:
     std::ostream& operator<<(const Weapon&) const;
 
     ~Weapon() override = default;
-    void Drop() override;
 };
 
 inline auto Plate = Weapon("Plate", 500, "Can hurt a lot, but is very fragile. Just like a betrayed heart.");

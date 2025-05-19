@@ -1,10 +1,7 @@
 #include "../include/armor.h"
 
 Armor::Armor(const char* name, const int plusDef, const int plusHP, const char* description) :
-    PlusDef(plusDef), PlusHP(plusHP){
-      this->Name = name;
-      this->Description = description;
-    };
+    Item(name, description), PlusDef(plusDef), PlusHP(plusHP) {}
 
 Armor::Armor() : Armor("Skin", 0, 1, "You're naked. Gross.") {};
 

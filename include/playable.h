@@ -4,21 +4,25 @@
 #include <array>
 
 #include "entity.h"
-#include "item.h"
+#include "consumable.h"
 
 class Playable : public Entity {
 protected:
     int XP = 0;
+    std::vector<Consumable *> Inventory {};
+
 public:
-    Playable(int, int, int, int, int, const char*, const char*, const Weapon*, const Armor*, const std::vector<const Item&>*);
+    Playable(const char*, int, int, int, int, int, int, const char*, const Weapon*, const Armor*, std::vector<Consumable*>);
     Playable();
     ~Playable() override;
+
+    [[nodiscard]] std::vector<Consumable *> GetInventory() const {return Inventory;}
 
     void ChangeWeapon(const Weapon&);
     void ChangeArmor(const Armor&);
     void CheckInventory();
+    void AddConsumableToInventory(Consumable&);
 
-    // friend std::istream& operator>>(std::istream&);
     std::ostream& operator<<(std::ostream&);
 };
 

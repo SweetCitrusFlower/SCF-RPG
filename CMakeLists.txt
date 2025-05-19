@@ -140,6 +140,7 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         src/playable.cpp
         include/playable.h
         include/consumable.h
+        src/consumable.cpp
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

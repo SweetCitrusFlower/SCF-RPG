@@ -1,10 +1,7 @@
 #include "../include/weapon.h"
 
-Weapon::Weapon(const char *name, const int plusAD, const char *description) :
-    PlusAD(plusAD){
-        this->Name = name;
-        this->Description = description;
-    };
+Weapon::Weapon(const char *name, const int plusAD, const char *description) : Item(name, description) ,
+                                                                              PlusAD(plusAD) {}
 
 Weapon::Weapon() : Weapon("Fists", 0, "Ye Ole Reliable.") {}
 
