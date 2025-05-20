@@ -3,20 +3,26 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include <cstring>
-
 class Item {
 protected:
     const char *Name = nullptr;
     const char *Description = nullptr;
 
-    virtual ~Item() = default;
-
 public:
-    explicit Item(const char* name, const char* description) : Name(name), Description(description) {}
-    Item() : Item(nullptr, nullptr) {}
+
+    Item(const char*, const char*);
+    Item();
+    virtual ~Item();
+
+    Item(const Item&);
+    Item(Item&&) noexcept;
+    Item& operator=(const Item&);
+    Item& operator=(Item&&) noexcept;
+
     [[nodiscard]] const char* GetName() const {return Name;}
     [[nodiscard]] const char* GetDescription() const {return Description;}
+
+    virtual std::ostream& operator<<(std::ostream&) const;
 
 };
 

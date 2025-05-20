@@ -1,20 +1,26 @@
+#pragma once
+
 #include "../include/armor.h"
+#include "item.cpp"
 
-Armor::Armor(const char* name, const int plusDef, const int plusHP, const char* description) :
-    Item(name, description), PlusDef(plusDef), PlusHP(plusHP) {}
+Armor::Armor(const char* name, const int plusDef = 0, const int plusHP = 0, const char* description = nullptr)
+    : Item(name, description), PlusDef(plusDef), PlusHP(plusHP) {}
 
-Armor::Armor() : Armor("Skin", 0, 1, "You're naked. Gross.") {};
+Armor::Armor() : Armor("No Armor") {}
 
-std::ostream& operator<<(std::ostream &c, const Armor &A){
-    c << A.GetName() << std::endl;
-    c << "+DEF: ";
-    if(A.GetPlusDef() < 0) c << "-" << -A.GetPlusDef();
-    else c << A.GetPlusDef();
+std::ostream& Armor::operator<<(std::ostream &c) const{
+    c << "DEF: ";
+    if(GetPlusDef() < 0) c << "-" << -GetPlusDef();
+    else if(GetPlusDef() == 0) c << "0";
+    else c << "+" << GetPlusDef();
 
-    c << std::endl << "+HP: ";
-    if(A.GetPlusHP() < 0) c << "-" << -A.GetPlusHP();
-    else c << A.GetPlusHP();
+    c << std::endl << "HPMax: ";
+    if(GetPlusHP() < 0) c << "-" << -GetPlusHP();
+    else if(GetPlusHP() == 0) c << "0";
+    else c << "+" << GetPlusHP();
+    c << std::endl;
 
-    c << std::endl << A.GetDescription() << std::endl << std::endl;
     return c;
-};
+}
+
+Armor::~Armor() = default;

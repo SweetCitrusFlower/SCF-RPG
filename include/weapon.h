@@ -5,20 +5,21 @@
 
 #include "item.h"
 
-class Weapon : public Item {
+class Weapon final : public Item {
 protected:
-    int PlusAD;
+    int PlusAD = 0;
+
 public:
     Weapon(const char*, int, const char*);
     Weapon();
+    ~Weapon() override;
 
     [[nodiscard]] int GetPlusAD() const {return PlusAD;}
 
-    std::ostream& operator<<(const Weapon&) const;
-
-    ~Weapon() override = default;
+    std::ostream& operator<<(std::ostream&) const override;
 };
 
+inline auto Fists = Weapon("Fists", 0, "Ye Ole Reliable.");
 inline auto Plate = Weapon("Plate", 500, "Can hurt a lot, but is very fragile. Just like a betrayed heart.");
 inline auto Cigarette = Weapon("Cigarette", 30, "It's gonna be put out on your skin.");
 

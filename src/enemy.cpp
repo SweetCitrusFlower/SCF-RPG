@@ -1,29 +1,19 @@
+#pragma once
+
 #include "../include/enemy.h"
+#include "entity.cpp"
 
-Enemy::Enemy(const int ADB, const int DEFB, const int HPM, const int XP, const int G, const char* N, const char* Desc, Weapon* W, Armor* A) :
-    XPGivenWhenSlain(XP), GoldGivenWhenSlain(G) {
-    if (N == nullptr) N = "MissingNO";
-    if (Desc == nullptr) Desc = "-";
-    if (W == nullptr) W = new Weapon();
-    if (A == nullptr) A = new Armor();
-    this->AttackDamageBase = ADB;
-    this->DefenseBase = DEFB;
-    this->HitPointsMax = HPM;
-    this->HitPointsCurrent = HPM;
-    this->Name = N;
-    this->Description = Desc;
-    this->WeaponSlot = W;
-    this->ArmorSlot = A;
-}
+Enemy::Enemy(const char* N, const int ADB = 1, const int DEFB = 0, const int HPM = 1, const int XP = 0, const int G = 0, const int SPEED = 0, const char* Desc = "Stupid dumbass enemy.", const Weapon* W = &Fists, const Armor* A = &Skin) :
+    Entity(N, ADB, DEFB, HPM, G, SPEED, Desc, W, A), XPGivenWhenSlain(XP){}
 
-Enemy::Enemy() : Enemy(0, 0, 0, 0, 0, nullptr, nullptr, nullptr, nullptr) {};
+Enemy::Enemy() : Enemy("Goblin"){}
 
-std::ostream& operator<<(std::ostream& c, const Enemy& E) {
-    c << E.GetName() << std::endl;
-    c << E.GetAD() << "(+" << E.GetWeapon()->GetPlusAD() << ") AD, " << E.GetDEF() << "(+" << E.GetArmor()->GetPlusDef() << ") DEF, " << E.GetHPCurrent() << "/" << E.GetHPCurrent() + E.GetArmor()->GetPlusHP() << " HP" << std::endl;
-    c << E.GetDesc() << std::endl;
-    c << "Gives " << E.GetGoldWhenSlain() << " Gold and " << E.GetXPWhenSlain() << " XP when slain." << std::endl << std::endl;
-    c << "Weapon: " << *E.GetWeapon();
-    c << "Armor: " << *E.GetArmor();
+std::ostream& operator<<(std::ostream& c, const Enemy& E){
+    c << static_cast<Entity>(E) << "Gives " << E.GetXPWhenSlain() << " XP and " << E.GetGold() << " Gold when slain." << std::endl;
     return c;
 }
+
+void Enemy::ShowEntity() {
+    std::cout << *this;
+}
+
