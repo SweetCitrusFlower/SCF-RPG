@@ -35,7 +35,7 @@ protected:
 public:
     Entity(const char*, int, int, int, int, int, const char*, const Weapon*, const Armor*);
     Entity();
-    virtual ~Entity() = default;
+    ~Entity() override = default;
     Entity(const Entity&);
     Entity(Entity&&) noexcept;
     Entity& operator=(const Entity&);

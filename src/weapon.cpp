@@ -8,11 +8,11 @@ Weapon::Weapon(const char *name, const int plusAD = 0, const char *description =
 
 Weapon::Weapon() : Weapon("No Weapon") {}
 
-std::ostream& Weapon::operator<<(std::ostream& c) const{
-    c << "AD: ";
-    if(GetPlusAD() < 0) c << "-" << -GetPlusAD();
-    else if (GetPlusAD() == 0) c << "0";
-    else c << "+" << GetPlusAD() << std::endl;
+std::ostream& operator<<(std::ostream& c, const Weapon& W) {
+    c << static_cast<Item>(W) << "AD: ";
+    if(W.GetPlusAD() < 0) c << "-" << -W.GetPlusAD();
+    else if (W.GetPlusAD() == 0) c << "0";
+    else c << "+" << W.GetPlusAD() << std::endl;
     return c;
 }
 Weapon::~Weapon() = default;

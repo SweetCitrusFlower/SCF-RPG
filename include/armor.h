@@ -16,8 +16,6 @@ public:
     [[nodiscard]] int GetPlusDef() const {return PlusDef;}
     [[nodiscard]] int GetPlusHP() const {return PlusHP;}
 
-    std::ostream& operator<<(std::ostream&) const override;
-
 };
 
 inline auto Skin = Armor("Skin", 0, 1, "You're naked. Gross.");

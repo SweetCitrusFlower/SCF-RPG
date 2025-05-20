@@ -15,8 +15,6 @@ public:
     ~Weapon() override;
 
     [[nodiscard]] int GetPlusAD() const {return PlusAD;}
-
-    std::ostream& operator<<(std::ostream&) const override;
 };
 
 inline auto Fists = Weapon("Fists", 0, "Ye Ole Reliable.");

@@ -17,8 +17,6 @@ public:
 
     [[nodiscard]] int GetPlusHP() const { return PlusHP;}
 
-    std::ostream& operator<<(std::ostream&) const override;
-
 };
 
 inline auto McPuisor = Consumable("McPuisor", -40, "This item makes you a bit fatter.");

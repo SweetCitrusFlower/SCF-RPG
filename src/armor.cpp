@@ -8,16 +8,16 @@ Armor::Armor(const char* name, const int plusDef = 0, const int plusHP = 0, cons
 
 Armor::Armor() : Armor("No Armor") {}
 
-std::ostream& Armor::operator<<(std::ostream &c) const{
-    c << "DEF: ";
-    if(GetPlusDef() < 0) c << "-" << -GetPlusDef();
-    else if(GetPlusDef() == 0) c << "0";
-    else c << "+" << GetPlusDef();
+std::ostream& operator<<(std::ostream &c, const Armor& A){
+    c << static_cast<Item>(A) << "DEF: ";
+    if(A.GetPlusDef() < 0) c << "-" << -A.GetPlusDef();
+    else if(A.GetPlusDef() == 0) c << "0";
+    else c << "+" << A.GetPlusDef();
 
     c << std::endl << "HPMax: ";
-    if(GetPlusHP() < 0) c << "-" << -GetPlusHP();
-    else if(GetPlusHP() == 0) c << "0";
-    else c << "+" << GetPlusHP();
+    if(A.GetPlusHP() < 0) c << "-" << -A.GetPlusHP();
+    else if(A.GetPlusHP() == 0) c << "0";
+    else c << "+" << A.GetPlusHP();
     c << std::endl;
 
     return c;

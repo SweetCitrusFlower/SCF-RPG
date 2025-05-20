@@ -3,14 +3,14 @@
 #include "../include/entity.h"
 #include <iostream>
 
-Entity::Entity(const char* N, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = nullptr, const Weapon* W = nullptr, const Armor* A = nullptr) {
+Entity::Entity(const char* NAME, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = nullptr, const Weapon* W = nullptr, const Armor* A = nullptr) {
         SetAD(ADB);
         SetDEF(DEFB);
         SetHPMAX(HPM);
         SetHPCurrent(HPM);
         SetGold(GOLD);
         SetSpeed(SPEED);
-        SetName(N);
+        SetName(NAME);
         SetDesc(Desc);
         SetWeapon(W);
         SetArmor(A);

@@ -8,5 +8,7 @@
 
 int main() {
 
+    std::cout << Cigarette << LanaTShirt << Plate;
+    auto Mera = Playable("Mera", )
     return 0;
 }

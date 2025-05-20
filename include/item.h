@@ -22,8 +22,6 @@ public:
     [[nodiscard]] const char* GetName() const {return Name;}
     [[nodiscard]] const char* GetDescription() const {return Description;}
 
-    virtual std::ostream& operator<<(std::ostream&) const;
-
 };
 
 #endif //ITEM_H
