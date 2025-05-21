@@ -19,12 +19,12 @@ void Playable::ChangeWeapon(const Weapon &W){
         std::cout << "how did you do this." << std::endl;
         return;
     }
-    if (W.GetName() == "Fists") {
+    if (strcmp(W.GetName(), "Fists") == 0) {
         std::cout << this->GetName() << " has unequipped \"" << this->GetWeapon()->GetName() << "\".\n\n";
         this->WeaponSlot = &W;
         return;
     }
-    if (this->GetWeapon()->GetName() == "Fists") {
+    if (strcmp(this->GetWeapon()->GetName() ,"Fists") == 0) {
         this->WeaponSlot = &W;
         std::cout << this->GetName() << " has eqquiped \"" << W.GetName() << "\"!" << std::endl << std::endl;
         return;
@@ -74,12 +74,12 @@ void Playable::ChangeArmor(const Armor &A){
         std::cout << "how did you do this.\n\n";
         return;
     }
-    if (A.GetName() == "Skin") {
+    if (strcmp(A.GetName(), "Skin") == 0) {
         std::cout << this->GetName() << " has unequipped  \"" << this->GetArmor()->GetName() << "\".\n\n";
         this->ArmorSlot = &A;
         return;
     }
-    if (this->GetArmor()->GetName() == "Skin") {
+    if (strcmp(this->GetArmor()->GetName(), "Skin") == 0) {
         this->ArmorSlot = &A;
         std::cout << this->GetName() << " has eqquiped \"" << A.GetName() << "\"!\n\n";
         return;
