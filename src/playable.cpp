@@ -4,12 +4,13 @@
 #include "entity.cpp"
 
 #include <algorithm>
+#include <iomanip>
+#include <cmath>
 #include <vector>
 #include <cstring>
 
-Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int XP = 0, const int SPEED = 0, const char* Desc = "-", const Weapon* W = &Fists, const Armor* A = &Skin, const std::vector<Consumable*> &I = {})
-    : Entity(N, ADB, DEFB, HPM, GOLD, SPEED, Desc, W, A), XP(XP), Inventory(I){
-    std::cout << "Hello, " << N << "!\n\n";
+Playable::Playable(const char* N, const int XP = 1, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = "-", const Weapon* W = &Fists, const Armor* A = &Skin, const std::vector<Consumable>& I = {})
+    : Entity(N, ADB + W->GetPlusAD(), DEFB + A->GetPlusDef(), HPM + A->GetPlusHP(), GOLD, SPEED, Desc, W, A), XP(XP), Inventory(I){
 }
 
 Playable::Playable() : Playable("MissingNo"){}
@@ -76,11 +77,16 @@ void Playable::ChangeArmor(const Armor &A){
     }
     if (strcmp(A.GetName(), "Skin") == 0) {
         std::cout << this->GetName() << " has unequipped  \"" << this->GetArmor()->GetName() << "\".\n\n";
+        SetDEF(GetDEF() - GetArmor()->GetPlusDef());
+        SetHPMAX(GetHPMAX() - GetArmor()->GetPlusHP());
+        SetHPCurrent(std::min(GetHPMAX(), GetHPCurrent()));
         this->ArmorSlot = &A;
         return;
     }
     if (strcmp(this->GetArmor()->GetName(), "Skin") == 0) {
         this->ArmorSlot = &A;
+        SetDEF(GetDEF() + A.GetPlusDef());
+        SetHPMAX(GetHPMAX() + A.GetPlusHP());
         std::cout << this->GetName() << " has eqquiped \"" << A.GetName() << "\"!\n\n";
         return;
     }
@@ -131,24 +137,43 @@ void Playable::CheckInventory(){
     }
     std::cout << Name << " has " << Inventory.size() << " item";
     if (Inventory.size() >= 2) {
-        std::sort(Inventory.begin(), Inventory.end(), [](const Consumable* a, const Consumable* b)
-                                                                                            {if (strcmp(a->GetDescription(), b->GetDescription()) < 0)
+        std::sort(Inventory.begin(), Inventory.end(), [](const Consumable& a, const Consumable& b)
+                                                                                            {if (strcmp(a.GetDescription(), b.GetDescription()) < 0)
                                                                                                     return true;
                                                                                                 return false;
                                                                                             } );
         std::cout << "s";
     }
     std::cout << ":" << std::endl;
-    for (auto item = 0; item <= Inventory.size(); ++item) {
-        std::cout << item + 1 << ". " << Inventory[item]->GetName() << std::endl;
+    for (auto item = 0; item < Inventory.size(); ++item) {
+        std::cout << item + 1 << ". " << Inventory[item].GetName() << std::endl;
+    }
+    std::cout << "Do you want to use a consumable on " << this->GetName() << "?\n[Y/N] ";
+    std::string response;
+    std::cin >> response;
+    switch (static_cast<char>(std::strlen(response.c_str()) != 1) ? '0' : tolower(response[0])) {
+        case 'y' : {
+            std::cout << "Enter a number between 1 and " << Inventory.size() << ":\n";
+            int nr;
+            std::cin >> nr;
+            if (nr > Inventory.size()) {
+                std::cout << "Number out of bounds. " << (nr - 1) % Inventory.size() + 1 << " chosen.";
+            }
+            nr = (nr - 1) % static_cast<int>(Inventory.size()) + 1;
+            this->UseConsumable(nr);
+            break;
+        }
+        default: {
+            break;
+        }
     }
     std::cout << std::endl;
 }
 
-void Playable::AddConsumableToInventory(Consumable& I) {
+void Playable::AddConsumableToInventory(const Consumable& I) {
     if (this->Inventory.size() == 5) {
-        std::sort(Inventory.begin(), Inventory.end(), [](const Consumable* a, const Consumable* b)
-                                                                                            {if (strcmp(a->GetDescription(), b->GetDescription()) < 0)
+        std::sort(Inventory.begin(), Inventory.end(), [](const Consumable& a, const Consumable& b)
+                                                                                            {if (strcmp(a.GetDescription(), b.GetDescription()) < 0)
                                                                                                 return true;
                                                                                             return false;
                                                                                         } );
@@ -158,16 +183,16 @@ void Playable::AddConsumableToInventory(Consumable& I) {
         switch (static_cast<char>(std::strlen(response.c_str()) != 1) ? '0' : tolower(response[0])) {
             case 'y' : {
                 std::cout << "Which item would you like to replace?\n";
-                for (auto item = 0; item <= Inventory.size(); ++item) {
-                    std::cout << item + 1 << ". " << Inventory[item]->GetName() << std::endl;
+                for (auto item = 0; item < Inventory.size(); ++item) {
+                    std::cout << item + 1 << ". " << Inventory[item].GetName() << std::endl;
                 }
                 std::cout << "\nPlease enter a number between 1 and " << Inventory.size() << ".\n> ";
                 auto nr = 0;
                 std::cin >> nr;
                 nr = (nr - 1) % Inventory.size();
                 Inventory.erase(Inventory.begin() + nr);
-                Inventory.insert(Inventory.begin() + nr, &I);
-                std::cout << "Item replaced succesfully!" << std::endl;
+                Inventory.push_back(I);
+                std::cout <<  "Consumable \"" << I.GetName() << "\" added to " << Name << "\'s inventory succesfully!" << std::endl;
                 break;
             }
             default: {
@@ -180,7 +205,7 @@ void Playable::AddConsumableToInventory(Consumable& I) {
         }
     }
     else {
-        Inventory.push_back(&I);
+        Inventory.push_back(I);
         std::cout <<  "Consumable \"" << I.GetName() << "\" added to " << Name << "\'s inventory succesfully!" << std::endl;
     }
     std::cout << std::endl;
@@ -188,25 +213,29 @@ void Playable::AddConsumableToInventory(Consumable& I) {
 
 void Playable::UseConsumable(const int i) {
     const auto I = Inventory[i - 1];
-    Inventory.erase(Inventory.begin() + i - 1);
-    HitPointsCurrent += I->GetPlusHP();
-    if (HitPointsCurrent < 0)
-        HitPointsCurrent = 0;
-    if (HitPointsCurrent > GetHPMAX())
-        HitPointsCurrent = GetHPMAX();
-    std::cout << Name << " has used \"" << I->GetName() << "\"! They have ";
-    if (I->GetPlusHP() < 0)
-        std::cout << "lost " << -I->GetPlusHP();
+    this->SetHPCurrent(this->GetHPCurrent() + I.GetPlusHP());
+    if (this->GetHPCurrent() < 0)
+        this->SetHPCurrent(0);
+    if (this->GetHPCurrent() > this->GetHPMAX())
+        this->SetHPCurrent(this->GetHPMAX());
+    std::cout << Name << " has used \"" << I.GetName() << "\"! They have ";
+    if (I.GetPlusHP() < 0)
+        std::cout << "lost " << -I.GetPlusHP();
     else
-        std::cout << "gained " << I->GetPlusHP();
-    std::cout << "HP!" << std::endl;
+        std::cout << "gained " << I.GetPlusHP();
+    std::cout << " HP!" << std::endl;
+    Inventory.erase(Inventory.begin() + i - 1);
     if (this->GetHPCurrent() == 0){
         Death();
     }
 }
 
 std::ostream& operator<<(std::ostream& c, const Playable& P){
-    c << (Entity&)P << "Has " << P.GetGold() << " Gold to their name." << std::endl;
+    c << static_cast<Entity>(P);
+    const int LVL = ceil(log2(1 + P.GetXP()));
+    c << "LVL: " << LVL << ", XP: " << P.GetXP() << std::endl;;
+    c << "Next LVL threshold at " << pow(2, LVL) << " XP" << std::endl;
+    c << "Has " << P.GetGold() << " Gold to their name." << std::endl;
     return c;
 }
 
@@ -214,6 +243,6 @@ void Playable::ShowEntity() {
     std::cout << *this;
 }
 
-void Playable::Death() const {
-    std::cout << this->Name << " has passed away...";
+void Playable::Death() {
+    std::cout << "LMAOOOOOOOOOOOOO";
 }

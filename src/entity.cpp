@@ -3,14 +3,14 @@
 #include "../include/entity.h"
 #include <iostream>
 
-Entity::Entity(const char* NAME, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = nullptr, const Weapon* W = nullptr, const Armor* A = nullptr) {
+Entity::Entity(const char* Name, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = nullptr, const Weapon* W = nullptr, const Armor* A = nullptr) {
         SetAD(ADB);
         SetDEF(DEFB);
         SetHPMAX(HPM);
         SetHPCurrent(HPM);
         SetGold(GOLD);
         SetSpeed(SPEED);
-        SetName(NAME);
+        SetName(Name);
         SetDesc(Desc);
         SetWeapon(W);
         SetArmor(A);
@@ -75,7 +75,7 @@ Entity::Entity() : Entity(nullptr){}
 
 std::ostream& operator<<(std::ostream& c, const Entity& P){
     c << std::endl << P.GetName() << std::endl;
-    c << P.GetAD() << "(+" << P.GetWeapon()->GetPlusAD() << ") AD, " << P.GetDEF() << "(+" << P.GetArmor()->GetPlusDef() << ") DEF, " << P.GetHPCurrent() << "/" << P.GetHPCurrent() + P.GetArmor()->GetPlusHP() << " HP" << std::endl;
+    c << P.GetAD() << " AD, " << P.GetDEF() << " DEF, " << P.GetHPCurrent() << "/" << P.GetHPMAX() << " HP, " << P.GetSpeed() << " SPEED" << std::endl;
     c << P.GetDesc() << std::endl;
     c << "Weapon: " << P.GetWeapon()->GetName() << std::endl;
     c << "Armor: " << P.GetArmor()->GetName() << std::endl;
