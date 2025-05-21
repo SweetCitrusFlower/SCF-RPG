@@ -18,60 +18,60 @@ Entity::Entity(const char* NAME, const int ADB = 0, const int DEFB = 0, const in
 
 Entity::Entity() : Entity(nullptr){}
 
-Entity::Entity(const Entity &E) {
-        SetAD(E.GetAD());
-        SetDEF(E.GetDEF());
-        SetHPMAX(E.GetHPMAX());
-        SetHPCurrent(E.GetHPCurrent());
-        SetGold(E.GetGold());
-        SetSpeed(E.GetSpeed());
-        SetName(E.GetName());
-        SetDesc(E.GetDesc());
-        SetArmor(E.GetArmor());
-        SetWeapon(E.GetWeapon());
-    }
-
-
-Entity::Entity(Entity &&E) noexcept :
-    AttackDamageBase(E.AttackDamageBase),
-    DefenseBase(E.DefenseBase),
-    HitPointsMax(E.HitPointsMax),
-    HitPointsCurrent(E.HitPointsCurrent),
-    Speed(E.Speed),
-    Name(E.Name),
-    Description(E.Description),
-    WeaponSlot(E.WeaponSlot),
-    ArmorSlot(E.ArmorSlot) {}
-
-Entity& Entity::operator=(const Entity &E) {
-    if(this == &E)
-        return *this;
-    AttackDamageBase = E.AttackDamageBase;
-    DefenseBase = E.DefenseBase;
-    HitPointsMax = E.HitPointsMax;
-    HitPointsCurrent = E.HitPointsCurrent;
-    Speed = E.Speed;
-    Name = E.Name;
-    Description = E.Description;
-    WeaponSlot = E.WeaponSlot;
-    ArmorSlot = E.ArmorSlot;
-    return *this;
-}
-
-Entity& Entity::operator=(Entity &&E) noexcept {
-    if(this == &E)
-        return *this;
-    AttackDamageBase = E.AttackDamageBase;
-    DefenseBase = E.DefenseBase;
-    HitPointsMax = E.HitPointsMax;
-    HitPointsCurrent = E.HitPointsCurrent;
-    Speed = E.Speed;
-    Name = E.Name;
-    Description = E.Description;
-    WeaponSlot = E.WeaponSlot;
-    ArmorSlot = E.ArmorSlot;
-    return *this;
-}
+// Entity::Entity(const Entity &E) {
+//         SetAD(E.GetAD());
+//         SetDEF(E.GetDEF());
+//         SetHPMAX(E.GetHPMAX());
+//         SetHPCurrent(E.GetHPCurrent());
+//         SetGold(E.GetGold());
+//         SetSpeed(E.GetSpeed());
+//         SetName(E.GetName());
+//         SetDesc(E.GetDesc());
+//         SetArmor(E.GetArmor());
+//         SetWeapon(E.GetWeapon());
+//     }
+//
+//
+// Entity::Entity(Entity &&E) noexcept :
+//     AttackDamageBase(E.AttackDamageBase),
+//     DefenseBase(E.DefenseBase),
+//     HitPointsMax(E.HitPointsMax),
+//     HitPointsCurrent(E.HitPointsCurrent),
+//     Speed(E.Speed),
+//     Name(E.Name),
+//     Description(E.Description),
+//     WeaponSlot(E.WeaponSlot),
+//     ArmorSlot(E.ArmorSlot) {}
+//
+// Entity& Entity::operator=(const Entity &E) {
+//     if(this == &E)
+//         return *this;
+//     AttackDamageBase = E.AttackDamageBase;
+//     DefenseBase = E.DefenseBase;
+//     HitPointsMax = E.HitPointsMax;
+//     HitPointsCurrent = E.HitPointsCurrent;
+//     Speed = E.Speed;
+//     Name = E.Name;
+//     Description = E.Description;
+//     WeaponSlot = E.WeaponSlot;
+//     ArmorSlot = E.ArmorSlot;
+//     return *this;
+// }
+//
+// Entity& Entity::operator=(Entity &&E) noexcept {
+//     if(this == &E)
+//         return *this;
+//     AttackDamageBase = E.AttackDamageBase;
+//     DefenseBase = E.DefenseBase;
+//     HitPointsMax = E.HitPointsMax;
+//     HitPointsCurrent = E.HitPointsCurrent;
+//     Speed = E.Speed;
+//     Name = E.Name;
+//     Description = E.Description;
+//     WeaponSlot = E.WeaponSlot;
+//     ArmorSlot = E.ArmorSlot;
+//     return *this;
+// }
 
 std::ostream& operator<<(std::ostream& c, const Entity& P){
     c << std::endl << P.GetName() << std::endl;

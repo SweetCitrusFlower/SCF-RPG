@@ -36,10 +36,10 @@ public:
     Entity(const char*, int, int, int, int, int, const char*, const Weapon*, const Armor*);
     Entity();
     ~Entity() override = default;
-    Entity(const Entity&);
-    Entity(Entity&&) noexcept;
-    Entity& operator=(const Entity&);
-    Entity& operator=(Entity&&) noexcept;
+    // Entity(const Entity&);
+    // Entity(Entity&&) noexcept;
+    // Entity& operator=(const Entity&);
+    // Entity& operator=(Entity&&) noexcept;
 
     [[nodiscard]] int GetAD() const {return AttackDamageBase;}
     [[nodiscard]] int GetDEF() const {return DefenseBase;}

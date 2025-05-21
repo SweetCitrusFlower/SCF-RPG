@@ -206,7 +206,7 @@ void Playable::UseConsumable(const int i) {
 }
 
 std::ostream& operator<<(std::ostream& c, const Playable& P){
-    c << static_cast<Entity>(P) << "Has " << P.GetGold() << " Gold to their name." << std::endl;
+    c << (Entity&)P << "Has " << P.GetGold() << " Gold to their name." << std::endl;
     return c;
 }
 
