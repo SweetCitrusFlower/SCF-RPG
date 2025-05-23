@@ -1,5 +1,3 @@
-#pragma once
-
 #include "../include/enemy.h"
 #include "entity.cpp"
 

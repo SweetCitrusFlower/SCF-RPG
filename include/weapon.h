@@ -14,7 +14,7 @@ public:
     Weapon();
     ~Weapon() override;
 
-    [[nodiscard]] int GetPlusAD() const {return PlusAD;}
+    [[nodiscard]] int GetPlusAD() const& {return PlusAD;}
 };
 
 inline auto Fists = Weapon("Fists", 0, "Ye Ole Reliable.");

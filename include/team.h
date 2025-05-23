@@ -12,8 +12,8 @@ template <class Member> class Team{
 public:
     Team(Member, Member, Member);
     Team();
-    std::vector<Member> GetTeam() const {return team;}
-    Member GetMember(const int i) const {return team[i - 1];}
+    std::vector<Member> GetTeam() const& {return team;}
+    Member GetMember(const int i) const& {return team[i - 1];}
     void ShowTeam() const;
     void MemberDeath(const Member&) const;
 

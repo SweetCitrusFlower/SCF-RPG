@@ -41,16 +41,16 @@ public:
     // Entity& operator=(const Entity&);
     // Entity& operator=(Entity&&) noexcept;
 
-    [[nodiscard]] int GetAD() const {return AttackDamageBase;}
-    [[nodiscard]] int GetDEF() const {return DefenseBase;}
-    [[nodiscard]] int GetHPMAX() const {return HitPointsMax;}
-    [[nodiscard]] int GetHPCurrent() const {return HitPointsCurrent;}
-    [[nodiscard]] int GetGold() const {return Gold;}
-    [[nodiscard]] int GetSpeed() const {return Speed;}
-    [[nodiscard]] const char* GetName() const {return Name;}
-    [[nodiscard]] const char* GetDesc() const {return Description;}
-    [[nodiscard]] const Weapon* GetWeapon() const {return WeaponSlot;}
-    [[nodiscard]] const Armor* GetArmor() const {return ArmorSlot;}
+    [[nodiscard]] int GetAD() const& {return AttackDamageBase;}
+    [[nodiscard]] int GetDEF() const& {return DefenseBase;}
+    [[nodiscard]] int GetHPMAX() const& {return HitPointsMax;}
+    [[nodiscard]] int GetHPCurrent() const& {return HitPointsCurrent;}
+    [[nodiscard]] int GetGold() const& {return Gold;}
+    [[nodiscard]] int GetSpeed() const& {return Speed;}
+    [[nodiscard]] const char* GetName() const& {return Name;}
+    [[nodiscard]] const char* GetDesc() const& {return Description;}
+    [[nodiscard]] const Weapon* GetWeapon() const& {return WeaponSlot;}
+    [[nodiscard]] const Armor* GetArmor() const& {return ArmorSlot;}
 
     void ShowEntity() override;
 };

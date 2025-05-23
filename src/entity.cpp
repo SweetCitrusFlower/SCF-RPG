@@ -1,5 +1,3 @@
-#pragma once
-
 #include "../include/entity.h"
 #include <iostream>
 
