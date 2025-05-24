@@ -3,6 +3,9 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include <iostream>
+#include <vector>
+
 class Item {
 protected:
     const char *Name = nullptr;
@@ -12,7 +15,7 @@ public:
 
     Item(const char*, const char*);
     Item();
-    virtual ~Item();
+    virtual ~Item() = default;
 
     Item(const Item&);
     Item(Item&&) noexcept;

@@ -11,15 +11,14 @@ class Armor final : public Item{
 public:
     Armor(const char*, int, int, const char*);
     Armor();
-    ~Armor() override;
+    ~Armor() override = default;
 
     [[nodiscard]] int GetPlusDef() const& {return PlusDef;}
     [[nodiscard]] int GetPlusHP() const& {return PlusHP;}
 
-};
+    int& SetPlusDef(const int x) {PlusDef = x; return PlusDef;}
+    int& SetPlusHP(const int x) {PlusHP = x; return PlusHP;}
 
-inline auto Skin = Armor("Skin", 0, 1, "You're naked. Gross.");
-inline auto SoulJacket = Armor("Soul Jacket", 200, 300, "The ultimate sacrifice: to live with your heart on your sleeve.");
-inline auto LanaTShirt = Armor("Lana del Rey T-Shirt", 20, 500, "Given with love. Kinda want it back tho ngl");
+};
 
 #endif //ARMOR_H

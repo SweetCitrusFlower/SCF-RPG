@@ -7,15 +7,13 @@
 
 class Enemy final : public Entity {
 protected:
-    int XPGivenWhenSlain = 0;
-
+    int XP = 0;
 public:
-    Enemy(const char*, int, int, int, int, int, int, const char*, const Weapon*, const Armor*);
+    Enemy(const char*, int, int, int, int, int, int, const char*, Weapon*, Armor*);
     Enemy();
     ~Enemy() override = default;
 
-    [[nodiscard]] int GetXPWhenSlain() const {return XPGivenWhenSlain;}
-    void ShowEntity() override;
+    void ShowEntity() const override;
 };
 
 #endif //ENEMY_H

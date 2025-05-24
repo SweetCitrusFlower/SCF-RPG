@@ -3,10 +3,31 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <cmath>
+#include "../src/team.cpp"
 
-class Game{
-    int GameInstance = rand() % 10000;
+class Game {
+protected:
+    static Game* GameInstancePointer;
+    Game() {}
+    Team<Playable> PlayerTeam = Team(Weakling, Weakling, Weakling);
+
+    void Fight();
+    void TeamAssembler();
+    static void ShowPlayables();
+    void Shop();
+
+public:
+
+    [[nodiscard]] Team<Playable> GetTeam () const& {return PlayerTeam;}
+    Team<Playable>& SetTeam(const Team<Playable> &TEAM) {PlayerTeam = TEAM; return PlayerTeam;}
+
+    Game(const Game&) = delete;
+    static Game* GetInstance(){
+        if(GameInstancePointer == nullptr)
+            GameInstancePointer = new Game();
+        return GameInstancePointer;
+    };
+    void ReceiveAction();
 };
 
 #endif //GAME_H

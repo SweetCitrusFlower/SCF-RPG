@@ -21,4 +21,7 @@ std::ostream& operator<<(std::ostream &c, const Armor& A){
     return c;
 }
 
-Armor::~Armor() = default;
+inline auto Skin = Armor("Skin", 0, 1, "You're naked. Gross.");
+inline auto SoulJacket = Armor("Soul Jacket", 200, 300, "The ultimate sacrifice: to live with your heart on your sleeve.");
+inline auto LanaTShirt = Armor("Lana del Rey T-Shirt", 20, 500, "Given with love. Kinda want it back tho ngl");
+inline std::vector AllArmors = {SoulJacket, LanaTShirt};

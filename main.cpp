@@ -1,14 +1,12 @@
 #include <iostream>
 
-#include "src/playable.cpp"
-#include "src/enemy.cpp"
-#include "src/consumable.cpp"
-#include "src/weapon.cpp"
-#include "src/armor.cpp"
-#include "src/team.cpp"
+#include "src/game.cpp"
+
+Game* Game::GameInstancePointer = nullptr;
 
 int main() {
 
-    
+    const auto game = Game::GetInstance();
+    game->ReceiveAction();
     return 0;
 }

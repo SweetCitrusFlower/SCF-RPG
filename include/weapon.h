@@ -12,13 +12,10 @@ protected:
 public:
     Weapon(const char*, int, const char*);
     Weapon();
-    ~Weapon() override;
+    ~Weapon() override = default;
 
     [[nodiscard]] int GetPlusAD() const& {return PlusAD;}
+    int& SetPlusAD(const int PAD) {PlusAD = PAD; return PlusAD;}
 };
-
-inline auto Fists = Weapon("Fists", 0, "Ye Ole Reliable.");
-inline auto Plate = Weapon("Plate", 500, "Can hurt a lot, but is very fragile. Just like a betrayed heart.");
-inline auto Cigarette = Weapon("Cigarette", 30, "It's gonna be put out on your skin.");
 
 #endif //WEAPON_H

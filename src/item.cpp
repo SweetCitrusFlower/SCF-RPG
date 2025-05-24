@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../include/item.h"
-#include <iostream>
 
 Item::Item(const char* name, const char* description = "") : Name(name), Description(description) {}
 
@@ -30,5 +29,3 @@ std::ostream& operator<<(std::ostream &c, const Item& I){
     c << std::endl << I.GetName() << std::endl << I.GetDescription() << std::endl;
     return c;
 }
-
-Item::~Item() = default;

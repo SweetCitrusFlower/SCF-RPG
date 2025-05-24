@@ -5,41 +5,27 @@
 
 #include "../src/weapon.cpp"
 #include "../src/armor.cpp"
-#include "virtualentity.h"
+#include <iostream>
+#include <vector>
 
-class Entity : public VirtualEntity {
+class Entity {
 protected:
+    const char *Name = nullptr;
     int AttackDamageBase = 0;
     int DefenseBase = 0;
     int HitPointsMax = 0;
     int HitPointsCurrent = 0;
     int Gold = 0;
     int Speed = 0;
-    const char *Name = nullptr;
+    int XP = 0;
     const char *Description = nullptr;
-    const Weapon *WeaponSlot = nullptr;
-    const Armor *ArmorSlot = nullptr;
-
-    void SetAD(const int x) {AttackDamageBase = x;}
-    void SetDEF(const int x) {DefenseBase = x;}
-    void SetHPMAX(const int x) {HitPointsMax = x;}
-    void SetHPCurrent(const int x) {HitPointsCurrent = x;}
-    void SetGold(const int x) {Gold = x;}
-    void SetSpeed(const int x) {Speed = x;}
-    void SetName(const char *name) {Name = name;}
-    void SetDesc(const char *desc) {Description = desc;}
-    void SetWeapon(const Weapon *W) {WeaponSlot = W;}
-    void SetArmor(const Armor *A) {ArmorSlot = A;}
-
-
+    Weapon *WeaponSlot = nullptr;
+    Armor *ArmorSlot = nullptr;
 public:
-    Entity(const char*, int, int, int, int, int, const char*, const Weapon*, const Armor*);
-    Entity();
-    ~Entity() override = default;
-    // Entity(const Entity&);
-    // Entity(Entity&&) noexcept;
-    // Entity& operator=(const Entity&);
-    // Entity& operator=(Entity&&) noexcept;
+
+    virtual ~Entity() = default;
+    virtual void ShowEntity() const = 0;
+    virtual std::ostream& operator<<(std::ostream& os) const = delete;
 
     [[nodiscard]] int GetAD() const& {return AttackDamageBase;}
     [[nodiscard]] int GetDEF() const& {return DefenseBase;}
@@ -49,10 +35,21 @@ public:
     [[nodiscard]] int GetSpeed() const& {return Speed;}
     [[nodiscard]] const char* GetName() const& {return Name;}
     [[nodiscard]] const char* GetDesc() const& {return Description;}
-    [[nodiscard]] const Weapon* GetWeapon() const& {return WeaponSlot;}
-    [[nodiscard]] const Armor* GetArmor() const& {return ArmorSlot;}
+    [[nodiscard]] int GetXP() const& {return XP;}
+    [[nodiscard]] Weapon* GetWeapon() const& {return WeaponSlot;}
+    [[nodiscard]] Armor* GetArmor() const& {return ArmorSlot;}
 
-    void ShowEntity() override;
+    int& SetAD(const int x) {AttackDamageBase = x;return this->AttackDamageBase;}
+    int& SetDEF(const int x) {DefenseBase = x;return this->DefenseBase;}
+    int& SetHPMAX(const int x) {HitPointsMax = x;return this->HitPointsMax;}
+    int& SetHPCurrent(const int x) {HitPointsCurrent = x; return this->HitPointsCurrent;}
+    int& SetGold(const int x) {Gold = x; return Gold;}
+    int& SetSpeed(const int x) {Speed = x; return this->Speed;}
+    const char*& SetName(const char *name) {Name = name; return Name;}
+    const char*& SetDesc(const char *desc) {Description = desc; return this->Description;}
+    int& SetXP(const int XP) {this->XP = XP; return this->XP;}
+    Weapon*& SetWeapon(Weapon *W) {WeaponSlot = W; return this->WeaponSlot;}
+    Armor*& SetArmor(Armor *A) {ArmorSlot = A; return this->ArmorSlot;}
 };
 
 #endif //ENTITY_H

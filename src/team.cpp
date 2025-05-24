@@ -4,7 +4,7 @@ template <class Member>
 Team<Member>::Team(Member m1, Member m2, Member m3) : team ({m1, m2, m3}), M1(m1), M2(m2), M3(m3) {}
 
 template <class Member>
-Team<Member>::Team() : team({}) ,M1(), M2(), M3(){}
+Team<Member>::Team() : Team(Weakling, Weakling, Weakling){}
 
 template <class Member>
 void Team<Member>::ShowTeam() const {
@@ -17,5 +17,16 @@ void Team<Member>::MemberDeath(const Member& TM) const {
     const auto* it = find(this->GetTeam().begin(), this->GetTeam().end(), TM);
     if(it != this->GetTeam().end())
         this->team.remove(team.begin() + it);
+}
+
+template <class Member>
+void Team<Member>::ChangeMember(const int i, const int k) {
+    team[i - 1] = AllPlayables[k - 1];
+    switch (i) {
+        case 1: M1 = AllPlayables[k - 1]; break;
+        case 2: M2 = AllPlayables[k - 1]; break;
+        case 3: M3 = AllPlayables[k - 1]; break;
+        default: break;
+    }
 }
 

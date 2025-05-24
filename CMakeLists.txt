@@ -145,9 +145,7 @@ add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         include/team.h
         src/game.cpp
         include/game.h
-        src/entity.cpp
         src/item.cpp
-        include/virtualentity.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

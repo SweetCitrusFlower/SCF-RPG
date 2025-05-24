@@ -4,31 +4,29 @@
 #define PLAYABLE_H
 
 #include "entity.h"
-#include "consumable.h"
+#include "../src/consumable.cpp"
 #include <vector>
 
 class Playable final : public Entity {
 protected:
-    int XP = 0;
     std::vector<Consumable> Inventory {};
-    void Death() const;
-    void UseConsumable(int);
+    std::vector<Consumable>& UseConsumable(int);
 
 public:
-    Playable(const char*, int, int, int, int, int, int, const char*, const Weapon*, const Armor*, const std::vector<Consumable>&);
+
+    Playable(const char*, int, int, int, int, int, const char*, Weapon*, Armor*, const std::vector<Consumable>&);
     Playable();
     ~Playable() override = default;
 
-    [[nodiscard]] int GetXP() const {return XP;}
-    [[nodiscard]] std::vector<Consumable> GetInventory() const& {return Inventory;}
+    std::vector<Consumable>& SetInventory(const std::vector<Consumable> &I) {Inventory = I; return Inventory;}
+    [[nodiscard]] std::vector<Consumable> GetInventory() const {return Inventory;}
 
-    void ChangeWeapon(const Weapon&);
-    void ChangeArmor(const Armor&);
+    Weapon& ChangeWeapon(Weapon&);
+    Armor& ChangeArmor(Armor&);
     void CheckInventory();
-    void AddConsumableToInventory(const Consumable&);
+    std::vector<Consumable>& AddConsumableToInventory(const Consumable&);
 
-    void ShowEntity() override;
-    void Death();
+    void ShowEntity() const override;
 
 };
 

@@ -4,6 +4,7 @@
 #define CONSUMABLE_H
 
 #include "item.h"
+#include <vector>
 
 class Consumable final : public Item {
 protected:
@@ -13,15 +14,11 @@ public:
 
     Consumable(const char*, int, const char*);
     Consumable();
-    ~Consumable() override;
+    ~Consumable() override = default;
 
     [[nodiscard]] int GetPlusHP() const { return PlusHP;}
 
+
 };
-
-inline auto McPuisor = Consumable("McPuisor", -40, "This item makes you a bit fatter.");
-inline auto Apple = Consumable("Apple", 5, "Keeps the doctors away!");
-inline auto Vodka = Consumable("Vodka", 300, "Russian wisdom cyka blyat");
-
 
 #endif //CONSUMABLE_H
