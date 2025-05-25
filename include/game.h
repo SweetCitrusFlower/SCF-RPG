@@ -12,13 +12,13 @@ protected:
     Team<Playable> PlayerTeam = Team(Weakling, Weakling, Weakling);
 
     void Fight();
-    void TeamAssembler();
+    void TeamEditor();
     static void ShowPlayables();
     void Shop();
 
 public:
 
-    [[nodiscard]] Team<Playable> GetTeam () const& {return PlayerTeam;}
+    [[nodiscard]] Team<Playable> GetTeam() const & {return PlayerTeam;}
     Team<Playable>& SetTeam(const Team<Playable> &TEAM) {PlayerTeam = TEAM; return PlayerTeam;}
 
     Game(const Game&) = delete;

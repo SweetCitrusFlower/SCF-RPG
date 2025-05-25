@@ -19,118 +19,64 @@ Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const i
 
 Playable::Playable() : Playable("MissingNo"){}
 
-Weapon& Playable::ChangeWeapon(Weapon &W){
+Playable& Playable::ChangeWeapon(Weapon &W){
     if (this->GetWeapon() == nullptr) {
         std::cout << "how did you do this." << std::endl;
-        return *WeaponSlot;
+        return *this;
     }
-    if (strcmp(W.GetName(), "Fists") == 0) {
-        std::cout << this->GetName() << " has unequipped \"" << this->GetWeapon()->GetName() << "\".\n\n";
-        this->SetWeapon(&W);
-        return *WeaponSlot;
+    if (&W == &Fists && this->GetWeapon() == &Fists) {
+        std::cout << "Changing fists for fists? Very funny." << std::endl;
+        return *this;
     }
-    if (strcmp(this->GetWeapon()->GetName() ,"Fists") == 0) {
+    SetAD(this->GetAD() - this->GetWeapon()->GetPlusAD() + W.GetPlusAD());
+    if (&W == &Fists) {
+        std::cout << this->GetName() << " has unequipped \"" << this->GetWeapon()->GetName() << "\"."  << std::endl << std::endl;
         this->SetWeapon(&W);
+        return *this;
+    }
+    if (this->GetWeapon() == &Fists) {
         std::cout << this->GetName() << " has eqquiped \"" << W.GetName() << "\"!" << std::endl << std::endl;
-        return *WeaponSlot;
+        this->SetWeapon(&W);
+        return *this;
     }
-
     if (this->GetWeapon() == &W) {
         std::cout << this->GetName() << " already has this weapon equipped." << std::endl << std::endl;
-        return *WeaponSlot;
+        return *this;
     }
-    std::string response;
-    short nr_answers = 0;
-    std::cout << this->GetName() << " has another weapon equipped. Do you want to change it to \"" << W.GetName() << "\"?" << std::endl << "[Y/N]: ";
-    do {
-        std::cin >> response;
-        switch (static_cast<char>(std::strlen(response.c_str()) != 1) ? '0' : tolower(response[0])) {
-            case 'y' : {
-                this->SetWeapon(&W);
-                std::cout << this->GetName() << "'s weapon has been changed to \"" << W.GetName() << "\"!" << std::endl << std::endl;
-                return *WeaponSlot;
-            }
-            case 'n' : {
-                std::cout << this->GetName() << "'s weapon has not been changed." << std::endl << std::endl;
-                return *WeaponSlot;
-            }
-            default: {
-                nr_answers++;
-                if (nr_answers < 5) {
-                    std::cout << "Please give a valid answer." << std::endl;
-                }
-                if (nr_answers == 5) {
-                    std::cout << "DUDE JUST WRITE Y FOR YES OR N FOR NO IT'S NOT THAT FUCKING HARD!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
-                }
-                if (nr_answers > 5) {
-                    std::cout << "That's it, I'm changing it." << std::endl << std::endl;
-                    this->SetWeapon(&W);
-                    std::cout << this->GetName() << "'s weapon has been changed to \"" << W.GetName() << "\"!" << std::endl << std::endl;
-                    return *WeaponSlot;
-                }
-                std::cout << "[Y/N]: ";
-            }
-        }
-    } while (true);
+    this->SetWeapon(&W);
+    std::cout << this->GetName() << "'s weapon has been changed to \"" << W.GetName() << "\"!" << std::endl << std::endl;
+    return *this;
 }
 
-Armor& Playable::ChangeArmor(Armor &A){
+Playable& Playable::ChangeArmor(Armor &A){
     if (this->GetArmor() == nullptr) {
-        std::cout << "how did you do this.\n\n";
-        return *ArmorSlot;
+        std::cout << "how did you do this." << std::endl;
+        return *this;
     }
-    if (strcmp(A.GetName(), "Skin") == 0) {
-        std::cout << this->GetName() << " has unequipped  \"" << this->GetArmor()->GetName() << "\".\n\n";
-        SetDEF(GetDEF() - GetArmor()->GetPlusDef());
-        SetHPMAX(GetHPMAX() - GetArmor()->GetPlusHP());
-        SetHPCurrent(std::min(GetHPMAX(), GetHPCurrent()));
-        this->SetArmor(&A);
-        return *ArmorSlot;
+    if (&A == &Skin && this->GetArmor() == &Skin) {
+        std::cout << "Changing skin for skin? Very funny." << std::endl;
+        return *this;
     }
-    if (strcmp(this->GetArmor()->GetName(), "Skin") == 0) {
+    SetHPMAX(this->GetHPMAX() - this->GetArmor()->GetPlusHP() + A.GetPlusHP());
+    SetDEF(this->GetDEF() - this->GetArmor()->GetPlusDef() + A.GetPlusDef());
+    SetHPCurrent(std::min(this->GetHPMAX(), this->GetHPCurrent()));
+    if (&A == &Skin) {
+        std::cout << this->GetName() << " has unequipped \"" << this->GetArmor()->GetName() << "\"."  << std::endl << std::endl;
         this->SetArmor(&A);
-        SetDEF(GetDEF() + A.GetPlusDef());
-        SetHPMAX(GetHPMAX() + A.GetPlusHP());
-        std::cout << this->GetName() << " has eqquiped \"" << A.GetName() << "\"!\n\n";
-        return *ArmorSlot;
+        return *this;
+    }
+    if (this->GetArmor() == &Skin) {
+        std::cout << this->GetName() << " has eqquiped \"" << A.GetName() << "\"!" << std::endl << std::endl;
+        this->SetArmor(&A);
+        return *this;
     }
     if (this->GetArmor() == &A) {
-        std::cout << this->GetName() << " already has this armor equipped.\n\n";
-        return *ArmorSlot;
+        std::cout << this->GetName() << " already has this armor equipped." << std::endl << std::endl;
+        return *this;
     }
-    std::string response;
-    short nr_answers = 0;
-    std::cout << this->GetName() << " has another armor equipped. Do you want to change it to \"" << A.GetName() << "\"?\n[Y/N]: ";
-    do {
-        std::cin >> response;
-        switch (static_cast<char>(std::strlen(response.c_str()) != 1) ? '0' : tolower(response[0])) {
-            case 'y' : {
-                this->SetArmor(&A);
-                std::cout << this->GetName() << "'s armor has been changed to \"" << A.GetName() << "\"!\n\n";
-                return *ArmorSlot;
-            }
-            case 'n' : {
-                std::cout << this->GetName() << "'s armor has not been changed.\n\n";
-                return *ArmorSlot;
-            }
-            default: {
-                nr_answers++;
-                if (nr_answers < 5) {
-                    std::cout << "Please give a valid answer.\n";
-                }
-                if (nr_answers == 5) {
-                    std::cout << "DUDE JUST WRITE Y FOR YES OR N FOR NO IT'S NOT THAT FUCKING HARD!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
-                }
-                if (nr_answers > 5) {
-                    std::cout << "That's it, I'm changing it.\n";
-                    this->SetArmor(&A);
-                    std::cout << this->GetName() << "'s armor has been changed to \"" << A.GetName() << "\"!\n\n";
-                    return *ArmorSlot;
-                }
-                std::cout << "[Y/N]: ";
-            }
-        }
-    } while (true);
+    this->SetArmor(&A);
+    std::cout << this->GetName() << "'s armor has been changed to \"" << A.GetName() << "\"!" << std::endl << std::endl;
+    return *this;
 }
 
 void Playable::CheckInventory(){
@@ -175,12 +121,12 @@ void Playable::CheckInventory(){
 }
 
 std::vector<Consumable>& Playable::AddConsumableToInventory(const Consumable& I) {
-    if (this->GetInventory().size() == 5) {
-        std::sort(this->GetInventory().begin(), this->GetInventory().end(), [](const Consumable& a, const Consumable& b)
-                                                                                            {if (strcmp(a.GetName(), b.GetName()) < 0)
-                                                                                                return true;
-                                                                                            return false;
-                                                                                        } );
+    if (this->GetInventory().size() >= 5) {
+        std::sort(Inventory.begin(), Inventory.end(), [](const Consumable& a, const Consumable& b)
+                                                                    {if (strcmp(a.GetName(), b.GetName()) < 0)
+                                                                        return true;
+                                                                    return false;
+                                                                    } );
         std::cout << this->GetName() << "\'s inventory is full! Do you want to replace an item?\n[Y/N] ";
         std::string response;
         std::cin >> response;
@@ -190,7 +136,7 @@ std::vector<Consumable>& Playable::AddConsumableToInventory(const Consumable& I)
                 for (auto item = 0; item < this->GetInventory().size(); ++item) {
                     std::cout << item + 1 << ". " << this->GetInventory()[item].GetName() << std::endl;
                 }
-                std::cout << "\nPlease enter a number between 1 and " << this->GetInventory().size() << ".\n> ";
+                std::cout << "\nPlease enter a number between 1 and 5.\n> ";
                 auto nr = 0;
                 std::cin >> nr;
                 nr = (nr - 1) % this->GetInventory().size();
@@ -227,7 +173,7 @@ std::vector<Consumable>& Playable::UseConsumable(const int i) {
     else
         std::cout << "gained " << I.GetPlusHP();
     std::cout << " HP!" << std::endl;
-    Inventory.erase(this->GetInventory().begin() + i - 1);
+    Inventory.erase(Inventory.begin() + i - 1);
     if (this->GetHPCurrent() == 0){}
     return Inventory;
 }
@@ -244,6 +190,8 @@ std::ostream& operator<<(std::ostream& c, const Playable& P){
 void Playable::ShowEntity() const {
     std::cout << this->GetName() << std::endl << this->GetDesc() << std::endl;
     std::cout << this->GetAD() << " AD, " << this->GetHPCurrent() << "/" << this->GetHPMAX() << " HP, " << this->GetDEF() << " DEF" << std::endl;
+    std::cout << "Weapon: " << this->GetWeapon()->GetName() << std::endl;
+    std::cout << "Armor: " << this->GetArmor()->GetName() << std::endl;
 }
 
 inline auto Mera = Playable("Mera", 5, 2, 30, 46, 3, "He loves playing League", &FlipPhone, &Skin, {Vodka});

@@ -14,7 +14,7 @@ public:
     Weapon();
     ~Weapon() override = default;
 
-    [[nodiscard]] int GetPlusAD() const& {return PlusAD;}
+    [[nodiscard]] int GetPlusAD() const {return PlusAD;}
     int& SetPlusAD(const int PAD) {PlusAD = PAD; return PlusAD;}
 };
 

@@ -22,8 +22,8 @@ public:
     Item& operator=(const Item&);
     Item& operator=(Item&&) noexcept;
 
-    [[nodiscard]] const char* GetName() const& {return Name;}
-    [[nodiscard]] const char* GetDescription() const& {return Description;}
+    [[nodiscard]] const char* GetName() const {return Name;}
+    [[nodiscard]] const char* GetDescription() const {return Description;}
 
 };
 

@@ -6,8 +6,6 @@
 #include "entity.h"
 
 class Enemy final : public Entity {
-protected:
-    int XP = 0;
 public:
     Enemy(const char*, int, int, int, int, int, int, const char*, Weapon*, Armor*);
     Enemy();

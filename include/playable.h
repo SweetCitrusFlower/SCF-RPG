@@ -21,8 +21,8 @@ public:
     std::vector<Consumable>& SetInventory(const std::vector<Consumable> &I) {Inventory = I; return Inventory;}
     [[nodiscard]] std::vector<Consumable> GetInventory() const {return Inventory;}
 
-    Weapon& ChangeWeapon(Weapon&);
-    Armor& ChangeArmor(Armor&);
+    Playable& ChangeWeapon(Weapon&);
+    Playable& ChangeArmor(Armor&);
     void CheckInventory();
     std::vector<Consumable>& AddConsumableToInventory(const Consumable&);
 

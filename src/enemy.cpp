@@ -24,5 +24,7 @@ std::ostream& operator<<(std::ostream& c, const Enemy& E){
 void Enemy::ShowEntity() const {
     std::cout << this->GetName() << std::endl << this->GetDesc() << std::endl;
     std::cout << this->GetAD() << " AD, " << this->GetHPCurrent() << "/" << this->GetHPMAX() << " HP, " << this->GetDEF() << " DEF" << std::endl;
+    std::cout << "Weapon: " << this->GetWeapon()->GetName() << std::endl;
+    std::cout << "Armor: " << this->GetArmor()->GetName() << std::endl;
 }
 
