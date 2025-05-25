@@ -14,10 +14,3 @@ std::ostream& operator<<(std::ostream& c, Consumable& C){
     c << std::endl;
     return c;
 }
-
-inline auto McPuisor = Consumable("McPuisor", -40, "This item makes you a bit fatter.");
-inline auto Apple = Consumable("Apple", 5, "Keeps the doctors away!");
-inline auto Vodka = Consumable("Vodka", 300, "Russian wisdom cyka blyat");
-inline auto PlateOfSpaghetti = Consumable("Plate of spaghetti", 300, "To forgetti your regretti.");
-inline std::vector<std::pair<Consumable, int>> AllConsumables = {{McPuisor, 2}, {Apple, 1}, {Vodka, 10}, {PlateOfSpaghetti, 15}};
-

@@ -16,8 +16,3 @@ std::ostream& operator<<(std::ostream& c, Weapon& W) {
     return c;
 }
 
-inline auto Fists = Weapon("Fists", 0, "Ye Ole Reliable.");
-inline auto Plate = Weapon("Plate", 100, "Can hurt a lot, but is very fragile. Just like a betrayed heart.");
-inline auto Cigarette = Weapon("Cigarette", 30, "It's gonna be put out on your skin.");
-inline auto FlipPhone = Weapon("Flip Phone", 150, "Single use. But you keep using it.");
-inline std::vector AllWeapons = {Plate, Cigarette, FlipPhone};

@@ -1,4 +1,5 @@
 #include "../include/game.h"
+#include "../include/ItemsAndPlayables.h"
 #include <cstring>
 
 void Game::ReceiveAction(){
@@ -32,7 +33,7 @@ void Game::ReceiveAction(){
                 std::cin.clear();
                 std::cout << "Invalid input. Choose again.\n> ";
                 std::cin >> x;
-            } while (!std::cin || x < 1 || x > 5);
+            } while (!std::cin || x > 5);
             std::cout << std::endl;
             switch (x) {
                 case 1: Fight(); break;
@@ -50,8 +51,32 @@ void Game::ReceiveAction(){
 }
 
 void Game::Fight() {
-    auto CurrTeam = PlayerTeam;
-
+    auto EnemyTeam = new Team<Enemy>;
+    for (int i = 1; i <= 3 ; i++) {
+        switch (std::rand() % 3) {
+            case 1: {
+                const auto EC = new GoblinCreator;
+                EnemyTeam->SetMember(i, *EC->FactoryMethod());
+                delete EC;
+                break;
+            }
+            case 2: {
+                const auto OC = new OgreCreator;
+                EnemyTeam->SetMember(i, *OC->FactoryMethod());
+                delete OC;
+                break;
+            }
+            default: {
+                const auto BC = new BeastCreator;
+                EnemyTeam->SetMember(i, *BC->FactoryMethod());
+                delete BC;
+                break;
+            }
+        }
+    }
+    for (auto e : EnemyTeam->GetTeam())
+        std::cout << e << std::endl;
+    delete EnemyTeam;
 }
 
 void Game::TeamEditor() {
@@ -97,7 +122,7 @@ void Game::TeamEditor() {
                             if (!std::cin) std::cin.clear();
                             std::cout << "> ";
                             std::cin >> k;
-                        }while (!std::cin || k <= 0 || k > AllPlayables.size());
+                        }while (!std::cin || k > AllPlayables.size());
                         PlayerTeam.ChangeMember(static_cast<int>(i2) + 1, static_cast<int>(k));
                         changed = true;
                         std::cout << "Teammate nr. " << static_cast<int>(i2) + 1 << " replaced with " << AllPlayables[k - 1].GetName() << "." << std::endl;
@@ -141,12 +166,12 @@ void Game::TeamEditor() {
                         std::cout << "Which weapon would you like to choose?" << std::endl;
                         unsigned long j = 0;
                         for (auto& w : AllWeapons) {
-                            std::cout << ++j << ". " << w.GetName();
-                            if (strcmp(w.GetName(), "Fists") == 0) std::cout << "(~unequip)";
+                            std::cout << ++j << ". " << w->GetName();
+                            if (strcmp(w->GetName(), "Fists") == 0) std::cout << "(~unequip)";
                             std::cout << ", ";
-                            if (w.GetPlusAD() - PlayerTeam.GetMember(static_cast<int>(i4)).GetWeapon()->GetPlusAD() >= 0)
+                            if (w->GetPlusAD() - PlayerTeam.GetMember(static_cast<int>(i4)).GetWeapon()->GetPlusAD() >= 0)
                                 std::cout << "+";
-                            std::cout << w.GetPlusAD() - PlayerTeam.GetMember(static_cast<int>(i4)).GetWeapon()->GetPlusAD() << " AD" << std::endl;
+                            std::cout << w->GetPlusAD() - PlayerTeam.GetMember(static_cast<int>(i4)).GetWeapon()->GetPlusAD() << " AD" << std::endl;
                         }
                         std::cout << "Pick a number between 1 and " << AllWeapons.size() << ".\n> ";
                         unsigned long k = 0;
@@ -154,7 +179,7 @@ void Game::TeamEditor() {
                         k--;
                         if (std::cin && k < AllWeapons.size()) {
                             auto& AuxMemb = PlayerTeam.GetMember(static_cast<int>(i4));
-                            AuxMemb.ChangeWeapon(AllWeapons[k]);
+                            AuxMemb.ChangeWeapon(*AllWeapons[k]);
                             PlayerTeam.SetMember(static_cast<int>(i4), AuxMemb);
                         }
                         break;
@@ -214,7 +239,7 @@ void Game::TeamEditor() {
                 std::cin.clear();
                 std::cout << "Invalid input. Choose again.\n> ";
                 std::cin >> i;
-            } while (!std::cin || i < 1 || i > 6);
+            } while (!std::cin || i > 6);
     }
     if (changed) {
         std::cout << "Your final team is:" << std::endl;
