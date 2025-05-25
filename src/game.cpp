@@ -121,7 +121,7 @@ void Game::TeamEditor() {
                         else {
                             std::cout << "Inventory:" << std::endl;
                             unsigned long j3 = 0;
-                            for (const auto& cons: this->GetTeam().GetMember(static_cast<int>(i3)).GetInventory())
+                            for (auto& cons: this->GetTeam().GetMember(static_cast<int>(i3)).GetInventory())
                                 std::cout << ++j3 << ". " << cons.GetName() << std::endl;
                         }
                         break;
@@ -140,7 +140,7 @@ void Game::TeamEditor() {
                     if (i4 == 0 || i4 == 1 || i4 == 2) {
                         std::cout << "Which weapon would you like to choose?" << std::endl;
                         unsigned long j = 0;
-                        for (const auto& w : AllWeapons) {
+                        for (auto& w : AllWeapons) {
                             std::cout << ++j << ". " << w.GetName();
                             if (strcmp(w.GetName(), "Fists") == 0) std::cout << "(~unequip)";
                             std::cout << ", ";
@@ -173,7 +173,7 @@ void Game::TeamEditor() {
                     if (i5 == 0 || i5 == 1 || i5 == 2) {
                         std::cout << "Which armor would you like to choose?" << std::endl;
                         unsigned long j = 0;
-                        for (const auto& w : AllArmors) {
+                        for (auto& w : AllArmors) {
                             std::cout << ++j << ". " << w.GetName();
                             if (strcmp(w.GetName(), "Skin") == 0) std::cout << "(a.k.a. unequip)" << std::endl;
                             std::cout << ", ";

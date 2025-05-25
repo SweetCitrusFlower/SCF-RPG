@@ -24,7 +24,7 @@ public:
     Playable& ChangeWeapon(Weapon&);
     Playable& ChangeArmor(Armor&);
     void CheckInventory();
-    std::vector<Consumable>& AddConsumableToInventory(const Consumable&);
+    std::vector<Consumable>& AddConsumableToInventory(Consumable&);
 
     void ShowEntity() const override;
 

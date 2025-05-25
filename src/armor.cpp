@@ -9,8 +9,8 @@ Armor::Armor(const char* name, const int plusDef = 0, const int plusHP = 0, cons
 
 Armor::Armor() : Armor("No Armor") {}
 
-std::ostream& operator<<(std::ostream &c, const Armor& A){
-    c << static_cast<Item>(A) << "DEF: ";
+std::ostream& operator<<(std::ostream &c, Armor& A){
+    c << static_cast<Item&>(A) << "DEF: ";
     if(A.GetPlusDef() < 0) c << "-" << -A.GetPlusDef();
     else if(A.GetPlusDef() == 0) c << "0";
     else c << "+" << A.GetPlusDef();

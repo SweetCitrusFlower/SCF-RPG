@@ -120,7 +120,7 @@ void Playable::CheckInventory(){
     std::cout << std::endl;
 }
 
-std::vector<Consumable>& Playable::AddConsumableToInventory(const Consumable& I) {
+std::vector<Consumable>& Playable::AddConsumableToInventory(Consumable& I) {
     if (this->GetInventory().size() >= 5) {
         std::sort(Inventory.begin(), Inventory.end(), [](Consumable& a, Consumable& b)
                                                                     {if (strcmp(a.GetName(), b.GetName()) < 0)
@@ -137,7 +137,7 @@ std::vector<Consumable>& Playable::AddConsumableToInventory(const Consumable& I)
                     std::cout << item + 1 << ". " << this->GetInventory()[item].GetName() << std::endl;
                 }
                 std::cout << "\nPlease enter a number between 1 and 5.\n> ";
-                auto nr = 0;
+                unsigned long nr = 0;
                 std::cin >> nr;
                 nr = (nr - 1) % this->GetInventory().size();
                 this->GetInventory().erase(this->GetInventory().begin() + nr);
@@ -161,7 +161,7 @@ std::vector<Consumable>& Playable::AddConsumableToInventory(const Consumable& I)
 }
 
 std::vector<Consumable>& Playable::UseConsumable(const int i) {
-    const auto I = Inventory[i - 1];
+    auto I = Inventory[i - 1];
     SetHPCurrent(this->GetHPCurrent() + I.GetPlusHP());
     if (this->GetHPCurrent() < 0)
         SetHPCurrent(0);
@@ -198,4 +198,4 @@ inline auto Mera = Playable("Mera", 5, 2, 30, 46, 3, "He loves playing League", 
 inline auto Dragos = Playable("Dragos", 15, 1, 115, 5, 11, "A beautiful feller", &Cigarette, &LanaTShirt, {Apple});
 inline auto Weakling = Playable("Weakling", 0, 0, 1, 0, 1, "-", &Fists, &Skin, {});
 inline auto sans = Playable("sans.", 1, 1, 1, 43, 1, "erererererer", &Fists, &Skin, {});
-inline std::vector AllPlayables = {Mera, Dragos, Weakling, sans};
+inline std::vector AllPlayables = {Mera, Dragos, sans};

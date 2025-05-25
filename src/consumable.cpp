@@ -6,8 +6,8 @@ Consumable::Consumable(const char* name, const int plusHP = 0, const char* desc 
 
 Consumable::Consumable() : Consumable("") {}
 
-std::ostream& operator<<(std::ostream& c, const Consumable& C){
-    c << static_cast<Item>(C) << "HP: ";
+std::ostream& operator<<(std::ostream& c, Consumable& C){
+    c << static_cast<Item&>(C) << "HP: ";
     if(C.GetPlusHP() < 0) c << "-" << -C.GetPlusHP();
     else if(C.GetPlusHP() == 0) c << "0";
     else c << "+" << C.GetPlusHP();

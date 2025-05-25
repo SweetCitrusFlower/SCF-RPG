@@ -25,7 +25,7 @@ Item& Item::operator=(Item &&E) noexcept{
    return *this;
 }
 
-std::ostream& operator<<(std::ostream &c, const Item& I){
+std::ostream& operator<<(std::ostream &c, Item& I){
     c << std::endl << I.GetName() << std::endl << I.GetDescription() << std::endl;
     return c;
 }
