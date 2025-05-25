@@ -18,7 +18,7 @@ protected:
 
 public:
 
-    [[nodiscard]] Team<Playable> GetTeam() const & {return PlayerTeam;}
+    [[nodiscard]] Team<Playable>& GetTeam() {return PlayerTeam;}
     Team<Playable>& SetTeam(const Team<Playable> &TEAM) {PlayerTeam = TEAM; return PlayerTeam;}
 
     Game(const Game&) = delete;

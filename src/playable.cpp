@@ -87,15 +87,15 @@ void Playable::CheckInventory(){
     }
     std::cout << Name << " has " << Inventory.size() << " item";
     if (Inventory.size() >= 2) {
-        std::sort(Inventory.begin(), Inventory.end(), [](const Consumable& a, const Consumable& b)
-                                                                                            {if (strcmp(a.GetDescription(), b.GetDescription()) < 0)
-                                                                                                    return true;
-                                                                                                return false;
-                                                                                            } );
+        std::sort(Inventory.begin(), Inventory.end(), [](Consumable& a, Consumable& b)
+                                                                    {if (strcmp(a.GetDescription(), b.GetDescription()) < 0)
+                                                                            return true;
+                                                                        return false;
+                                                                    } );
         std::cout << "s";
     }
     std::cout << ":" << std::endl;
-    for (auto item = 0; item < Inventory.size(); ++item) {
+    for (unsigned long item = 0; item < Inventory.size(); ++item) {
         std::cout << item + 1 << ". " << Inventory[item].GetName() << std::endl;
     }
     std::cout << "Do you want to use a consumable on " << this->GetName() << "?\n[Y/N] ";
@@ -104,13 +104,13 @@ void Playable::CheckInventory(){
     switch (static_cast<char>(std::strlen(response.c_str()) != 1) ? '0' : tolower(response[0])) {
         case 'y' : {
             std::cout << "Enter a number between 1 and " << Inventory.size() << ":\n";
-            int nr;
+            unsigned long nr;
             std::cin >> nr;
             if (nr > Inventory.size()) {
                 std::cout << "Number out of bounds. " << (nr - 1) % Inventory.size() + 1 << " chosen.";
             }
             nr = (nr - 1) % static_cast<int>(Inventory.size()) + 1;
-            this->UseConsumable(nr);
+            this->UseConsumable(static_cast<int>(nr));
             break;
         }
         default: {
@@ -122,7 +122,7 @@ void Playable::CheckInventory(){
 
 std::vector<Consumable>& Playable::AddConsumableToInventory(const Consumable& I) {
     if (this->GetInventory().size() >= 5) {
-        std::sort(Inventory.begin(), Inventory.end(), [](const Consumable& a, const Consumable& b)
+        std::sort(Inventory.begin(), Inventory.end(), [](Consumable& a, Consumable& b)
                                                                     {if (strcmp(a.GetName(), b.GetName()) < 0)
                                                                         return true;
                                                                     return false;
@@ -133,7 +133,7 @@ std::vector<Consumable>& Playable::AddConsumableToInventory(const Consumable& I)
         switch (static_cast<char>(std::strlen(response.c_str()) != 1) ? '0' : tolower(response[0])) {
             case 'y' : {
                 std::cout << "Which item would you like to replace?\n";
-                for (auto item = 0; item < this->GetInventory().size(); ++item) {
+                for (unsigned long item = 0; item < this->GetInventory().size(); ++item) {
                     std::cout << item + 1 << ". " << this->GetInventory()[item].GetName() << std::endl;
                 }
                 std::cout << "\nPlease enter a number between 1 and 5.\n> ";

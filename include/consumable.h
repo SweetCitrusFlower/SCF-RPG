@@ -16,7 +16,7 @@ public:
     Consumable();
     ~Consumable() override = default;
 
-    [[nodiscard]] int GetPlusHP() const { return PlusHP;}
+    [[nodiscard]] int& GetPlusHP() { return PlusHP;}
 
 
 };

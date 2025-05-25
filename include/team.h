@@ -14,7 +14,7 @@ protected:
 public:
     Team(Member, Member, Member);
     Team();
-    std::vector<Member> GetTeam() {return team;}
+    std::vector<Member>& GetTeam() {return team;}
     Member& GetMember(const int i) {return team[i];}
 
     void SetTeam(const std::vector<Member>& TEAM) {team = TEAM;}

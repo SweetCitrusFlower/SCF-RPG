@@ -19,7 +19,7 @@ public:
     ~Playable() override = default;
 
     std::vector<Consumable>& SetInventory(const std::vector<Consumable> &I) {Inventory = I; return Inventory;}
-    [[nodiscard]] std::vector<Consumable> GetInventory() const {return Inventory;}
+    [[nodiscard]] std::vector<Consumable>& GetInventory() {return Inventory;}
 
     Playable& ChangeWeapon(Weapon&);
     Playable& ChangeArmor(Armor&);

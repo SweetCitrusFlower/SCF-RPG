@@ -13,8 +13,8 @@ public:
     Armor();
     ~Armor() override = default;
 
-    [[nodiscard]] int GetPlusDef() const {return PlusDef;}
-    [[nodiscard]] int GetPlusHP() const {return PlusHP;}
+    [[nodiscard]] int& GetPlusDef() {return PlusDef;}
+    [[nodiscard]] int& GetPlusHP(){return PlusHP;}
 
     int& SetPlusDef(const int x) {PlusDef = x; return PlusDef;}
     int& SetPlusHP(const int x) {PlusHP = x; return PlusHP;}
