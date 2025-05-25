@@ -7,6 +7,7 @@ Enemy::Enemy(const char* N, const int ADB = 1, const int DEFB = 0, const int HPM
     this->SetAD(ADB + this->GetWeapon()->GetPlusAD());
     this->SetDEF(DEFB + this->GetArmor()->GetPlusDef());
     this->SetHPMAX(HPM + this->GetArmor()->GetPlusHP());
+    this->SetXP(XP);
     this->SetHPCurrent(GetHPMAX());
     this->SetGold(GOLD);
     this->SetSpeed(SPEED);

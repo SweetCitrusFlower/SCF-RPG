@@ -47,7 +47,7 @@ public:
     int& SetSpeed(const int x) {Speed = x; return this->Speed;}
     const char*& SetName(const char *name) {Name = name; return Name;}
     const char*& SetDesc(const char *desc) {Description = desc; return this->Description;}
-    int& SetXP(const int XP) {this->XP = XP; return this->XP;}
+    int& SetXP(const int x) {this->XP = x; return this->XP;}
     Weapon*& SetWeapon(Weapon *W) {WeaponSlot = W; return this->WeaponSlot;}
     Armor*& SetArmor(Armor *A) {ArmorSlot = A; return this->ArmorSlot;}
 };
