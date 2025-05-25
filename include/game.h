@@ -9,7 +9,7 @@ class Game {
 protected:
     static Game* GameInstancePointer;
     Game() {}
-    Team<Playable> PlayerTeam = Team(Weakling, Weakling, Weakling);
+    Team<Playable*> PlayerTeam = {new Mera, new Dragos, new sans};
 
     void Fight();
     void TeamEditor();
@@ -18,8 +18,8 @@ protected:
 
 public:
 
-    [[nodiscard]] Team<Playable>& GetTeam() {return PlayerTeam;}
-    Team<Playable>& SetTeam(const Team<Playable> &TEAM) {PlayerTeam = TEAM; return PlayerTeam;}
+    [[nodiscard]] Team<Playable*>& GetTeam() {return PlayerTeam;}
+    Team<Playable*>& SetTeam(const Team<Playable*> &TEAM) {PlayerTeam = TEAM; return PlayerTeam;}
 
     Game(const Game&) = delete;
     static Game* GetInstance(){

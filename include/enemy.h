@@ -18,9 +18,11 @@ class Ogre : public Enemy {
 public:
     Ogre(): Enemy("Ogre", 30 + std::rand() % 6, 13 + std::rand() % 5, 58 + std::rand() % 10, 44, 50,
               3 + std::rand() % 3, "A fearsome oger, grumpy mostly because you woke him up.",
-              new Weapon("Ogre Club", 40, "Made of the bones of its ancestors."), &Skin) {}
-
-    ~Ogre() override = default;
+              new Weapon("Ogre Club", 40, "Made of the bones of its ancestors."), new Skin) {}
+    ~Ogre() override {
+        delete this->ArmorSlot;
+        delete this->WeaponSlot;
+    }
     void ShowEntity() const override {}
 };
 
@@ -28,17 +30,23 @@ class Goblin : public Enemy {
 public:
     Goblin() : Enemy("Goblin", 7 + std::rand() % 4,  6 + std::rand() % 3, 22 + std::rand() % 8, 8, 10,
             8 + std::rand() % 4, "It screams, for the Void screams louder.",
-            new Weapon("Goblin Bone", 10, "A wish bone that didn't crack properly."), &Skin) {};
-    ~Goblin() override = default;
+            new Weapon("Goblin Bone", 10, "A wish bone that didn't crack properly."), new Skin) {}
+    ~Goblin() override {
+        delete this->ArmorSlot;
+        delete this->WeaponSlot;
+    }
     void ShowEntity() const override {};
 };
 
 class ArmoredBeast : public Enemy {
 public:
     ArmoredBeast() : Enemy("Armored Beast", 4 + std::rand() % 2, 13 + std::rand() % 3, 30 + std::rand() % 10, 44, 50,
-                           2 + std::rand() % 2, "Heavy and slow, like the flow of time.", &Fists,
-                           new Armor("Skeletal Armor", 140, 60, "A plated chestmail of great strength.")) {};
-    ~ArmoredBeast() override = default;
+                           2 + std::rand() % 2, "Heavy and slow, like the flow of time.", new Fists,
+                           new Armor("Skeletal Armor", 140, 60, "A plated chestmail of great strength.")) {}
+    ~ArmoredBeast() override {
+        delete this->ArmorSlot;
+        delete this->WeaponSlot;
+    }
     void ShowEntity() const override {};
 };
 

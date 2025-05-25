@@ -1,6 +1,6 @@
 #include "../include/enemy.h"
 
-Enemy::Enemy(const char* N, const int ADB = 1, const int DEFB = 0, const int HPM = 1, const int XP = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = "Stupid dumbass enemy.", Weapon* W = &Fists, Armor* A = &Skin) {
+Enemy::Enemy(const char* N, const int ADB = 1, const int DEFB = 0, const int HPM = 1, const int XP = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = "Stupid dumbass enemy.", Weapon* W = new Fists, Armor* A = new Skin) {
     this->SetName(N);
     this->SetWeapon(W);
     this->SetArmor(A);

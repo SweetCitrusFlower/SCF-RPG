@@ -13,14 +13,15 @@ void Team<Member>::ShowTeam() const {
 }
 
 template <class Member>
-void Team<Member>::MemberDeath(const Member& TM) const {
-    const auto* it = find(this->GetTeam().begin(), this->GetTeam().end(), TM);
+void Team<Member>::MemberDeath(Member TM){
+    const auto it = find(this->GetTeam().begin(), this->GetTeam().end(), TM);
     if(it != this->GetTeam().end())
-        this->team.remove(team.begin() + it);
+        this->team.erase(it);
 }
 
 template <class Member>
 void Team<Member>::ChangeMember(const int i, const int k) {
+    std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
     team[i - 1] = AllPlayables[k - 1];
 }
 

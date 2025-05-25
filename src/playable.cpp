@@ -1,9 +1,9 @@
-#include "../include/ItemsAndPlayables.h"
+#include "../include/playable.h"
 #include <algorithm>
 #include <cmath>
 #include <cstring>
 
-Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = "-", Weapon* W = &Fists, Armor* A = &Skin, const std::vector<Consumable>& I = {}) {
+Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = "-", Weapon* W = new Fists, Armor* A = new Skin, const std::vector<Consumable*>& I = {}) {
     this->SetName(N);
     this->SetWeapon(W);
     this->SetArmor(A);
@@ -24,22 +24,22 @@ Playable& Playable::ChangeWeapon(Weapon &W){
         std::cout << "how did you do this." << std::endl;
         return *this;
     }
-    if (&W == &Fists && this->GetWeapon() == &Fists) {
+    if (strcmp(W.GetName(), "Fists") == 0 && strcmp(this->GetWeapon()->GetName(), "Fists") == 0) {
         std::cout << "Changing fists for fists? Very funny." << std::endl;
         return *this;
     }
     SetAD(this->GetAD() - this->GetWeapon()->GetPlusAD() + W.GetPlusAD());
-    if (&W == &Fists) {
+    if (strcmp(W.GetName(), "Fists") == 0) {
         std::cout << this->GetName() << " has unequipped \"" << this->GetWeapon()->GetName() << "\"."  << std::endl << std::endl;
         this->SetWeapon(&W);
         return *this;
     }
-    if (this->GetWeapon() == &Fists) {
+    if (strcmp(this->GetWeapon()->GetName(), "Fists")) {
         std::cout << this->GetName() << " has eqquiped \"" << W.GetName() << "\"!" << std::endl << std::endl;
         this->SetWeapon(&W);
         return *this;
     }
-    if (this->GetWeapon() == &W) {
+    if (strcmp(this->GetWeapon()->GetName(), W.GetName()) == 0) {
         std::cout << this->GetName() << " already has this weapon equipped." << std::endl << std::endl;
         return *this;
     }
@@ -53,24 +53,24 @@ Playable& Playable::ChangeArmor(Armor &A){
         std::cout << "how did you do this." << std::endl;
         return *this;
     }
-    if (&A == &Skin && this->GetArmor() == &Skin) {
+    if (strcmp(A.GetName(), "Skin") == 0 && strcmp(this->GetArmor()->GetName(), "Skin") == 0) {
         std::cout << "Changing skin for skin? Very funny." << std::endl;
         return *this;
     }
     SetHPMAX(this->GetHPMAX() - this->GetArmor()->GetPlusHP() + A.GetPlusHP());
     SetDEF(this->GetDEF() - this->GetArmor()->GetPlusDef() + A.GetPlusDef());
     SetHPCurrent(std::min(this->GetHPMAX(), this->GetHPCurrent()));
-    if (&A == &Skin) {
+    if (strcmp(A.GetName(), "Skin") == 0) {
         std::cout << this->GetName() << " has unequipped \"" << this->GetArmor()->GetName() << "\"."  << std::endl << std::endl;
         this->SetArmor(&A);
         return *this;
     }
-    if (this->GetArmor() == &Skin) {
+    if (strcmp(this->GetArmor()->GetName(), "Skin") == 0) {
         std::cout << this->GetName() << " has eqquiped \"" << A.GetName() << "\"!" << std::endl << std::endl;
         this->SetArmor(&A);
         return *this;
     }
-    if (this->GetArmor() == &A) {
+    if (strcmp(this->GetArmor()->GetName(), A.GetName()) == 0) {
         std::cout << this->GetName() << " already has this armor equipped." << std::endl << std::endl;
         return *this;
     }
@@ -87,8 +87,8 @@ void Playable::CheckInventory(){
     }
     std::cout << Name << " has " << Inventory.size() << " item";
     if (Inventory.size() >= 2) {
-        std::sort(Inventory.begin(), Inventory.end(), [](Consumable& a, Consumable& b)
-                                                                    {if (strcmp(a.GetDescription(), b.GetDescription()) < 0)
+        std::sort(Inventory.begin(), Inventory.end(), [](Consumable* a, Consumable* b)
+                                                                    {if (strcmp(a->GetDescription(), b->GetDescription()) < 0)
                                                                             return true;
                                                                         return false;
                                                                     } );
@@ -96,7 +96,7 @@ void Playable::CheckInventory(){
     }
     std::cout << ":" << std::endl;
     for (unsigned long item = 0; item < Inventory.size(); ++item) {
-        std::cout << item + 1 << ". " << Inventory[item].GetName() << std::endl;
+        std::cout << item + 1 << ". " << Inventory[item]->GetName() << std::endl;
     }
     std::cout << "Do you want to use a consumable on " << this->GetName() << "?\n[Y/N] ";
     std::string response;
@@ -120,10 +120,10 @@ void Playable::CheckInventory(){
     std::cout << std::endl;
 }
 
-std::vector<Consumable>& Playable::AddConsumableToInventory(Consumable& I) {
+std::vector<Consumable*>& Playable::AddConsumableToInventory(Consumable& I) {
     if (this->GetInventory().size() >= 5) {
-        std::sort(Inventory.begin(), Inventory.end(), [](Consumable& a, Consumable& b)
-                                                                    {if (strcmp(a.GetName(), b.GetName()) < 0)
+        std::sort(Inventory.begin(), Inventory.end(), [](Consumable* a, Consumable* b)
+                                                                    {if (strcmp(a->GetName(), b->GetName()) < 0)
                                                                         return true;
                                                                     return false;
                                                                     } );
@@ -134,44 +134,45 @@ std::vector<Consumable>& Playable::AddConsumableToInventory(Consumable& I) {
             case 'y' : {
                 std::cout << "Which item would you like to replace?\n";
                 for (unsigned long item = 0; item < this->GetInventory().size(); ++item) {
-                    std::cout << item + 1 << ". " << this->GetInventory()[item].GetName() << std::endl;
+                    std::cout << item + 1 << ". " << this->GetInventory()[item]->GetName() << std::endl;
                 }
                 std::cout << "\nPlease enter a number between 1 and 5.\n> ";
                 unsigned long nr = 0;
                 std::cin >> nr;
                 nr = (nr - 1) % this->GetInventory().size();
                 this->GetInventory().erase(this->GetInventory().begin() + nr);
-                Inventory.push_back(I);
+                this->GetInventory().push_back(&I);
                 std::cout <<  "Consumable \"" << I.GetName() << "\" added to " << Name << "\'s inventory succesfully!" << std::endl;
                 break;
-            }
-            default: {
-                std::cout << "Response not recognized! ";
             }
             case 'n' : {
                 std::cout << "Item not replaced." << std::endl;
                 break;
             }
+            default: {
+                std::cout << "Response not recognized! Item not replaced." << std::endl;
+                break;
+            }
         }
     }
     else {
-        Inventory.push_back(I);
+        this->GetInventory().push_back(&I);;
     }
     return Inventory;
 }
 
-std::vector<Consumable>& Playable::UseConsumable(const int i) {
-    auto I = Inventory[i - 1];
-    SetHPCurrent(this->GetHPCurrent() + I.GetPlusHP());
+std::vector<Consumable*>& Playable::UseConsumable(const int i) {
+    const auto I = Inventory[i - 1];
+    SetHPCurrent(this->GetHPCurrent() + I->GetPlusHP());
     if (this->GetHPCurrent() < 0)
         SetHPCurrent(0);
     if (this->GetHPCurrent() > this->GetHPMAX())
         SetHPCurrent(GetHPMAX());
-    std::cout << this->GetName() << " has used \"" << I.GetName() << "\"! They have ";
-    if (I.GetPlusHP() < 0)
-        std::cout << "lost " << -I.GetPlusHP();
+    std::cout << this->GetName() << " has used \"" << I->GetName() << "\"! They have ";
+    if (I->GetPlusHP() < 0)
+        std::cout << "lost " << -I->GetPlusHP();
     else
-        std::cout << "gained " << I.GetPlusHP();
+        std::cout << "gained " << I->GetPlusHP();
     std::cout << " HP!" << std::endl;
     Inventory.erase(Inventory.begin() + i - 1);
     if (this->GetHPCurrent() == 0){}

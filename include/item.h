@@ -17,11 +17,6 @@ public:
     Item();
     virtual ~Item() = default;
 
-    Item(const Item&);
-    Item(Item&&) noexcept;
-    Item& operator=(const Item&);
-    Item& operator=(Item&&) noexcept;
-
     [[nodiscard]] const char*& GetName() {return Name;}
     [[nodiscard]] const char*& GetDescription() {return Description;}
 

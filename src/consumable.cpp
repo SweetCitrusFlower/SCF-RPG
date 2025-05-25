@@ -1,5 +1,4 @@
 #include "../include/consumable.h"
-#include "item.cpp"
 
 Consumable::Consumable(const char* name, const int plusHP = 0, const char* desc = "")
     : Item(name, desc) , PlusHP(plusHP) {}
