@@ -19,19 +19,19 @@ public:
 
 };
 
-class Skin : public Armor {
+class Skin final : public Armor {
 public:
     Skin() : Armor("Skin", 0, 1, "You're naked. Gross.") {}
     ~Skin() override = default;
 };
 
-class SoulJacket : public Armor {
+class SoulJacket final : public Armor {
 public:
     SoulJacket() : Armor("Soul Jacket", 200, 300, "The ultimate sacrifice: to live with your heart on your sleeve.") {}
     ~SoulJacket() override = default;
 };
 
-class LanaTShirt : public Armor {
+class LanaTShirt final : public Armor {
     public:
     LanaTShirt() : Armor("Lana del Rey T-Shirt", 20, 500, "Given with love. Kinda want it back tho ngl") {}
     ~LanaTShirt() override = default;
@@ -39,7 +39,7 @@ class LanaTShirt : public Armor {
 
 #endif //ARMOR_H
 
-inline std::ostream& operator<<(std::ostream &c, Armor*& A){
+inline std::ostream& operator<<(std::ostream &c, Armor* &A){
     c << dynamic_cast<Item*>(A) << "DEF: ";
     if(A->GetPlusDef() < 0) c << "-" << -A->GetPlusDef();
     else if(A->GetPlusDef() == 0) c << "0";

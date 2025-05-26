@@ -1,7 +1,9 @@
 #include "../include/game.h"
 #include <cstring>
+#include <memory>
 #include <ostream>
 #include <algorithm>
+#include <memory>
 
 void Game::ReceiveAction(){
     std::cout << std::endl << "Welcome to SCF RPG! Select an option:\n";
@@ -56,30 +58,27 @@ void Game::ReceiveAction(){
 }
 
 void Game::Fight(){
-    const auto ET = new Team<Enemy*>;
+    const auto ET = std::make_unique<Team<Enemy*>>();
     std::vector<Playable*> AuxTeam;
     AuxTeam.assign(this->GetTeam().GetTeam().begin(), this->GetTeam().GetTeam().end());
     for (int i = 0; i < 3; i++) {
         switch (rand() % 3) {
             case 0: {
-                const auto EC = new GoblinCreator;
+                const auto EC = std::make_unique<GoblinCreator>();
                 ET->SetMember(i, EC->FactoryMethod());
                 EC->ConfirmCreation();
-                delete EC;
                 break;
             }
             case 1: {
-                const auto OC = new OgreCreator;
+                const auto OC = std::make_unique<OgreCreator>();
                 ET->SetMember(i, OC->FactoryMethod());
                 OC->ConfirmCreation();
-                delete OC;
                 break;
             }
             default: {
-                const auto BC = new BeastCreator;
+                const auto BC = std::make_unique<BeastCreator>();
                 ET->SetMember(i, BC->FactoryMethod());
                 BC->ConfirmCreation();
-                delete BC;
                 break;
             }
         }
@@ -187,7 +186,6 @@ void Game::Fight(){
     else
         std::cout << "Your team lost..." << std::endl;
     std::cout << std::endl;
-    delete ET;
 }
 
 void Game::TeamEditor() {
@@ -261,6 +259,9 @@ void Game::TeamEditor() {
                         PlayerTeam.ChangeMember(static_cast<int>(i2) + 1, static_cast<int>(k));
                         changed = true;
                         std::cout << "Teammate nr. " << static_cast<int>(i2) + 1 << " replaced with " << AllPlayables[k - 1]->GetName() << "." << std::endl;
+                        for (unsigned long l = AllPlayables.size(); l > 0; --l) {
+                            delete AllPlayables[l - 1];
+                        }
                         break;
                     }
                     std::cout << "invalid input." << std::endl;
@@ -293,6 +294,9 @@ void Game::TeamEditor() {
                         if (std::cin && k < AllWeapons.size()) {
                             PlayerTeam.SetMember(static_cast<int>(i4), &PlayerTeam.GetMember(static_cast<int>(i4))->ChangeWeapon(*AllWeapons[k]));
                         }
+                        for (unsigned long l = AllWeapons.size(); l > 0; --l) {
+                            delete AllWeapons[l - 1];
+                        }
                         break;
                     }
                     std::cout << "invalid input." << std::endl;
@@ -309,7 +313,7 @@ void Game::TeamEditor() {
                     if (i5 == 0 || i5 == 1 || i5 == 2) {
                         std::cout << "Which armor would you like to choose?" << std::endl;
                         unsigned long j = 0;
-                        std::vector<Armor*> AllArmors = {new SoulJacket(), new LanaTShirt()};
+                        std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt};
                         for (auto* w : AllArmors) {
                             std::cout << ++j << ". " << w->GetName();
                             if (strcmp(w->GetName(), "Skin") == 0) std::cout << "(a.k.a. unequip)" << std::endl;
@@ -327,6 +331,9 @@ void Game::TeamEditor() {
                         k--;
                         if (std::cin && k < AllArmors.size()) {
                             PlayerTeam.SetMember(static_cast<int>(i5), &PlayerTeam.GetMember(static_cast<int>(i5))->ChangeArmor(*AllArmors[k]));
+                        }
+                        for (unsigned long l = AllArmors.size(); l > 0; --l) {
+                            delete AllArmors[l - 1];
                         }
                         break;
                     }
@@ -362,7 +369,7 @@ void Game::TeamEditor() {
 }
 
 void Game::ShowPlayables() {
-    const std::vector<Playable*> &AllPlayables = {new Mera, new Dragos, new sans};
+    const std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
     for (unsigned long k = 0; const auto pl: AllPlayables) {
         std::cout << ++k << ". " << *pl << std::endl;
         delete pl;

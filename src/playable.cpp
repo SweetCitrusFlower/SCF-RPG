@@ -3,8 +3,9 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <memory>
 
-Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = "-", Weapon* W = new Fists, Armor* A = new Skin, const std::vector<Consumable*>& I = {}) {
+Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = "-", Weapon* W = std::make_unique<Fists>().get(), Armor* A = std::make_unique<Skin>().get(), const std::vector<Consumable*>& I = {}) {
     this->SetName(N);
     this->SetWeapon(W);
     this->SetArmor(A);
