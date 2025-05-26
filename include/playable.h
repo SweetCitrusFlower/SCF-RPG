@@ -16,7 +16,7 @@ public:
 
     Playable(const char*, int, int, int, int, int, const char*, Weapon*, Armor*, const std::vector<Consumable*>&);
     Playable();
-    virtual ~Playable() override = default;
+    ~Playable() override = default;
 
     std::vector<Consumable*>& SetInventory(const std::vector<Consumable*> &I) {Inventory = I; return Inventory;}
     [[nodiscard]] std::vector<Consumable*>& GetInventory() {return Inventory;}
@@ -30,39 +30,39 @@ public:
 
 };
 
-class Weakling : public Playable {
+class Weakling final : public Playable {
 public:
     Weakling() : Playable("Weakling", 0, 0, 1, 0, 1, "-", new Fists, new Skin, {}) {}
     ~Weakling() override {
-        delete this->GetWeapon();
-        delete this->GetArmor();
+        SetWeapon(nullptr);
+        SetArmor(nullptr);
     }
 };
 
-class Mera: public Playable {
+class Mera final: public Playable {
 public:
     Mera() : Playable("Mera", 5, 2, 30, 46, 3, "He loves playing League", new Fists, new Skin, {new Vodka}) {}
     ~Mera() override {
-        delete this->GetWeapon();
-        delete this->GetArmor();
+        SetWeapon(nullptr);
+        SetArmor(nullptr);
     }
 };
 
-class Dragos : public Playable {
+class Dragos final: public Playable {
 public:
     Dragos() : Playable("Dragos", 15, 1, 115, 5, 11, "A beautiful feller", new Cigarette, new LanaTShirt, {new Apple()}) {}
     ~Dragos() override {
-        delete this->GetWeapon();
-        delete this->GetArmor();
+        SetWeapon(nullptr);
+        SetArmor(nullptr);
     }
 };
 
-class sans : public Playable {
+class sans final : public Playable {
 public:
     sans() : Playable("sans.", 1, 1, 1, 43, 1, "erererererer", new Fists, new Skin, {}) {}
     ~sans() override {
-        delete this->GetWeapon();
-        delete this->GetArmor();
+        SetWeapon(nullptr);
+        SetArmor(nullptr);
     }
 };
 

@@ -14,38 +14,38 @@ public:
     void ShowEntity() const override;
 };
 
-class Ogre : public Enemy {
+class Ogre final : public Enemy {
 public:
     Ogre(): Enemy("Ogre", 30 + std::rand() % 6, 13 + std::rand() % 5, 58 + std::rand() % 10, 44, 50,
               3 + std::rand() % 3, "A fearsome oger, grumpy mostly because you woke him up.",
               new Weapon("Ogre Club", 40, "Made of the bones of its ancestors."), new Skin) {}
     ~Ogre() override {
-        delete this->ArmorSlot;
-        delete this->WeaponSlot;
+        SetWeapon(nullptr);
+        SetArmor(nullptr);
     }
     void ShowEntity() const override {}
 };
 
-class Goblin : public Enemy {
+class Goblin final : public Enemy {
 public:
     Goblin() : Enemy("Goblin", 7 + std::rand() % 4,  6 + std::rand() % 3, 22 + std::rand() % 8, 8, 10,
             8 + std::rand() % 4, "It screams, for the Void screams louder.",
             new Weapon("Goblin Bone", 10, "A wish bone that didn't crack properly."), new Skin) {}
     ~Goblin() override {
-        delete this->ArmorSlot;
-        delete this->WeaponSlot;
+        SetWeapon(nullptr);
+        SetArmor(nullptr);
     }
     void ShowEntity() const override {};
 };
 
-class ArmoredBeast : public Enemy {
+class ArmoredBeast final : public Enemy {
 public:
     ArmoredBeast() : Enemy("Armored Beast", 4 + std::rand() % 2, 13 + std::rand() % 3, 30 + std::rand() % 10, 44, 50,
                            2 + std::rand() % 2, "Heavy and slow, like the flow of time.", new Fists,
                            new Armor("Skeletal Armor", 140, 60, "A plated chestmail of great strength.")) {}
     ~ArmoredBeast() override {
-        delete this->ArmorSlot;
-        delete this->WeaponSlot;
+        SetWeapon(nullptr);
+        SetArmor(nullptr);
     }
     void ShowEntity() const override {};
 };
@@ -55,7 +55,7 @@ public:
 class EnemyCreator{
 public:
     virtual ~EnemyCreator() = default;
-    virtual Enemy* FactoryMethod() const = 0;
+    [[nodiscard]] virtual Enemy* FactoryMethod() const = 0;
     void ConfirmCreation() const{
         Enemy* E = this->FactoryMethod();
         if (E == nullptr)
@@ -68,19 +68,19 @@ public:
 
 class OgreCreator final : public EnemyCreator {
 public:
-    Enemy* FactoryMethod() const override {
+    [[nodiscard]] Enemy* FactoryMethod() const override {
         return new Ogre;
     }
 };
 class GoblinCreator final : public EnemyCreator {
 public:
-    Enemy* FactoryMethod() const override {
+    [[nodiscard]] Enemy* FactoryMethod() const override {
         return new Goblin;
     }
 };
 class BeastCreator final : public EnemyCreator {
 public:
-    Enemy* FactoryMethod() const override {
+    [[nodiscard]] Enemy* FactoryMethod() const override {
         return new ArmoredBeast;
     }
 };

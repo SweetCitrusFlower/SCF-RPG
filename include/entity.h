@@ -6,10 +6,6 @@
 #include "../src/weapon.cpp"
 #include "../src/armor.cpp"
 #include <iostream>
-#include <vector>
-
-#include "playable.h"
-#include "playable.h"
 
 class Entity {
 protected:
