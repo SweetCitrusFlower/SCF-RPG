@@ -21,10 +21,10 @@ public:
         this->SetDesc(Desc);
         this->Revive();
     }
-    
+
     ~Enemy() override = default;
 
-    void ShowEntity() const override {}
+    void ShowEntity() const override {std::cout << std::endl;}
 };
 
 class Ogre final : public Enemy {
