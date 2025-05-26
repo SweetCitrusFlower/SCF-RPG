@@ -7,21 +7,23 @@ void Game::ReceiveAction(){
     while (true) {
         std::cout << "1. Fight against a team of random enemies\n";
         std::cout << "2. Edit your team\n";
-        std::cout << "3. See your \"Playable\" characters\n";
-        std::cout << "4. Shop for consumables\n";
-        std::cout << "5. Exit\n> ";
+        std::cout << "3. Show available \"Playables\"\n";
+        std::cout << "4. Show available Weapons and Armors\n";
+        std::cout << "5. Shop for consumables\n";
+        std::cout << "6. Exit\n> ";
         std::cin >> x;
-        if (std::cin && x >= 1 && x <= 5)
+        if (std::cin && x >= 1 && x <= 6)
         {
             std::cout << std::endl;
             switch (x) {
                 case 1: Fight(); break;
                 case 2: TeamEditor(); break;
                 case 3: ShowPlayables(); break;
-                case 4: Shop(); break;
+                case 4: ShowWeaponsArmors(); break;
+                case 5: Shop(); break;
                 default: break;
             }
-            if (x == 5) {
+            if (x == 6) {
                 std::cout << "Goodbye! Thanks for tuning in!" << std::endl;
                 break;
             }
@@ -32,16 +34,17 @@ void Game::ReceiveAction(){
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cout << "Invalid input. Choose again.\n> ";
                 std::cin >> x;
-            } while (!std::cin || x > 5);
+            } while (!std::cin || x > 6);
             std::cout << std::endl;
             switch (x) {
                 case 1: Fight();break;
                 case 2: TeamEditor(); break;
                 case 3: ShowPlayables(); break;
-                case 4: Shop(); break;
+                case 4: ShowWeaponsArmors(); break;
+                case 5: Shop(); break;
                 default: break;
             }
-            if (x == 5) {
+            if (x == 6) {
                 std::cout << "Goodbye! Thanks for tuning in!" << std::endl;
                 break;
             }
@@ -96,7 +99,7 @@ void Game::Fight(){
             if (ent->GetAlive()) {
                 std::cout << std::endl;
                 bool TurnOver = false;
-                while (!TurnOver) {
+                while (!TurnOver && !fleeing) {
                     if (auto itAlly =
                     std::find(AuxTeam.begin(), AuxTeam.end(), ent); itAlly < AuxTeam.end()) {
                         std::cout << "What will " << ent->GetName() << " do?" << std::endl;
@@ -137,7 +140,7 @@ void Game::Fight(){
                                 else
                                     TurnOver = true, dynamic_cast<Playable*>(ent)->CheckInventory();
                             }
-                            else {fleeing = true; TurnOver = true; break;}
+                            else {fleeing = true; break;}
                         }
                         else {
                             TurnOver = true;
@@ -162,7 +165,7 @@ void Game::Fight(){
         }
         std::cout << std::endl;
     }
-    if (!AuxTeam.empty() && !ET->GetTeam().empty()) {
+    if (!AuxTeam.empty()) {
         if (!ET->GetTeam().empty())
             std::cout << "Your team ran away." << std::endl;
         else
@@ -176,6 +179,7 @@ void Game::Fight(){
     }
     else
         std::cout << "Your team lost..." << std::endl;
+    std::cout << std::endl;
     delete ET;
 }
 
@@ -356,6 +360,23 @@ void Game::ShowPlayables() {
     for (const auto pl: AllPlayables)
         std::cout << ++k << ". " << *pl << std::endl;
 }
+
+void Game::ShowWeaponsArmors() {
+    std::cout << "Weapons:" << std::endl;
+    unsigned long j = 0;
+    std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone};
+    for (Weapon *&w : AllWeapons) {
+        std::cout << ++j << ". " << w;
+    }
+    std::cout << std::endl << "Armors:" << std::endl;
+    j = 0;
+    std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt};
+    for (Armor *&a : AllArmors) {
+        std::cout << ++j << ". " << a;
+    }
+    std::cout << std::endl;
+}
+
 
 void Game::Shop() {
     std::vector<std::pair<Consumable*, int>> AllConsumables = {{new McPuisor, 2}, {new Apple, 1}, {new Vodka, 10}, {new PlateOfSpaghetti, 15}};

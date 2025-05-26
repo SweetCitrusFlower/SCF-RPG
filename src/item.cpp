@@ -4,7 +4,7 @@ Item::Item(const char* name, const char* description = "") : Name(name), Descrip
 
 Item::Item() : Item("") {}
 
-std::ostream& operator<<(std::ostream &c, Item& I){
-    c << std::endl << I.GetName() << std::endl << I.GetDescription() << std::endl;
+std::ostream& operator<<(std::ostream &c, Item* I){
+    c << I->GetName() << std::endl << I->GetDescription() << std::endl;
     return c;
 }

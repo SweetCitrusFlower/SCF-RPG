@@ -97,11 +97,11 @@ void Playable::CheckInventory(){
                                                                         return true;
                                                                     return false;
                                                                 } );
-        std::cout << "s:";
+        std::cout << "s:" << std::endl;
         for (unsigned long item = 0; item < Inventory.size(); ++item) {
             std::cout << item + 1 << ". " << Inventory[item]->GetName() << std::endl;
         }
-        std::cout << "Enter a number between 1 and " << Inventory.size() << ":\n";
+        std::cout << "Enter a number between 1 and " << Inventory.size() << ":\n> ";
         unsigned long nr;
         std::cin >> nr;
         if (nr > Inventory.size())
@@ -179,7 +179,7 @@ std::ostream& operator<<(std::ostream& c, const Playable& P){
     return c;
 }
 
-void Playable::ShowEntity() const {
+void Playable::ShowEntity() const{
     std::cout << this->GetName() << std::endl << this->GetDesc() << std::endl;
     std::cout << this->GetAD() << " AD, " << this->GetHPCurrent() << "/" << this->GetHPMAX() << " HP, " << this->GetDEF() << " DEF, " << this->GetSpeed() << " Speed" << std::endl;;
     std::cout << "Weapon: " << this->GetWeapon()->GetName() << std::endl;

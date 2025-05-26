@@ -14,6 +14,7 @@ protected:
     void Fight();
     void TeamEditor();
     static void ShowPlayables();
+    static void ShowWeaponsArmors();
     void Shop();
 
 public:
