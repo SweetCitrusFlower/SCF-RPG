@@ -25,15 +25,6 @@ public:
         std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
         team[i - 1] = AllPlayables[k - 1];
     }
-    void ShowTeam() const {
-        for(int i = 0; i < 3; ++i)
-            std::cout << this->team[i] << std::endl;
-    }
-    void MemberDeath(Member TM){
-        const auto it = find(this->GetTeam().begin(), this->GetTeam().end(), TM);
-        if(it != this->GetTeam().end())
-            this->team.erase(it);
-    }
 };
 
 #endif //TEAM_H

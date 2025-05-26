@@ -17,8 +17,6 @@ public:
     [[nodiscard]] int& GetPlusDef() {return PlusDef;}
     [[nodiscard]] int& GetPlusHP(){return PlusHP;}
 
-    int& SetPlusDef(const int x) {PlusDef = x; return PlusDef;}
-    int& SetPlusHP(const int x) {PlusHP = x; return PlusHP;}
 };
 
 class Skin : public Armor {

@@ -37,7 +37,7 @@ Playable& Playable::ChangeWeapon(Weapon &W){
         return *this;
     }
     if (strcmp(this->GetWeapon()->GetName(), "Fists") == 0) {
-        std::cout << this->GetName() << " has eqquiped \"" << W.GetName() << "\"!" << std::endl << std::endl;
+        std::cout << this->GetName() << " has equipped \"" << W.GetName() << "\"!" << std::endl << std::endl;
         this->SetWeapon(&W);
         return *this;
     }
@@ -68,7 +68,7 @@ Playable& Playable::ChangeArmor(Armor &A){
         return *this;
     }
     if (strcmp(this->GetArmor()->GetName(), "Skin") == 0) {
-        std::cout << this->GetName() << " has eqquiped \"" << A.GetName() << "\"!" << std::endl << std::endl;
+        std::cout << this->GetName() << " has equipped \"" << A.GetName() << "\"!" << std::endl << std::endl;
         this->SetArmor(&A);
         return *this;
     }
@@ -93,18 +93,18 @@ void Playable::CheckInventory(){
         this->UseConsumable(1);
     }
     else {
-        std::sort(Inventory.begin(), Inventory.end(), [](Consumable* a, Consumable* b)
-                                                                    {if (strcmp(a->GetDescription(), b->GetDescription()) < 0)
-                                                                        return true;
-                                                                    return false;
-                                                                } );
+        std::ranges::sort(Inventory, [](Consumable* a, Consumable* b)
+        {if (strcmp(a->GetDescription(), b->GetDescription()) < 0)
+                return true;
+            return false;
+        } );
         std::cout << "s:" << std::endl;
         for (unsigned long item = 0; item < Inventory.size(); ++item) {
             std::cout << item + 1 << ". " << Inventory[item]->GetName() << std::endl;
         }
         std::cout << "Enter a number between 1 and " << Inventory.size() << ":\n> ";
         unsigned long nr;
-        cin >> nr;
+        std::cin >> nr;
         if (nr > Inventory.size())
             std::cout << "Number out of bounds. " << (nr - 1) % Inventory.size() + 1 << " chosen.";
         nr = (nr - 1) % static_cast<int>(Inventory.size()) + 1;
@@ -114,14 +114,14 @@ void Playable::CheckInventory(){
 
 std::vector<Consumable*>& Playable::AddConsumableToInventory(Consumable& I) {
     if (this->GetInventory().size() >= 5) {
-        std::sort(Inventory.begin(), Inventory.end(), [](Consumable* a, Consumable* b)
-                                                                    {if (strcmp(a->GetName(), b->GetName()) < 0)
-                                                                        return true;
-                                                                    return false;
-                                                                    } );
+        std::ranges::sort(Inventory, [](Consumable* a, Consumable* b)
+        {if (strcmp(a->GetName(), b->GetName()) < 0)
+                return true;
+            return false;
+        } );
         std::cout << this->GetName() << "\'s inventory is full! Do you want to replace an item?\n[Y/N] ";
         std::string response;
-        cin >> response;
+        std::cin >> response;
         switch (static_cast<char>(std::strlen(response.c_str()) != 1) ? '0' : tolower(response[0])) {
             case 'y' : {
                 std::cout << "Which item would you like to replace?\n";
@@ -130,11 +130,11 @@ std::vector<Consumable*>& Playable::AddConsumableToInventory(Consumable& I) {
                 }
                 std::cout << "\nPlease enter a number between 1 and 5.\n> ";
                 unsigned long nr = 0;
-                cin >> nr;
+                std::cin >> nr;
                 nr = (nr - 1) % this->GetInventory().size();
                 this->GetInventory().erase(this->GetInventory().begin() + nr);
                 this->GetInventory().push_back(&I);
-                std::cout <<  "Consumable \"" << I.GetName() << "\" added to " << Name << "\'s inventory succesfully!" << std::endl;
+                std::cout <<  "Consumable \"" << I.GetName() << "\" added to " << Name << "\'s inventory successfully!" << std::endl;
                 break;
             }
             case 'n' : {

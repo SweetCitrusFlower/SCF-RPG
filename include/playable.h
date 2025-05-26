@@ -5,9 +5,6 @@
 #include <vector>
 #include <cmath>
 
-#include <fstream>
-inline std::ifstream cin("../tastatura.txt");
-
 #ifndef PLAYABLE_H
 #define PLAYABLE_H
 

@@ -13,9 +13,9 @@ void Game::ReceiveAction(){
         std::cout << "4. Show available Weapons and Armors\n";
         std::cout << "5. Shop for consumables\n";
         std::cout << "6. Exit\n> ";
-        cin.clear();
-        cin >> x;
-        if (cin && x >= 1 && x <= 6)
+        std::cin.clear();
+        std::cin >> x;
+        if (std::cin && x >= 1 && x <= 6)
         {
             std::cout << std::endl;
             switch (x) {
@@ -33,11 +33,11 @@ void Game::ReceiveAction(){
         }
         else {
             do {
-                cin.clear();
-                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cout << "Invalid input. Choose again.\n> ";
-                cin >> x;
-            } while (!cin || x > 6);
+                std::cin >> x;
+            } while (!std::cin || x > 6);
             std::cout << std::endl;
             switch (x) {
                 case 1: Fight();break;
@@ -64,12 +64,14 @@ void Game::Fight(){
             case 0: {
                 const auto EC = new GoblinCreator;
                 ET->SetMember(i, EC->FactoryMethod());
+                EC->ConfirmCreation();
                 delete EC;
                 break;
             }
             case 1: {
                 const auto OC = new OgreCreator;
                 ET->SetMember(i, OC->FactoryMethod());
+                OC->ConfirmCreation();
                 delete OC;
                 break;
             }
@@ -89,7 +91,7 @@ void Game::Fight(){
             OrderOfAttack.push_back(ally);
         for (const auto& enemy : ET->GetTeam())
             OrderOfAttack.push_back(enemy);
-        std::sort(OrderOfAttack.begin(), OrderOfAttack.end(), [](const Entity* a, const Entity* b) {
+        std::ranges::sort(OrderOfAttack, [](const Entity* a, const Entity* b) {
                                                                             return a->GetSpeed() > b->GetSpeed();
                                                                             });
         std::cout << "Turn " << ++turn << ". Order of attack:" << std::endl;
@@ -108,16 +110,16 @@ void Game::Fight(){
                         std::cout << "What will " << ent->GetName() << " do?" << std::endl;
                         std::cout << "1. Attack an Enemy" << std::endl << "2. Use a consumable" << std::endl << "3. Flee" << std::endl << "> ";
                         int resp1;
-                        cin >> resp1;
-                        if (cin) {
+                        std::cin >> resp1;
+                        if (std::cin) {
                             if (resp1 == 1) {
                                 std::cout << "Which enemy?" << std::endl;
                                 int resp2 = 0;
-                                for (const auto& enemy : ET->GetTeam())
+                                for (auto* const& enemy : ET->GetTeam())
                                     std::cout << ++resp2 << ". " << enemy->GetName() << std::endl;
                                 std::cout << "> ";
-                                cin >> resp1;
-                                if (cin) {
+                                std::cin >> resp1;
+                                if (std::cin) {
                                     const auto& enemy = ET->GetTeam()[resp1 - 1];
                                     const int ActualDMG = static_cast<int>(50.0 * ent->GetAD() / (enemy->GetDEF() + 50.0));
                                     enemy->SetHPCurrent(enemy->GetHPCurrent() - ActualDMG);
@@ -155,7 +157,7 @@ void Game::Fight(){
                         TurnOver = true;
                         if (AuxTeam.empty())
                             break;
-                        const auto& enemy = AuxTeam.at(rand() % AuxTeam.size());
+                        auto const& enemy = AuxTeam.at(rand() % AuxTeam.size());
                         const int ActualDMG = static_cast<int>(50.0 * ent->GetAD() / (enemy->GetDEF() + 50.0));
                         enemy->SetHPCurrent(enemy->GetHPCurrent() - ActualDMG);
                         std::cout << ent->GetName() << " attacked " << enemy->GetName() << " and they lost " << ActualDMG << "HP!" << std::endl;
@@ -205,22 +207,22 @@ void Game::TeamEditor() {
         std::cout << "5. Change a teammate's armor" << std::endl;
         std::cout << "6. Nothing." << std::endl;
         std::cout << "Please enter a number between 1 and 6." << std::endl << "> ";
-        cin >> i;
-        if (cin && i >= 1 && i <= 6) {
+        std::cin >> i;
+        if (std::cin && i >= 1 && i <= 6) {
             switch (i) {
                 case 1: {
                     unsigned long i1 = 0;
-                    for (const auto& tm : this->GetTeam().GetTeam())
+                    for (auto const& tm : this->GetTeam().GetTeam())
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     break;
                 }
                 case 2: {
                     unsigned long i1 = 0;
-                    for (const auto& tm : this->GetTeam().GetTeam())
+                    for (auto const& tm : this->GetTeam().GetTeam())
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     unsigned long i3 = 0;
                     std::cout << "Pick a number between 1 and 3.\n> ";
-                    cin >> i3;
+                    std::cin >> i3;
                     i3--;
                     if (i3 == 0 || i3 == 1 || i3 == 2) {
                         std::cout << *this->GetTeam().GetMember(static_cast<int>(i3));
@@ -229,7 +231,7 @@ void Game::TeamEditor() {
                         else {
                             std::cout << "Inventory:" << std::endl;
                             unsigned long j3 = 0;
-                            for (const auto& cons: this->GetTeam().GetMember(static_cast<int>(i3))->GetInventory())
+                            for (auto const& cons: this->GetTeam().GetMember(static_cast<int>(i3))->GetInventory())
                                 std::cout << ++j3 << ". " << cons->GetName() << std::endl;
                         }
                         break;
@@ -239,11 +241,11 @@ void Game::TeamEditor() {
                 }
                 case 3: {
                     unsigned long i1 = 0;
-                    for (const auto& tm : this->GetTeam().GetTeam())
+                    for (auto const& tm : this->GetTeam().GetTeam())
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     unsigned long i2 = 0;
                     std::cout << "Which teammate would you like to change? Pick a number between 1 and 3.\n> ";
-                    cin >> i2;
+                    std::cin >> i2;
                     i2--;
                     if (i2 == 0 || i2 == 1 || i2 == 2) {
                         unsigned long k = 0;
@@ -252,10 +254,10 @@ void Game::TeamEditor() {
                             std::cout << ++k << ". " << pl->GetName() << std::endl;
                         std::cout << "With what playable would you like to change " << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << "? Pick a number between 1 and " << AllPlayables.size() << "." << std::endl;
                         do {
-                            if (!cin) cin.clear();
+                            if (!std::cin) std::cin.clear();
                             std::cout << "> ";
-                            cin >> k;
-                        }while (!cin || k > AllPlayables.size());
+                            std::cin >> k;
+                        }while (!std::cin || k > AllPlayables.size());
                         PlayerTeam.ChangeMember(static_cast<int>(i2) + 1, static_cast<int>(k));
                         changed = true;
                         std::cout << "Teammate nr. " << static_cast<int>(i2) + 1 << " replaced with " << AllPlayables[k - 1]->GetName() << "." << std::endl;
@@ -266,17 +268,17 @@ void Game::TeamEditor() {
                 }
                 case 4: {
                     unsigned long i1 = 0;
-                    for (const auto& tm : this->GetTeam().GetTeam())
+                    for (auto const& tm : this->GetTeam().GetTeam())
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     unsigned long i4 = 0;
                     std::cout << "Pick a number between 1 and 3.\n> ";
-                    cin >> i4;
+                    std::cin >> i4;
                     i4--;
                     if (i4 == 0 || i4 == 1 || i4 == 2) {
                         std::cout << "Which weapon would you like to choose?" << std::endl;
                         unsigned long j = 0;
                         std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone};
-                        for (const auto& w : AllWeapons) {
+                        for (auto const& w : AllWeapons) {
                             std::cout << ++j << ". " << w->GetName();
                             if (strcmp(w->GetName(), "Fists") == 0) std::cout << "(~unequip)";
                             std::cout << ", ";
@@ -286,9 +288,9 @@ void Game::TeamEditor() {
                         }
                         std::cout << "Pick a number between 1 and " << AllWeapons.size() << ".\n> ";
                         unsigned long k = 0;
-                        cin >> k;
+                        std::cin >> k;
                         k--;
-                        if (cin && k < AllWeapons.size()) {
+                        if (std::cin && k < AllWeapons.size()) {
                             PlayerTeam.SetMember(static_cast<int>(i4), &PlayerTeam.GetMember(static_cast<int>(i4))->ChangeWeapon(*AllWeapons[k]));
                         }
                         break;
@@ -298,17 +300,17 @@ void Game::TeamEditor() {
                 }
                 case 5: {
                     unsigned long i1 = 0;
-                    for (const auto& tm : this->GetTeam().GetTeam())
+                    for (auto const& tm : this->GetTeam().GetTeam())
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     unsigned long i5 = 0;
                     std::cout << "Pick a number between 1 and 3.\n> ";
-                    cin >> i5;
+                    std::cin >> i5;
                     i5--;
                     if (i5 == 0 || i5 == 1 || i5 == 2) {
                         std::cout << "Which armor would you like to choose?" << std::endl;
                         unsigned long j = 0;
                         std::vector<Armor*> AllArmors = {new SoulJacket(), new LanaTShirt()};
-                        for (const auto& w : AllArmors) {
+                        for (auto const& w : AllArmors) {
                             std::cout << ++j << ". " << w->GetName();
                             if (strcmp(w->GetName(), "Skin") == 0) std::cout << "(a.k.a. unequip)" << std::endl;
                             std::cout << ", ";
@@ -321,9 +323,9 @@ void Game::TeamEditor() {
                         }
                         std::cout << "Pick a number between 1 and " << AllArmors.size() << ".\n> ";
                         unsigned long k = 0;
-                        cin >> k;
+                        std::cin >> k;
                         k--;
-                        if (cin && k < AllArmors.size()) {
+                        if (std::cin && k < AllArmors.size()) {
                             PlayerTeam.SetMember(static_cast<int>(i5), &PlayerTeam.GetMember(static_cast<int>(i5))->ChangeArmor(*AllArmors[k]));
                         }
                         break;
@@ -338,22 +340,22 @@ void Game::TeamEditor() {
                 }
                 default: {
                     std::cout << "Invalid input. Choose again.\n> ";
-                    cin.clear();
+                    std::cin.clear();
                     break;
                 }
             }
         }
         else
             do {
-                cin.clear();
+                std::cin.clear();
                 std::cout << "Invalid input. Choose again.\n> ";
-                cin >> i;
-            } while (!cin || i > 6);
+                std::cin >> i;
+            } while (!std::cin || i > 6);
     }
     if (changed) {
         std::cout << "Your final team is:" << std::endl;
         unsigned long ig = 0;
-        for (const auto& pl : PlayerTeam.GetTeam()) {
+        for (auto const& pl : PlayerTeam.GetTeam()) {
             std::cout << ++ig << ". " << pl->GetName() << std::endl;
         }
     }
@@ -393,16 +395,16 @@ void Game::Shop() {
     for (; i <= 2; i++)
         std::cout << i + 1 << ". " << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << std::endl;
     std::cout << "Pick a number between 1 and 3.\n> ";
-    cin >> i;
+    std::cin >> i;
     i--;
     if (i == 0 || i == 1 || i == 2) {
         std::cout << "Which consumable would you like to buy? Pick a number between 1 and " << AllConsumables.size() << ".\n> ";
         bool shopping = true;
         do {
             unsigned long j = 0;
-            cin >> j;
+            std::cin >> j;
             j--;
-            if (cin && j < AllConsumables.size())
+            if (std::cin && j < AllConsumables.size())
             {
                 if (PlayerTeam.GetMember(static_cast<int>(i))->GetGold() >= AllConsumables[j].second)
                 {
@@ -419,7 +421,7 @@ void Game::Shop() {
             }
             std::cout << "Would you like to keep shopping?\n[Y/N] ";
             std::string response;
-            cin >> response;
+            std::cin >> response;
             switch (static_cast<char>(std::strlen(response.c_str()) != 1) ? '0' : tolower(response[0])) {
                 case 'y': {std::cout << "Which consumable would you like to buy?\n> "; break;}
                 case 'n': {shopping = false; break;}
