@@ -261,7 +261,6 @@ void Game::TeamEditor() {
                         PlayerTeam.ChangeMember(static_cast<int>(i2) + 1, static_cast<int>(k));
                         changed = true;
                         std::cout << "Teammate nr. " << static_cast<int>(i2) + 1 << " replaced with " << AllPlayables[k - 1]->GetName() << "." << std::endl;
-                        delete &AllPlayables;
                         break;
                     }
                     std::cout << "invalid input." << std::endl;
@@ -294,7 +293,6 @@ void Game::TeamEditor() {
                         if (std::cin && k < AllWeapons.size()) {
                             PlayerTeam.SetMember(static_cast<int>(i4), &PlayerTeam.GetMember(static_cast<int>(i4))->ChangeWeapon(*AllWeapons[k]));
                         }
-                        delete &AllWeapons;
                         break;
                     }
                     std::cout << "invalid input." << std::endl;
@@ -330,7 +328,6 @@ void Game::TeamEditor() {
                         if (std::cin && k < AllArmors.size()) {
                             PlayerTeam.SetMember(static_cast<int>(i5), &PlayerTeam.GetMember(static_cast<int>(i5))->ChangeArmor(*AllArmors[k]));
                         }
-                        delete &AllArmors;
                         break;
                     }
                     std::cout << "invalid input." << std::endl;
@@ -434,5 +431,4 @@ void Game::Shop() {
     }
     else
         std::cout << "Player id out of bounds. Exiting shop... :(" << std::endl;
-    delete &AllConsumables;
 }
