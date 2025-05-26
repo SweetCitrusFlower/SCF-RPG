@@ -2,10 +2,9 @@
 #include <cstring>
 
 void Game::ReceiveAction(){
-    std::cout << "Welcome to SCF RPG! Select an option:\n";
+    std::cout <<  std::endl << "Welcome to SCF RPG! Select an option:\n";
     unsigned long x = 0;
     while (true) {
-        std::cout << std::endl;
         std::cout << "1. Fight against a team of random enemies\n";
         std::cout << "2. Edit your team\n";
         std::cout << "3. See your \"Playable\" characters\n";
@@ -23,34 +22,37 @@ void Game::ReceiveAction(){
                 default: break;
             }
             if (x == 5) {
-                std::cout << "Goodbye!";
+                std::cout << "Goodbye! Thanks for tuning in!" << std::endl;
                 break;
             }
         }
         else {
             do {
                 std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cout << "Invalid input. Choose again.\n> ";
                 std::cin >> x;
             } while (!std::cin || x > 5);
             std::cout << std::endl;
             switch (x) {
-                case 1: Fight(); break;
+                case 1: Fight();break;
                 case 2: TeamEditor(); break;
                 case 3: ShowPlayables(); break;
                 case 4: Shop(); break;
                 default: break;
             }
             if (x == 5) {
-                std::cout << "Goodbye!";
+                std::cout << "Goodbye! Thanks for tuning in!" << std::endl;
                 break;
             }
         }
     }
 }
 
-void Game::Fight() {
-    auto ET = new Team<Enemy*>;
+void Game::Fight(){
+    const auto ET = new Team<Enemy*>;
+    std::vector<Playable*> AuxTeam;
+    AuxTeam.assign(this->GetTeam().GetTeam().begin(), this->GetTeam().GetTeam().end());
     for (int i = 0; i < 3; i++) {
         switch (std::rand() % 3) {
             case 0: {
@@ -73,45 +75,108 @@ void Game::Fight() {
             }
         }
     }
-    auto a0 = dynamic_cast<Entity*>(this->GetTeam().GetMember(0));
-    auto a1 = dynamic_cast<Entity*>(this->GetTeam().GetMember(1));
-    auto a2 = dynamic_cast<Entity*>(this->GetTeam().GetMember(2));
-    auto e0 = dynamic_cast<Entity*>(ET->GetMember(0));
-    auto e1 = dynamic_cast<Entity*>(ET->GetMember(1));
-    auto e2 = dynamic_cast<Entity*>(ET->GetMember(2));
-    int i = 0;
-    while (!this->GetTeam().GetTeam().empty() && !ET->GetTeam().empty()) {
+    int turn = 0;
+    int fleeing = false;
+    while (!AuxTeam.empty() && !ET->GetTeam().empty() && !fleeing) {
         std::vector<Entity*> OrderOfAttack;
-        for (const auto& ally : this->GetTeam().GetTeam())
-            OrderOfAttack.push_back((ally));
+        for (const auto& ally : AuxTeam)
+            OrderOfAttack.push_back(ally);
         for (const auto& enemy : ET->GetTeam())
-            OrderOfAttack.push_back((enemy));
+            OrderOfAttack.push_back(enemy);
         std::sort(OrderOfAttack.begin(), OrderOfAttack.end(), [](const Entity* a, const Entity* b) {
                                                                             return a->GetSpeed() > b->GetSpeed();
                                                                             });
-        for (const auto& fd : OrderOfAttack)
-            std::cout << fd->GetName() << ' ' << fd->GetSpeed() << std::endl;
-        const auto slowest = OrderOfAttack[OrderOfAttack.size() - 1];
-        const auto itAlly = std::find(this->GetTeam().GetTeam().begin(), this->GetTeam().GetTeam().end(), slowest);
-        const auto itEnemy = std::find(ET->GetTeam().begin(), ET->GetTeam().end(), slowest);
-        if (itAlly == this->GetTeam().GetTeam().end())
-            ET->MemberDeath(dynamic_cast<Enemy*>(slowest));
-        else
-            this->GetTeam().MemberDeath(dynamic_cast<Playable*>(slowest));
+        std::cout << "Turn " << ++turn << ". Order of attack:" << std::endl;
+        for (auto*& ent : OrderOfAttack)
+            std::cout << ent->GetName() << " " << ent->GetHPCurrent() << "/" << ent->GetHPMAX() << std::endl;
+        std::cout << std::endl;
+        for (auto& ent: OrderOfAttack) {
+            if (fleeing)
+                break;
+            if (ent->GetAlive()) {
+                std::cout << std::endl;
+                bool TurnOver = false;
+                while (!TurnOver) {
+                    if (auto itAlly =
+                    std::find(AuxTeam.begin(), AuxTeam.end(), ent); itAlly < AuxTeam.end()) {
+                        std::cout << "What will " << ent->GetName() << " do?" << std::endl;
+                        std::cout << "1. Attack an Enemy" << std::endl << "2. Use a consumable" << std::endl << "3. Flee" << std::endl << "> ";
+                        int resp1;
+                        std::cin >> resp1;
+                        if (std::cin) {
+                            if (resp1 == 1) {
+                                std::cout << "Which enemy?" << std::endl;
+                                int resp2 = 0;
+                                for (const auto& enemy : ET->GetTeam())
+                                    std::cout << ++resp2 << ". " << enemy->GetName() << std::endl;
+                                std::cout << "> ";
+                                std::cin >> resp1;
+                                if (std::cin) {
+                                    const auto& enemy = ET->GetTeam()[resp1 - 1];
+                                    const int ActualDMG = static_cast<int>(50.0 * ent->GetAD() / (enemy->GetDEF() + 50.0));
+                                    enemy->SetHPCurrent(enemy->GetHPCurrent() - ActualDMG);
+                                    std::cout << enemy->GetName() << " lost " << ActualDMG << "HP!" << std::endl;
+                                    if (enemy->GetHPCurrent() <= 0) {
+                                        std::cout << ent->GetName() << " has slain " << enemy->GetName() << "!" << std::endl
+                                            << "They have gained " << enemy->GetXP() << " XP and " << enemy->GetGold() << " Gold." << std::endl;
+                                        ent->SetGold(ent->GetGold() + enemy->GetGold());
+                                        ent->SetXP(ent->GetXP() + enemy->GetXP());
+                                        enemy->Kill();
+                                        ET->GetTeam().erase(std::find(ET->GetTeam().begin(), ET->GetTeam().end(), enemy));
+                                    }
+                                }
+                                else {
+                                    std::cout << ent->GetName() << " chose to attack themselves. Damn... They lost 5 HP!" << std::endl;
+                                    ent->SetHPCurrent(ent->GetHPCurrent() - 5);
+                                }
+                                TurnOver = true;
+                            }
+                            else if (resp1 == 2) {
+                                if (dynamic_cast<Playable*>(ent)->GetInventory().empty())
+                                    std::cout << ent->GetName() << " has no items!" << std::endl;
+                                else
+                                    TurnOver = true, dynamic_cast<Playable*>(ent)->CheckInventory();
+                            }
+                            else {fleeing = true; TurnOver = true; break;}
+                        }
+                        else {
+                            TurnOver = true;
+                            std::cout << ent->GetName() << " had a little stroke. They did nothing and also lost 5 HP." << std::endl;
+                            ent->SetHPCurrent(ent->GetHPCurrent() - 5);
+                        }
+                    }
+                    else {
+                        const auto& enemy = AuxTeam.at(rand() % AuxTeam.size());
+                        const int ActualDMG = static_cast<int>(50.0 * ent->GetAD() / (enemy->GetDEF() + 50.0));
+                        enemy->SetHPCurrent(enemy->GetHPCurrent() - ActualDMG);
+                        std::cout << ent->GetName() << " attacked " << enemy->GetName() << " and they lost " << ActualDMG << "HP!" << std::endl;
+                        if (enemy->GetHPCurrent() <= 0) {
+                            std::cout << enemy->GetName() << " has passed away..." << std::endl;
+                            enemy->Kill();
+                            AuxTeam.erase(std::find(AuxTeam.begin(), AuxTeam.end(), enemy));
+                        }
+                        TurnOver = true;
+                    }
+                }
+            }
+        }
         std::cout << std::endl;
     }
-    if (!this->GetTeam().GetTeam().empty()) {
-        std::cout << "YOU WON!!!!" << std::endl;
+    if (!AuxTeam.empty() && !ET->GetTeam().empty()) {
+        if (!ET->GetTeam().empty())
+            std::cout << "Your team ran away." << std::endl;
+        else
+            std::cout << "YOUR TEAM WON!!!" << std::endl;
+        for (auto*& OrigTM : this->GetTeam().GetTeam()) {
+            OrigTM->Revive(), OrigTM->SetHPCurrent(std::max(OrigTM->GetHPCurrent(), 1));
+            for (auto*& CopyTM : AuxTeam)
+                if (CopyTM->GetName() == OrigTM->GetName())
+                    OrigTM->SetGold(CopyTM->GetGold()), OrigTM->SetXP(CopyTM->GetXP());
+        }
     }
     else
-        std::cout << "You lost..." << std::endl;
+        std::cout << "Your team lost..." << std::endl;
     delete ET;
-    delete a0;
-    delete a1;
-    delete a2;
-    delete e0;
-    delete e1;
-    delete e2;
 }
 
 void Game::TeamEditor() {
@@ -151,7 +216,7 @@ void Game::TeamEditor() {
                     if (i2 == 0 || i2 == 1 || i2 == 2) {
                         unsigned long k = 0;
                         std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
-                        for (auto &pl: AllPlayables)
+                        for (const auto &pl: AllPlayables)
                             std::cout << ++k << ". " << pl->GetName() << std::endl;
                         std::cout << "With what playable would you like to change " << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << "? Pick a number between 1 and " << AllPlayables.size() << "." << std::endl;
                         do {

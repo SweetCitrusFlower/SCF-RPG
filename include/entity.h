@@ -8,6 +8,9 @@
 #include <iostream>
 #include <vector>
 
+#include "playable.h"
+#include "playable.h"
+
 class Entity {
 protected:
     const char *Name = nullptr;
@@ -18,6 +21,7 @@ protected:
     int Gold = 0;
     int Speed = 0;
     int XP = 0;
+    bool alive = true;
     const char *Description = nullptr;
     Weapon *WeaponSlot = nullptr;
     Armor *ArmorSlot = nullptr;
@@ -36,8 +40,12 @@ public:
     [[nodiscard]] const char* GetName() const {return Name;}
     [[nodiscard]] const char* GetDesc() const {return Description;}
     [[nodiscard]] int GetXP() const {return XP;}
+    [[nodiscard]] bool GetAlive() const {return alive;}
     [[nodiscard]] Weapon* GetWeapon() const {return WeaponSlot;}
     [[nodiscard]] Armor* GetArmor() const {return ArmorSlot;}
+
+    Entity* Kill() {this->alive = false; return this;}
+    Entity* Revive() {this->alive = true; return this;}
 
     int& SetAD(const int x) {AttackDamageBase = x;return this->AttackDamageBase;}
     int& SetDEF(const int x) {DefenseBase = x;return this->DefenseBase;}
@@ -50,6 +58,24 @@ public:
     int& SetXP(const int x) {this->XP = x; return this->XP;}
     Weapon*& SetWeapon(Weapon *W) {WeaponSlot = W; return this->WeaponSlot;}
     Armor*& SetArmor(Armor *A) {ArmorSlot = A; return this->ArmorSlot;}
+
+    Entity& operator=(const Entity &other) {
+        if (this == &other)
+            return *this;
+        Name = other.Name;
+        AttackDamageBase = other.AttackDamageBase;
+        DefenseBase = other.DefenseBase;
+        HitPointsMax = other.HitPointsMax;
+        HitPointsCurrent = other.HitPointsCurrent;
+        Gold = other.Gold;
+        Speed = other.Speed;
+        XP = other.XP;
+        alive = other.alive;
+        Description = other.Description;
+        WeaponSlot = other.WeaponSlot;
+        ArmorSlot = other.ArmorSlot;
+        return *this;
+    }
 };
 
 #endif //ENTITY_H

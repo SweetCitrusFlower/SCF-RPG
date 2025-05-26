@@ -13,3 +13,4 @@ std::ostream& operator<<(std::ostream& c, Consumable& C){
     c << std::endl;
     return c;
 }
+
