@@ -133,7 +133,6 @@ FetchContent_MakeAvailable(googletest)
 add_executable(${MAIN_EXECUTABLE_NAME} main.cpp ${SOURCES}
         include/weapon.h
         include/armor.h
-        src/enemy.cpp
         include/enemy.h
         src/playable.cpp
         include/playable.h

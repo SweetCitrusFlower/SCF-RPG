@@ -1,6 +1,7 @@
 #include "../include/game.h"
 #include <cstring>
 #include <iostream>
+#include <algorithm>
 
 void Game::ReceiveAction(){
     std::cout <<  std::endl << "Welcome to SCF RPG! Select an option:\n";

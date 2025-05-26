@@ -7,10 +7,24 @@
 
 class Enemy : public Entity {
 public:
-    Enemy(const char*, int, int, int, int, int, int, const char*, Weapon*, Armor*);
+    explicit Enemy(const char* N, const int ADB = 1, const int DEFB = 0, const int HPM = 1, const int XP = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = "Stupid dumbass enemy.", Weapon* W = new Fists, Armor* A = new Skin) {
+        this->SetName(N);
+        this->SetWeapon(W);
+        this->SetArmor(A);
+        this->SetAD(ADB + this->GetWeapon()->GetPlusAD());
+        this->SetDEF(DEFB + this->GetArmor()->GetPlusDef());
+        this->SetHPMAX(HPM + this->GetArmor()->GetPlusHP());
+        this->SetXP(XP);
+        this->SetHPCurrent(GetHPMAX());
+        this->SetGold(GOLD);
+        this->SetSpeed(SPEED);
+        this->SetDesc(Desc);
+        this->Revive();
+    }
+    
     ~Enemy() override = default;
 
-    void ShowEntity() const override;
+    void ShowEntity() const override {}
 };
 
 class Ogre final : public Enemy {
@@ -22,7 +36,12 @@ public:
         SetWeapon(nullptr);
         SetArmor(nullptr);
     }
-    void ShowEntity() const override {}
+    void ShowEntity() const override {
+        std::cout << this->GetName() << std::endl << this->GetDesc() << std::endl;
+        std::cout << this->GetAD() << " AD, " << this->GetHPCurrent() << "/" << this->GetHPMAX() << " HP, " << this->GetDEF() << " DEF, " << this->GetSpeed() << " Speed" << std::endl;
+        std::cout << "Weapon: " << this->GetWeapon()->GetName() << std::endl;
+        std::cout << "Armor: " << this->GetArmor()->GetName() << std::endl;
+    }
 };
 
 class Goblin final : public Enemy {
@@ -85,3 +104,9 @@ public:
 };
 
 #endif //ENEMY_H
+
+inline std::ostream& operator<<(std::ostream& c, const Enemy& E){
+    E.ShowEntity();
+    c << "Gives " << E.GetXP() << " XP and " << E.GetGold() << " Gold when slain." << std::endl;
+    return c;
+}

@@ -1,8 +1,8 @@
 #include "../include/playable.h"
-#include <algorithm>
-#include <cmath>
 #include <cstring>
 #include <iostream>
+#include <algorithm>
+#include <cmath>
 
 Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = "-", Weapon* W = new Fists, Armor* A = new Skin, const std::vector<Consumable*>& I = {}) {
     this->SetName(N);
