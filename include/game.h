@@ -29,6 +29,8 @@ public:
         return GameInstancePointer;
     }
 
+    ~Game() = default;
+
     void ReceiveAction();
 };
 
