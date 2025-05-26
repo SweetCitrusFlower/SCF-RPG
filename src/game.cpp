@@ -78,6 +78,7 @@ void Game::Fight(){
             default: {
                 const auto BC = new BeastCreator;
                 ET->SetMember(i, BC->FactoryMethod());
+                BC->ConfirmCreation();
                 delete BC;
                 break;
             }
@@ -94,12 +95,11 @@ void Game::Fight(){
         std::ranges::sort(OrderOfAttack, [](const Entity* a, const Entity* b) {
                                                                             return a->GetSpeed() > b->GetSpeed();
                                                                             });
-        std::cout << "Turn " << ++turn << ". Order of attack:" << std::endl;
+        std::cout << std::endl << "Turn " << ++turn << ". Order of attack:" << std::endl;
         for (auto*& ent : OrderOfAttack)
             std::cout << ent->GetName() << " " << ent->GetHPCurrent() << "/" << ent->GetHPMAX() << std::endl;
-        std::cout << std::endl;
         for (auto& ent: OrderOfAttack) {
-            if (fleeing)
+            if (AuxTeam.empty() || ET->GetTeam().empty() || fleeing)
                 break;
             if (ent->GetAlive()) {
                 std::cout << std::endl;
@@ -130,7 +130,7 @@ void Game::Fight(){
                                         ent->SetGold(ent->GetGold() + enemy->GetGold());
                                         ent->SetXP(ent->GetXP() + enemy->GetXP());
                                         enemy->Kill();
-                                        ET->GetTeam().erase(std::find(ET->GetTeam().begin(), ET->GetTeam().end(), enemy));
+                                        ET->GetTeam().erase(std::ranges::find(ET->GetTeam(), enemy));
                                     }
                                 }
                                 else {
@@ -164,7 +164,7 @@ void Game::Fight(){
                         if (enemy->GetHPCurrent() <= 0) {
                             std::cout << enemy->GetName() << " has passed away..." << std::endl;
                             enemy->Kill();
-                            AuxTeam.erase(std::find(AuxTeam.begin(), AuxTeam.end(), enemy));
+                            AuxTeam.erase(std::ranges::find(AuxTeam, enemy));
                         }
                     }
                 }
@@ -372,13 +372,13 @@ void Game::ShowPlayables() {
 void Game::ShowWeaponsArmors() {
     std::cout << "Weapons:" << std::endl;
     unsigned long j = 0;
-    for (const std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone}; const auto w : AllWeapons) {
+    for (const std::vector<Weapon*> &AllWeapons = {new Plate, new Cigarette, new FlipPhone}; const auto w : AllWeapons) {
         std::cout << ++j << ". " << w;
         delete w;
     }
     std::cout << std::endl << "Armors:" << std::endl;
     j = 0;
-    for (const std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt}; const auto a : AllArmors) {
+    for (const std::vector<Armor*> &AllArmors = {new SoulJacket, new LanaTShirt}; const auto a : AllArmors) {
         std::cout << ++j << ". " << a;
         delete a;
     }

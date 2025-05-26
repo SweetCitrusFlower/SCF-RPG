@@ -38,38 +38,25 @@ public:
 class Weakling final : public Playable {
 public:
     Weakling() : Playable("Weakling", 0, 0, 1, 0, 1, "-", new Fists, new Skin, {}) {}
-    ~Weakling() override {
-        SetWeapon(nullptr);
-        SetArmor(nullptr);
-        delete this;
-    }
+    ~Weakling() override = default;
 };
 
 class Mera final: public Playable {
 public:
     Mera() : Playable("Mera", 5, 2, 30, 46, 3, "He loves playing League", new Fists, new Skin, {new Vodka}) {}
-    ~Mera() override {
-        SetWeapon(nullptr);
-        SetArmor(nullptr);
-    }
+    ~Mera() override = default;
 };
 
 class Dragos final: public Playable {
 public:
     Dragos() : Playable("Dragos", 15, 1, 115, 5, 11, "A beautiful feller", new Cigarette, new LanaTShirt, {new Apple()}) {}
-    ~Dragos() override {
-        SetWeapon(nullptr);
-        SetArmor(nullptr);
-    }
+    ~Dragos() override = default;
 };
 
 class sans final : public Playable {
 public:
     sans() : Playable("sans.", 1, 1, 1, 43, 1, "erererererer", new Fists, new Skin, {}) {}
-    ~sans() override {
-        SetWeapon(nullptr);
-        SetArmor(nullptr);
-    }
+    ~sans() override = default;
 };
 
 #endif //PLAYABLE_H

@@ -9,7 +9,7 @@ class Game {
 protected:
     static Game* GameInstancePointer;
     Game() = default;
-    Team<Playable*> PlayerTeam = {new Mera, new Dragos, new sans};
+    Team<Playable*> PlayerTeam = Team<Playable*>(new Mera, new Dragos, new sans);
 
     void Fight();
     void TeamEditor();

@@ -8,11 +8,15 @@
 
 template <class Member> class Team{
 protected:
-    std::vector<Member> team{NULL, NULL, NULL};
+    std::vector<Member> team{};
 
 public:
-    Team(Member m1, Member m2, Member m3) : team ({m1, m2, m3}) {};
-    Team() = default;
+    Team(Member m1, Member m2, Member m3) : team ({m1, m2, m3}) {}
+    Team() {
+        team.push_back(Member());
+        team.push_back(Member());
+        team.push_back(Member());
+    }
     ~Team() = default;
     std::vector<Member>& GetTeam() {return team;}
     Member& GetMember(const int i) {return team[i];}
