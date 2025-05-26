@@ -1,10 +1,10 @@
 #include "../include/game.h"
 #include <cstring>
-#include <iostream>
+#include <ostream>
 #include <algorithm>
 
 void Game::ReceiveAction(){
-    std::cout <<  std::endl << "Welcome to SCF RPG! Select an option:\n";
+    std::cout << std::endl << "Welcome to SCF RPG! Select an option:\n";
     unsigned long x = 0;
     while (true) {
         std::cout << "1. Fight against a team of random enemies\n";
@@ -13,8 +13,9 @@ void Game::ReceiveAction(){
         std::cout << "4. Show available Weapons and Armors\n";
         std::cout << "5. Shop for consumables\n";
         std::cout << "6. Exit\n> ";
-        std::cin >> x;
-        if (std::cin && x >= 1 && x <= 6)
+        cin.clear();
+        cin >> x;
+        if (cin && x >= 1 && x <= 6)
         {
             std::cout << std::endl;
             switch (x) {
@@ -32,11 +33,11 @@ void Game::ReceiveAction(){
         }
         else {
             do {
-                std::cin.clear();
-                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                cin.clear();
+                cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 std::cout << "Invalid input. Choose again.\n> ";
-                std::cin >> x;
-            } while (!std::cin || x > 6);
+                cin >> x;
+            } while (!cin || x > 6);
             std::cout << std::endl;
             switch (x) {
                 case 1: Fight();break;
@@ -107,16 +108,16 @@ void Game::Fight(){
                         std::cout << "What will " << ent->GetName() << " do?" << std::endl;
                         std::cout << "1. Attack an Enemy" << std::endl << "2. Use a consumable" << std::endl << "3. Flee" << std::endl << "> ";
                         int resp1;
-                        std::cin >> resp1;
-                        if (std::cin) {
+                        cin >> resp1;
+                        if (cin) {
                             if (resp1 == 1) {
                                 std::cout << "Which enemy?" << std::endl;
                                 int resp2 = 0;
                                 for (const auto& enemy : ET->GetTeam())
                                     std::cout << ++resp2 << ". " << enemy->GetName() << std::endl;
                                 std::cout << "> ";
-                                std::cin >> resp1;
-                                if (std::cin) {
+                                cin >> resp1;
+                                if (cin) {
                                     const auto& enemy = ET->GetTeam()[resp1 - 1];
                                     const int ActualDMG = static_cast<int>(50.0 * ent->GetAD() / (enemy->GetDEF() + 50.0));
                                     enemy->SetHPCurrent(enemy->GetHPCurrent() - ActualDMG);
@@ -151,6 +152,9 @@ void Game::Fight(){
                         }
                     }
                     else {
+                        TurnOver = true;
+                        if (AuxTeam.empty())
+                            break;
                         const auto& enemy = AuxTeam.at(rand() % AuxTeam.size());
                         const int ActualDMG = static_cast<int>(50.0 * ent->GetAD() / (enemy->GetDEF() + 50.0));
                         enemy->SetHPCurrent(enemy->GetHPCurrent() - ActualDMG);
@@ -160,7 +164,6 @@ void Game::Fight(){
                             enemy->Kill();
                             AuxTeam.erase(std::find(AuxTeam.begin(), AuxTeam.end(), enemy));
                         }
-                        TurnOver = true;
                     }
                 }
             }
@@ -202,8 +205,8 @@ void Game::TeamEditor() {
         std::cout << "5. Change a teammate's armor" << std::endl;
         std::cout << "6. Nothing." << std::endl;
         std::cout << "Please enter a number between 1 and 6." << std::endl << "> ";
-        std::cin >> i;
-        if (std::cin && i >= 1 && i <= 6) {
+        cin >> i;
+        if (cin && i >= 1 && i <= 6) {
             switch (i) {
                 case 1: {
                     unsigned long i1 = 0;
@@ -217,7 +220,7 @@ void Game::TeamEditor() {
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     unsigned long i3 = 0;
                     std::cout << "Pick a number between 1 and 3.\n> ";
-                    std::cin >> i3;
+                    cin >> i3;
                     i3--;
                     if (i3 == 0 || i3 == 1 || i3 == 2) {
                         std::cout << *this->GetTeam().GetMember(static_cast<int>(i3));
@@ -240,7 +243,7 @@ void Game::TeamEditor() {
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     unsigned long i2 = 0;
                     std::cout << "Which teammate would you like to change? Pick a number between 1 and 3.\n> ";
-                    std::cin >> i2;
+                    cin >> i2;
                     i2--;
                     if (i2 == 0 || i2 == 1 || i2 == 2) {
                         unsigned long k = 0;
@@ -249,10 +252,10 @@ void Game::TeamEditor() {
                             std::cout << ++k << ". " << pl->GetName() << std::endl;
                         std::cout << "With what playable would you like to change " << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << "? Pick a number between 1 and " << AllPlayables.size() << "." << std::endl;
                         do {
-                            if (!std::cin) std::cin.clear();
+                            if (!cin) cin.clear();
                             std::cout << "> ";
-                            std::cin >> k;
-                        }while (!std::cin || k > AllPlayables.size());
+                            cin >> k;
+                        }while (!cin || k > AllPlayables.size());
                         PlayerTeam.ChangeMember(static_cast<int>(i2) + 1, static_cast<int>(k));
                         changed = true;
                         std::cout << "Teammate nr. " << static_cast<int>(i2) + 1 << " replaced with " << AllPlayables[k - 1]->GetName() << "." << std::endl;
@@ -267,7 +270,7 @@ void Game::TeamEditor() {
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     unsigned long i4 = 0;
                     std::cout << "Pick a number between 1 and 3.\n> ";
-                    std::cin >> i4;
+                    cin >> i4;
                     i4--;
                     if (i4 == 0 || i4 == 1 || i4 == 2) {
                         std::cout << "Which weapon would you like to choose?" << std::endl;
@@ -283,9 +286,9 @@ void Game::TeamEditor() {
                         }
                         std::cout << "Pick a number between 1 and " << AllWeapons.size() << ".\n> ";
                         unsigned long k = 0;
-                        std::cin >> k;
+                        cin >> k;
                         k--;
-                        if (std::cin && k < AllWeapons.size()) {
+                        if (cin && k < AllWeapons.size()) {
                             PlayerTeam.SetMember(static_cast<int>(i4), &PlayerTeam.GetMember(static_cast<int>(i4))->ChangeWeapon(*AllWeapons[k]));
                         }
                         break;
@@ -299,7 +302,7 @@ void Game::TeamEditor() {
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     unsigned long i5 = 0;
                     std::cout << "Pick a number between 1 and 3.\n> ";
-                    std::cin >> i5;
+                    cin >> i5;
                     i5--;
                     if (i5 == 0 || i5 == 1 || i5 == 2) {
                         std::cout << "Which armor would you like to choose?" << std::endl;
@@ -318,9 +321,9 @@ void Game::TeamEditor() {
                         }
                         std::cout << "Pick a number between 1 and " << AllArmors.size() << ".\n> ";
                         unsigned long k = 0;
-                        std::cin >> k;
+                        cin >> k;
                         k--;
-                        if (std::cin && k < AllArmors.size()) {
+                        if (cin && k < AllArmors.size()) {
                             PlayerTeam.SetMember(static_cast<int>(i5), &PlayerTeam.GetMember(static_cast<int>(i5))->ChangeArmor(*AllArmors[k]));
                         }
                         break;
@@ -335,17 +338,17 @@ void Game::TeamEditor() {
                 }
                 default: {
                     std::cout << "Invalid input. Choose again.\n> ";
-                    std::cin.clear();
+                    cin.clear();
                     break;
                 }
             }
         }
         else
             do {
-                std::cin.clear();
+                cin.clear();
                 std::cout << "Invalid input. Choose again.\n> ";
-                std::cin >> i;
-            } while (!std::cin || i > 6);
+                cin >> i;
+            } while (!cin || i > 6);
     }
     if (changed) {
         std::cout << "Your final team is:" << std::endl;
@@ -390,16 +393,16 @@ void Game::Shop() {
     for (; i <= 2; i++)
         std::cout << i + 1 << ". " << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << std::endl;
     std::cout << "Pick a number between 1 and 3.\n> ";
-    std::cin >> i;
+    cin >> i;
     i--;
     if (i == 0 || i == 1 || i == 2) {
         std::cout << "Which consumable would you like to buy? Pick a number between 1 and " << AllConsumables.size() << ".\n> ";
         bool shopping = true;
         do {
             unsigned long j = 0;
-            std::cin >> j;
+            cin >> j;
             j--;
-            if (std::cin && j < AllConsumables.size())
+            if (cin && j < AllConsumables.size())
             {
                 if (PlayerTeam.GetMember(static_cast<int>(i))->GetGold() >= AllConsumables[j].second)
                 {
@@ -416,7 +419,7 @@ void Game::Shop() {
             }
             std::cout << "Would you like to keep shopping?\n[Y/N] ";
             std::string response;
-            std::cin >> response;
+            cin >> response;
             switch (static_cast<char>(std::strlen(response.c_str()) != 1) ? '0' : tolower(response[0])) {
                 case 'y': {std::cout << "Which consumable would you like to buy?\n> "; break;}
                 case 'n': {shopping = false; break;}
