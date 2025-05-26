@@ -5,7 +5,6 @@
 
 #include "../src/weapon.cpp"
 #include "../src/armor.cpp"
-#include <iostream>
 
 class Entity {
 protected:

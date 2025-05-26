@@ -1,5 +1,6 @@
 #include "../include/weapon.h"
 #include "item.cpp"
+#include <iostream>
 
 Weapon::Weapon(const char *name, const int plusAD = 0, const char *description = nullptr)
     : Item(name, description) , PlusAD(plusAD) {}

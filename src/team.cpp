@@ -4,7 +4,7 @@ template <class Member>
 Team<Member>::Team(Member m1, Member m2, Member m3) : team ({m1, m2, m3}) {}
 
 template <class Member>
-Team<Member>::Team() {}
+Team<Member>::Team() = default;
 
 template <class Member>
 void Team<Member>::ShowTeam() const {

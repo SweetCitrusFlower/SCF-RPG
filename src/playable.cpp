@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstring>
+#include <iostream>
 
 Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = "-", Weapon* W = new Fists, Armor* A = new Skin, const std::vector<Consumable*>& I = {}) {
     this->SetName(N);
@@ -35,7 +36,7 @@ Playable& Playable::ChangeWeapon(Weapon &W){
         this->SetWeapon(&W);
         return *this;
     }
-    if (strcmp(this->GetWeapon()->GetName(), "Fists")) {
+    if (strcmp(this->GetWeapon()->GetName(), "Fists") == 0) {
         std::cout << this->GetName() << " has eqquiped \"" << W.GetName() << "\"!" << std::endl << std::endl;
         this->SetWeapon(&W);
         return *this;

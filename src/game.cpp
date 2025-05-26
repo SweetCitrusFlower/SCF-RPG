@@ -1,5 +1,6 @@
 #include "../include/game.h"
 #include <cstring>
+#include <iostream>
 
 void Game::ReceiveAction(){
     std::cout <<  std::endl << "Welcome to SCF RPG! Select an option:\n";
@@ -99,7 +100,7 @@ void Game::Fight(){
             if (ent->GetAlive()) {
                 std::cout << std::endl;
                 bool TurnOver = false;
-                while (!TurnOver && !fleeing) {
+                while (!TurnOver) {
                     if (auto itAlly =
                     std::find(AuxTeam.begin(), AuxTeam.end(), ent); itAlly < AuxTeam.end()) {
                         std::cout << "What will " << ent->GetName() << " do?" << std::endl;
@@ -194,8 +195,8 @@ void Game::TeamEditor() {
         std::cout << std::endl;
         std::cout << "What would you like to do?" << std::endl;
         std::cout << "1. Show my team" << std::endl;
-        std::cout << "2. Change a teammate with another \"Playable\"" << std::endl;
-        std::cout << "3. Check a teammate's stats and inventory" << std::endl;
+        std::cout << "2. Check a teammate's stats and inventory" << std::endl;
+        std::cout << "3. Change a teammate with another \"Playable\"" << std::endl;
         std::cout << "4. Change a teammate's weapon" << std::endl;
         std::cout << "5. Change a teammate's armor" << std::endl;
         std::cout << "6. Nothing." << std::endl;
@@ -210,6 +211,29 @@ void Game::TeamEditor() {
                     break;
                 }
                 case 2: {
+                    unsigned long i1 = 0;
+                    for (const auto& tm : this->GetTeam().GetTeam())
+                        std::cout << ++i1 << ". " << tm->GetName() << std::endl;
+                    unsigned long i3 = 0;
+                    std::cout << "Pick a number between 1 and 3.\n> ";
+                    std::cin >> i3;
+                    i3--;
+                    if (i3 == 0 || i3 == 1 || i3 == 2) {
+                        std::cout << *this->GetTeam().GetMember(static_cast<int>(i3));
+                        if (this->GetTeam().GetMember(static_cast<int>(i3))->GetInventory().empty())
+                            std::cout << "Empty inventory." << std::endl;
+                        else {
+                            std::cout << "Inventory:" << std::endl;
+                            unsigned long j3 = 0;
+                            for (const auto& cons: this->GetTeam().GetMember(static_cast<int>(i3))->GetInventory())
+                                std::cout << ++j3 << ". " << cons->GetName() << std::endl;
+                        }
+                        break;
+                    }
+                    std::cout << "invalid input." << std::endl;
+                    break;
+                }
+                case 3: {
                     unsigned long i1 = 0;
                     for (const auto& tm : this->GetTeam().GetTeam())
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
@@ -231,29 +255,6 @@ void Game::TeamEditor() {
                         PlayerTeam.ChangeMember(static_cast<int>(i2) + 1, static_cast<int>(k));
                         changed = true;
                         std::cout << "Teammate nr. " << static_cast<int>(i2) + 1 << " replaced with " << AllPlayables[k - 1]->GetName() << "." << std::endl;
-                        break;
-                    }
-                    std::cout << "invalid input." << std::endl;
-                    break;
-                }
-                case 3: {
-                    unsigned long i1 = 0;
-                    for (const auto& tm : this->GetTeam().GetTeam())
-                        std::cout << ++i1 << ". " << tm->GetName() << std::endl;
-                    unsigned long i3 = 0;
-                    std::cout << "Pick a number between 1 and 3.\n> ";
-                    std::cin >> i3;
-                    i3--;
-                    if (i3 == 0 || i3 == 1 || i3 == 2) {
-                        std::cout << *this->GetTeam().GetMember(static_cast<int>(i3));
-                        if (this->GetTeam().GetMember(static_cast<int>(i3))->GetInventory().empty())
-                            std::cout << "Empty inventory." << std::endl;
-                        else {
-                            std::cout << "Inventory:" << std::endl;
-                            unsigned long j3 = 0;
-                            for (const auto& cons: this->GetTeam().GetMember(static_cast<int>(i3))->GetInventory())
-                                std::cout << ++j3 << ". " << cons->GetName() << std::endl;
-                        }
                         break;
                     }
                     std::cout << "invalid input." << std::endl;

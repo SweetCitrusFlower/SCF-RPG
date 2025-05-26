@@ -4,7 +4,6 @@
 #define CONSUMABLE_H
 
 #include "item.h"
-#include <vector>
 
 class Consumable : public Item {
 protected:

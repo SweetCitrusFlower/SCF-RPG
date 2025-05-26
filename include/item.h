@@ -3,9 +3,6 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include <iostream>
-#include <vector>
-
 class Item {
 protected:
     const char *Name = nullptr;

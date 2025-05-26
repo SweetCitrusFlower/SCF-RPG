@@ -1,4 +1,5 @@
 #include "../include/item.h"
+#include <iostream>
 
 Item::Item(const char* name, const char* description = "") : Name(name), Description(description) {}
 

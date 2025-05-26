@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "src/game.cpp"
 
 Game* Game::GameInstancePointer = nullptr;

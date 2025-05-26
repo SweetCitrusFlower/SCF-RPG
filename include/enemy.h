@@ -4,7 +4,6 @@
 #define ENEMY_H
 
 #include "entity.h"
-#include <random>
 
 class Enemy : public Entity {
 public:
