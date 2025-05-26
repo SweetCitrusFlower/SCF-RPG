@@ -1,5 +1,3 @@
-#pragma once
-
 #include "../include/weapon.h"
 #include "item.cpp"
 
