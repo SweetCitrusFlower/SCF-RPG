@@ -52,4 +52,3 @@ inline std::ostream& operator<<(std::ostream& c, Weapon*& W) {
     else c << "+" << W->GetPlusAD() << std::endl;
     return c;
 }
-

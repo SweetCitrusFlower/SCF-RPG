@@ -170,4 +170,3 @@ std::vector<Consumable*>& Playable::UseConsumable(const int i) {
     if (this->GetHPCurrent() == 0){}
     return Inventory;
 }
-

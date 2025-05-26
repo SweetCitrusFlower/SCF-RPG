@@ -41,6 +41,7 @@ public:
     ~Weakling() override {
         SetWeapon(nullptr);
         SetArmor(nullptr);
+        delete this;
     }
 };
 

@@ -362,31 +362,34 @@ void Game::TeamEditor() {
 }
 
 void Game::ShowPlayables() {
-    unsigned long k = 0;
-    for (const std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans}; const auto pl: AllPlayables)
+    const std::vector<Playable*> &AllPlayables = {new Mera, new Dragos, new sans};
+    for (unsigned long k = 0; const auto pl: AllPlayables) {
         std::cout << ++k << ". " << *pl << std::endl;
+        delete pl;
+    }
 }
 
 void Game::ShowWeaponsArmors() {
     std::cout << "Weapons:" << std::endl;
     unsigned long j = 0;
-    for (std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone}; Weapon *&w : AllWeapons) {
+    for (const std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone}; const auto w : AllWeapons) {
         std::cout << ++j << ". " << w;
+        delete w;
     }
     std::cout << std::endl << "Armors:" << std::endl;
     j = 0;
-    for (std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt}; Armor *&a : AllArmors) {
+    for (const std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt}; const auto a : AllArmors) {
         std::cout << ++j << ". " << a;
+        delete a;
     }
     std::cout << std::endl;
 }
-
 
 void Game::Shop() {
     std::vector<std::pair<Consumable*, int>> AllConsumables = {{new McPuisor, 2}, {new Apple, 1}, {new Vodka, 10}, {new PlateOfSpaghetti, 15}};
     std::cout << "The Shop(TM) has " << AllConsumables.size() << " consumables:" << std::endl;
     unsigned long k = 0;
-    for (auto &[cons, cost]: AllConsumables) {
+    for (const auto &[cons, cost]: AllConsumables) {
         std::cout << ++k << ". " << cons->GetName() << " - " << cost << " Gold" << std::endl;
     }
     std::cout << "Who are you buying for?" << std::endl;
