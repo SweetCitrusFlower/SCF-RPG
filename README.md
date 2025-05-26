@@ -43,7 +43,7 @@ Nerespectarea duce la nepunctarea proiectului
   - folosirea a funcționlităților limbajului cu scopul de a încălca "legal" o altă regulă
       - folosirea excesivă a claselor friend
       - folosirea excesviă a elementelor statice
-  - fiecare cerinta va fi punctate 1/2 pe implementare + 1/2 pe faptul ca a fost implementata cu sens
+  - lipsa separarea implementarii de definitie
 
 ## Cerințe
 - [ ] definirea a minim **2-3 ieararhii de clase** care sa interactioneze in cadrul temei alese (fie prin compunere, agregare sau doar sa apeleze metodele celeilalte intr-un mod logic) (6p)
