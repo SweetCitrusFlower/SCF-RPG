@@ -1,4 +1,5 @@
 #include "../include/armor.h"
+#include <iostream>
 
 Armor::Armor(const char* name, const int plusDef = 0, const int plusHP = 0, const char* description = nullptr) :
     Item(name, description) {
