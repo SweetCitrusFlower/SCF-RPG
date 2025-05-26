@@ -1,14 +1,14 @@
 #pragma once
 
+#include "team.h"
+
 #ifndef GAME_H
 #define GAME_H
-
-#include "../src/team.cpp"
 
 class Game {
 protected:
     static Game* GameInstancePointer;
-    Game() {}
+    Game() = default;
     Team<Playable*> PlayerTeam = {new Mera, new Dragos, new sans};
 
     void Fight();
@@ -27,7 +27,8 @@ public:
         if(GameInstancePointer == nullptr)
             GameInstancePointer = new Game();
         return GameInstancePointer;
-    };
+    }
+
     void ReceiveAction();
 };
 

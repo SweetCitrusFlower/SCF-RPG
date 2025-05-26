@@ -1,16 +1,17 @@
 #pragma once
 
+#include "item.h"
+
 #ifndef CONSUMABLE_H
 #define CONSUMABLE_H
-
-#include "item.h"
 
 class Consumable : public Item {
 protected:
     int PlusHP = 0;
 public:
-    Consumable(const char*, int, const char*);
-    Consumable();
+    explicit Consumable(const char* name, const int plusHP = 0, const char* desc = "-") :
+        Item(name, desc) , PlusHP(plusHP) {}
+    Consumable() : Consumable("") {}
     ~Consumable() override = default;
 
     [[nodiscard]] int& GetPlusHP() { return PlusHP;}
@@ -40,3 +41,13 @@ public:
     ~PlateOfSpaghetti() override = default;
 };
 #endif //CONSUMABLE_H
+
+inline std::ostream& operator<<(std::ostream& c, Consumable*& C){
+    c << dynamic_cast<Item*>(C) << "HP: ";
+    if(C->GetPlusHP() < 0) c << "-" << -C->GetPlusHP();
+    else if(C->GetPlusHP() == 0) c << "0";
+    else c << "+" << C->GetPlusHP();
+    c << std::endl;
+    return c;
+}
+

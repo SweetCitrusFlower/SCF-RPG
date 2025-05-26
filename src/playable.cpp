@@ -171,19 +171,3 @@ std::vector<Consumable*>& Playable::UseConsumable(const int i) {
     return Inventory;
 }
 
-std::ostream& operator<<(std::ostream& c, const Playable& P){
-    P.ShowEntity();
-    const int LVL = ceil(log2(1 + P.GetXP()));
-    c << "LVL: " << LVL << ", XP: " << P.GetXP() << std::endl;
-    c << "Next LVL threshold at " << pow(2, LVL) << " XP" << std::endl;
-    c << "Has " << P.GetGold() << " Gold to their name." << std::endl;
-    return c;
-}
-
-void Playable::ShowEntity() const{
-    std::cout << this->GetName() << std::endl << this->GetDesc() << std::endl;
-    std::cout << this->GetAD() << " AD, " << this->GetHPCurrent() << "/" << this->GetHPMAX() << " HP, " << this->GetDEF() << " DEF, " << this->GetSpeed() << " Speed" << std::endl;;
-    std::cout << "Weapon: " << this->GetWeapon()->GetName() << std::endl;
-    std::cout << "Armor: " << this->GetArmor()->GetName() << std::endl;
-}
-

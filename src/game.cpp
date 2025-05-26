@@ -58,7 +58,7 @@ void Game::Fight(){
     std::vector<Playable*> AuxTeam;
     AuxTeam.assign(this->GetTeam().GetTeam().begin(), this->GetTeam().GetTeam().end());
     for (int i = 0; i < 3; i++) {
-        switch (std::rand() % 3) {
+        switch (rand() % 3) {
             case 0: {
                 const auto EC = new GoblinCreator;
                 ET->SetMember(i, EC->FactoryMethod());
@@ -365,14 +365,12 @@ void Game::ShowPlayables() {
 void Game::ShowWeaponsArmors() {
     std::cout << "Weapons:" << std::endl;
     unsigned long j = 0;
-    std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone};
-    for (Weapon *&w : AllWeapons) {
+    for (std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone}; Weapon *&w : AllWeapons) {
         std::cout << ++j << ". " << w;
     }
     std::cout << std::endl << "Armors:" << std::endl;
     j = 0;
-    std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt};
-    for (Armor *&a : AllArmors) {
+    for (std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt}; Armor *&a : AllArmors) {
         std::cout << ++j << ". " << a;
     }
     std::cout << std::endl;

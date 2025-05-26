@@ -1,17 +1,18 @@
 #pragma once
 
+#include "item.h"
+#include <iostream>
+
 #ifndef WEAPON_H
 #define WEAPON_H
-
-#include "item.h"
 
 class Weapon : public Item {
 protected:
     int PlusAD = 0;
 
 public:
-    Weapon(const char*, int, const char*);
-    Weapon();
+    explicit Weapon(const char* name, const int plusAD = 0, const char* description = "-") : Item(name, description) , PlusAD(plusAD) {};
+    Weapon() : Weapon("No Weapon") {};
     ~Weapon() override = default;
 
     [[nodiscard]] int& GetPlusAD() {return PlusAD;}
@@ -42,5 +43,13 @@ public:
     ~FlipPhone() override = default;
 };
 
-
 #endif //WEAPON_H
+
+inline std::ostream& operator<<(std::ostream& c, Weapon*& W) {
+    c << dynamic_cast<Item*>(W) << "AD: ";
+    if(W->GetPlusAD() < 0) c << "-" << -W->GetPlusAD();
+    else if (W->GetPlusAD() == 0) c << "0";
+    else c << "+" << W->GetPlusAD() << std::endl;
+    return c;
+}
+

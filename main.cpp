@@ -1,4 +1,4 @@
-#include "src/game.cpp"
+#include "include/game.h"
 
 Game* Game::GameInstancePointer = nullptr;
 

@@ -1,9 +1,9 @@
 #pragma once
 
+#include "entity.h"
+
 #ifndef ENEMY_H
 #define ENEMY_H
-
-#include "entity.h"
 
 class Enemy : public Entity {
 public:
@@ -56,7 +56,7 @@ public:
     virtual ~EnemyCreator() = default;
     [[nodiscard]] virtual Enemy* FactoryMethod() const = 0;
     void ConfirmCreation() const{
-        Enemy* E = this->FactoryMethod();
+        const Enemy* E = this->FactoryMethod();
         if (E == nullptr)
             std::cout << "Enemy unable to be created.\n";
         else

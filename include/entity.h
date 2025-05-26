@@ -1,10 +1,10 @@
 #pragma once
 
+#include "weapon.h"
+#include "armor.h"
+
 #ifndef ENTITY_H
 #define ENTITY_H
-
-#include "../src/weapon.cpp"
-#include "../src/armor.cpp"
 
 class Entity {
 protected:
