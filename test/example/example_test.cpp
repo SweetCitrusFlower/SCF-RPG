@@ -1,7 +1,10 @@
-#include <gtest/gtest.h>
-#include "../../include/example.h"
+#include "../../include/game.h"
 
-TEST(SuiteName, TestName) {
-    EXPECT_EQ(doSomething(10), 10);
-    // Other assertions: https://google.github.io/googletest/reference/assertions.html#boolean
+Game* Game::GameInstancePointer = nullptr;
+
+int main() {
+    const auto game = Game::GetInstance();
+    game->ReceiveAction();
+    delete game;
+    return 0;
 }
