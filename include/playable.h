@@ -17,7 +17,13 @@ public:
 
     Playable(const char*, int, int, int, int, int, const char*, Weapon*, Armor*, std::vector<Consumable*>*);
     Playable();
-    ~Playable() override = default;
+    ~Playable() override {
+        WeaponSlot = nullptr;
+        ArmorSlot = nullptr;
+        for (; !Inventory->empty(); Inventory->pop_back()) {}
+        Inventory->clear();
+        Inventory = nullptr;
+    };
 
     std::vector<Consumable*>* SetInventory(std::vector<Consumable*> *&I) {Inventory = I; return Inventory;}
     [[nodiscard]] std::vector<Consumable*>* GetInventory() const {return Inventory;}
@@ -38,49 +44,25 @@ public:
 class Weakling final : public Playable {
 public:
     Weakling() : Playable("Weakling", 0, 0, 1, 0, 1, "-", new Fists, new Skin, {}) {}
-    ~Weakling() override {
-        WeaponSlot = nullptr;
-        ArmorSlot = nullptr;
-        for (; !Inventory->empty(); Inventory->pop_back()) {}
-        Inventory->clear();
-        Inventory = nullptr;
-    }
+    ~Weakling() override = default;
 };
 
 class Mera final: public Playable {
 public:
     Mera() : Playable("Mera", 5, 2, 30, 46, 3, "He loves playing League", new Fists, new Skin, new std::vector<Consumable*> {new Vodka}) {}
-    ~Mera() override {
-        WeaponSlot = nullptr;
-        ArmorSlot = nullptr;
-        for (; !Inventory->empty(); Inventory->pop_back()) {}
-        Inventory->clear();
-        Inventory = nullptr;
-    }
+    ~Mera() override = default;
 };
 
 class Dragos final: public Playable {
 public:
     Dragos() : Playable("Dragos", 15, 1, 115, 5, 11, "A beautiful feller", new Cigarette, new LanaTShirt, new std::vector<Consumable*> {new Apple}) {}
-    ~Dragos() override {
-        WeaponSlot = nullptr;
-        ArmorSlot = nullptr;
-        for (; !Inventory->empty(); Inventory->pop_back()) {}
-        Inventory->clear();
-        Inventory = nullptr;
-    }
+    ~Dragos() override = default;
 };
 
 class sans final : public Playable {
 public:
     sans() : Playable("sans.", 1, 1, 1, 43, 1, "erererererer", new Fists, new Skin, new std::vector<Consumable*> {new PlateOfSpaghetti}) {}
-    ~sans() override {
-        WeaponSlot = nullptr;
-        ArmorSlot = nullptr;
-        for (; !Inventory->empty(); Inventory->pop_back()) {}
-        Inventory->clear();
-        Inventory = nullptr;
-    }
+    ~sans() override = default;
 };
 
 #endif //PLAYABLE_H
