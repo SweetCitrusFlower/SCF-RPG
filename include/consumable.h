@@ -48,7 +48,8 @@ public:
 #endif //CONSUMABLE_H
 
 inline std::ostream& operator<<(std::ostream& c, Consumable*& C){
-    c << dynamic_cast<Item*>(C) << "HP: ";
+    C->ShowItem();
+    c << "HP: ";
     if(C->GetPlusHP() < 0) c << "-" << -C->GetPlusHP();
     else if(C->GetPlusHP() == 0) c << "0";
     else c << "+" << C->GetPlusHP();
