@@ -8,7 +8,7 @@
 class Game {
     static Game* GameInstancePointer;
     Game() = default;
-    Team<Playable*> PlayerTeam = Team<Playable*>{new Mera, new Dragos, new sans};
+    Team<Playable*> PlayerTeam = Team<Playable*>{new sans, new Mera, new Dragos};
 
     void Fight();
     void TeamEditor();
