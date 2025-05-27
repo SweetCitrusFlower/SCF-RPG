@@ -48,7 +48,7 @@ public:
 
 #endif //WEAPON_H
 
-inline std::ostream& operator<<(std::ostream& c, Weapon*& W) {
+inline std::ostream& operator<<(std::ostream& c, Weapon* W) {
     W->ShowItem();
     c << "AD: ";
     if(W->GetPlusAD() < 0) c << "-" << -W->GetPlusAD();

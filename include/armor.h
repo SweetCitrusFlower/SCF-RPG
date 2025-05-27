@@ -42,7 +42,7 @@ class LanaTShirt final : public Armor {
 
 #endif //ARMOR_H
 
-inline std::ostream& operator<<(std::ostream &c, Armor* &A){
+inline std::ostream& operator<<(std::ostream &c, Armor* A){
     A->ShowItem();
     c << "DEF: ";
     if(A->GetPlusDef() < 0) c << "-" << -A->GetPlusDef();

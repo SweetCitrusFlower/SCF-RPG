@@ -42,6 +42,7 @@ public:
         for(const auto i: AllConsumables)
             delete i;
         for (; !AllConsumables.empty(); AllConsumables.pop_back()) {}
+        delete GameInstancePointer;
     }
 
     void ReceiveAction();

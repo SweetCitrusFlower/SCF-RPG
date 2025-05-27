@@ -47,7 +47,7 @@ public:
             8 + std::rand() % 4, "It screams, for the Void screams louder.",
             new Weapon("Goblin Bone", 10, "A wish bone that didn't crack properly."), new Skin) {}
     ~Goblin() override = default;
-    void ShowEntity() const override {};
+    void ShowEntity() const override {}
 };
 
 class ArmoredBeast final : public Enemy {
@@ -56,7 +56,7 @@ public:
                            2 + std::rand() % 2, "Heavy and slow, like the flow of time.", new Fists,
                            new Armor("Skeletal Armor", 140, 60, "A plated chestmail of great strength.")) {}
     ~ArmoredBeast() override = default;
-    void ShowEntity() const override {};
+    void ShowEntity() const override {}
 };
 
 
@@ -76,21 +76,18 @@ public:
 class OgreCreator final : public EnemyCreator {
 public:
     [[nodiscard]] Enemy* FactoryMethod() override {
-        std::cout << "1";
         return new Ogre;
     }
 };
 class GoblinCreator final : public EnemyCreator {
 public:
     [[nodiscard]] Enemy* FactoryMethod() override {
-        std::cout << "2";
         return new Goblin;
     }
 };
 class BeastCreator final : public EnemyCreator {
 public:
     [[nodiscard]] Enemy* FactoryMethod() override {
-        std::cout << "3";
         return new ArmoredBeast;
     }
 };
