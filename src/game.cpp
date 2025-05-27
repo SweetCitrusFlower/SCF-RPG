@@ -288,8 +288,8 @@ void Game::TeamEditor() {
                         std::cin >> k;
                         k--;
                         if (std::cin && k < AllWeapons.size()) {
-                            auto AuxPl = PlayerTeam.GetMember(static_cast<int>(i4))->ChangeWeapon(*AllWeapons[k]);
-                            PlayerTeam.SetMember(static_cast<int>(i4), &AuxPl);
+                            Playable *AuxPl = &PlayerTeam.GetMember(static_cast<int>(i4))->ChangeWeapon(*AllWeapons[k]);
+                            PlayerTeam.SetMember(static_cast<int>(i4), AuxPl);
                         }
                         break;
                     }
@@ -323,8 +323,8 @@ void Game::TeamEditor() {
                         std::cin >> k;
                         k--;
                         if (std::cin && k < AllArmors.size()) {
-                            auto AuxPl = PlayerTeam.GetMember(static_cast<int>(i5))->ChangeArmor(*AllArmors[k]);
-                            PlayerTeam.SetMember(static_cast<int>(i5), &AuxPl);
+                            Playable *AuxPl = &PlayerTeam.GetMember(static_cast<int>(i5))->ChangeArmor(*AllArmors[k]);
+                            PlayerTeam.SetMember(static_cast<int>(i5), AuxPl);
                         }
                         break;
                     }
