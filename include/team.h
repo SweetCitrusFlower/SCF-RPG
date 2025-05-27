@@ -35,8 +35,10 @@ public:
         if (team->empty()) {
             team->push_back(NewM);
         }
-        else
+        else {
+            delete team->at(i);
             team->at(i) = NewM;
+        }
     }
 };
 
