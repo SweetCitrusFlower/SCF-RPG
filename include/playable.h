@@ -18,11 +18,10 @@ public:
     Playable(const char*, int, int, int, int, int, const char*, Weapon*, Armor*, std::vector<Consumable*>*);
     Playable();
     ~Playable() override {
-        WeaponSlot = nullptr;
-        ArmorSlot = nullptr;
+        delete WeaponSlot; WeaponSlot = nullptr;
+        delete ArmorSlot; ArmorSlot = nullptr;
         for (; !Inventory->empty(); Inventory->pop_back()) {}
-        Inventory->clear();
-        Inventory = nullptr;
+        Inventory->clear(); delete Inventory; Inventory = nullptr;
     };
 
     std::vector<Consumable*>* SetInventory(std::vector<Consumable*> *&I) {Inventory = I; return Inventory;}

@@ -8,7 +8,7 @@
 class Game {
     static Game* GameInstancePointer;
     Game() = default;
-    Team<Playable*> PlayerTeam = Team<Playable*>(new Mera, new Dragos, new sans);
+    Team<Playable*> PlayerTeam = Team<Playable*>{new Mera, new Dragos, new sans};
 
     void Fight();
     void TeamEditor();
@@ -39,8 +39,8 @@ public:
         for(; !AllPlayables.empty(); AllPlayables.pop_back()) {}
         for(; !AllWeapons.empty(); AllWeapons.pop_back()) {}
         for(; !AllArmors.empty(); AllArmors.pop_back()) {}
-        for(const auto i: AllConsumables)
-            delete i;
+        for(auto i: AllConsumables)
+            i = nullptr, delete i;
         for (; !AllConsumables.empty(); AllConsumables.pop_back()) {}
         delete GameInstancePointer;
     }
