@@ -22,7 +22,7 @@ Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const i
 
 Playable::Playable() : Playable("MissingNo"){}
 
-Playable& Playable::ChangeWeapon(Weapon &W){
+Playable Playable::ChangeWeapon(Weapon &W){
     if (this->GetWeapon() == nullptr) {
         std::cout << "how did you do this." << std::endl;
         return *this;
@@ -51,7 +51,7 @@ Playable& Playable::ChangeWeapon(Weapon &W){
     return *this;
 }
 
-Playable& Playable::ChangeArmor(Armor &A){
+Playable Playable::ChangeArmor(Armor &A){
     if (this->GetArmor() == nullptr) {
         std::cout << "how did you do this." << std::endl;
         return *this;

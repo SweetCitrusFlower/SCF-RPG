@@ -256,7 +256,7 @@ void Game::TeamEditor() {
                             std::cout << "> ";
                             std::cin >> k;
                         }while (!std::cin || k > AllPlayables.size());
-                        PlayerTeam.GetTeam()->at(static_cast<int>(i2) + 1) = AllPlayables[static_cast<int>(k) - 1];
+                        PlayerTeam.GetTeam()->at(static_cast<int>(i2)) = AllPlayables[static_cast<int>(k) - 1];
                         changed = true;
                         std::cout << "Teammate nr. " << static_cast<int>(i2) + 1 << " replaced with " << AllPlayables[k - 1]->GetName() << "." << std::endl;
                         break;
@@ -288,7 +288,7 @@ void Game::TeamEditor() {
                         std::cin >> k;
                         k--;
                         if (std::cin && k < AllWeapons.size()) {
-                            PlayerTeam.SetMember(static_cast<int>(i4), &PlayerTeam.GetMember(static_cast<int>(i4))->ChangeWeapon(*AllWeapons[k]));
+                            PlayerTeam.GetMember(static_cast<int>(i4))->ChangeWeapon(*AllWeapons[k]);
                         }
                         break;
                     }
@@ -322,7 +322,7 @@ void Game::TeamEditor() {
                         std::cin >> k;
                         k--;
                         if (std::cin && k < AllArmors.size()) {
-                            PlayerTeam.SetMember(static_cast<int>(i5), &PlayerTeam.GetMember(static_cast<int>(i5))->ChangeArmor(*AllArmors[k]));
+                            PlayerTeam.GetMember(static_cast<int>(i5))->ChangeArmor(*AllArmors[k]);
                         }
                         break;
                     }

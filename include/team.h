@@ -19,7 +19,7 @@ public:
     Team() {}
     ~Team() = default;
     std::vector<Member>*& GetTeam() {return team;}
-    Member& GetMember(const int i) {return team->at(i);}
+    Member GetMember(const int i) {return team->at(i);}
 
     void SetTeam(std::vector<Member>*& TEAM) {
         team->assign(TEAM->begin(), TEAM->end());
