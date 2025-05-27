@@ -405,6 +405,7 @@ void Game::Shop() {
                     AuxTeam->at(i)->SetGold(AuxTeam->at(i)->GetGold() - AllConsumables[j]->second);
                     PlayerTeam.SetTeam(AuxTeam);
                     std::cout << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << " bought " << AllConsumables[j]->first->GetName() << "." << std::endl;
+                    delete AuxTeam;
                 }
                 else
                     std::cout << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << " has only " << PlayerTeam.GetMember(static_cast<int>(i))->GetGold() << " Gold, which isn't enough." << std::endl;
