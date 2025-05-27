@@ -8,26 +8,32 @@
 
 template <class Member> class Team{
 protected:
-    std::vector<Member> team{};
+    std::vector<Member>* team = new std::vector<Member>;
 
 public:
-    Team(Member m1, Member m2, Member m3) : team ({m1, m2, m3}) {}
-    Team() {
-        team.push_back(Member());
-        team.push_back(Member());
-        team.push_back(Member());
+    Team(Member m1, Member m2, Member m3){
+        team->push_back(m1);
+        team->push_back(m2);
+        team->push_back(m3);
     }
+    Team() {}
     ~Team() = default;
-    std::vector<Member>& GetTeam() {return team;}
-    Member& GetMember(const int i) {return team[i];}
+    std::vector<Member>*& GetTeam() {return team;}
+    Member& GetMember(const int i) {return team->at(i);}
 
-    void SetTeam(const std::vector<Member>& TEAM) {team = TEAM;}
-    void SetMember(const int i, const Member& NewM) {
-        team[i] = NewM;
+    void SetTeam(std::vector<Member>*& TEAM) {
+        team->assign(TEAM->begin(), TEAM->end());
+    }
+    void SetMember(const int i, Member NewM) {
+        if (team->empty()) {
+            team->push_back(NewM);
+        }
+        else
+            team->at(i) = NewM;
     }
     void ChangeMember(const int i, const int k) {
         std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
-        team[i - 1] = AllPlayables[k - 1];
+        team->at(i) = AllPlayables[k - 1];
     }
 };
 

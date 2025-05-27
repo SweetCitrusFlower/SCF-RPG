@@ -5,7 +5,7 @@
 #include <cmath>
 #include <memory>
 
-Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = "-", Weapon* W = std::make_unique<Fists>().get(), Armor* A = std::make_unique<Skin>().get(), const std::vector<Consumable*>& I = {}) {
+Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const int HPM = 0, const int GOLD = 0, const int SPEED = 0, const char* Desc = "-", Weapon* W = std::make_unique<Fists>().get(), Armor* A = std::make_unique<Skin>().get(), std::vector<Consumable*>* I = {}) {
     this->SetName(N);
     this->SetWeapon(W);
     this->SetArmor(A);
@@ -84,38 +84,38 @@ Playable& Playable::ChangeArmor(Armor &A){
 
 void Playable::CheckInventory(){
 
-    if (this->Inventory.empty()) {
+    if (this->Inventory->empty()) {
         std::cout << Name << "'s inventory is empty!";
         return;
     }
-    std::cout << Name << " has " << Inventory.size() << " item";
-    if (Inventory.size() == 1) {
+    std::cout << Name << " has " << Inventory->size() << " item";
+    if (Inventory->size() == 1) {
         std::cout << "." << std::endl;
         this->UseConsumable(1);
     }
     else {
-        std::ranges::sort(Inventory, [](Consumable* a, Consumable* b)
+        std::ranges::sort(*Inventory, [](Consumable* a, Consumable* b)
         {if (strcmp(a->GetDescription(), b->GetDescription()) < 0)
                 return true;
             return false;
         } );
         std::cout << "s:" << std::endl;
-        for (unsigned long item = 0; item < Inventory.size(); ++item) {
-            std::cout << item + 1 << ". " << Inventory[item]->GetName() << std::endl;
+        for (unsigned long item = 0; item < Inventory->size(); ++item) {
+            std::cout << item + 1 << ". " << Inventory->at(item)->GetName() << std::endl;
         }
-        std::cout << "Enter a number between 1 and " << Inventory.size() << ":\n> ";
+        std::cout << "Enter a number between 1 and " << Inventory->size() << ":\n> ";
         unsigned long nr;
         std::cin >> nr;
-        if (nr > Inventory.size())
-            std::cout << "Number out of bounds. " << (nr - 1) % Inventory.size() + 1 << " chosen.";
-        nr = (nr - 1) % static_cast<int>(Inventory.size()) + 1;
+        if (nr > Inventory->size())
+            std::cout << "Number out of bounds. " << (nr - 1) % Inventory->size() + 1 << " chosen.";
+        nr = (nr - 1) % static_cast<int>(Inventory->size()) + 1;
         this->UseConsumable(static_cast<int>(nr));
     }
 }
 
-std::vector<Consumable*>& Playable::AddConsumableToInventory(Consumable& I) {
-    if (this->GetInventory().size() >= 5) {
-        std::ranges::sort(Inventory, [](Consumable* a, Consumable* b)
+std::vector<Consumable*>& Playable::AddConsumableToInventory(Consumable& I) const {
+    if (this->GetInventory()->size() >= 5) {
+        std::ranges::sort(*Inventory, [](Consumable* a, Consumable* b)
         {if (strcmp(a->GetName(), b->GetName()) < 0)
                 return true;
             return false;
@@ -126,15 +126,15 @@ std::vector<Consumable*>& Playable::AddConsumableToInventory(Consumable& I) {
         switch (static_cast<char>(std::strlen(response.c_str()) != 1) ? '0' : tolower(response[0])) {
             case 'y' : {
                 std::cout << "Which item would you like to replace?\n";
-                for (unsigned long item = 0; item < this->GetInventory().size(); ++item) {
-                    std::cout << item + 1 << ". " << this->GetInventory()[item]->GetName() << std::endl;
+                for (unsigned long item = 0; item < this->GetInventory()->size(); ++item) {
+                    std::cout << item + 1 << ". " << this->GetInventory()->at(item)->GetName() << std::endl;
                 }
                 std::cout << "\nPlease enter a number between 1 and 5.\n> ";
                 unsigned long nr = 0;
                 std::cin >> nr;
-                nr = (nr - 1) % this->GetInventory().size();
-                this->GetInventory().erase(this->GetInventory().begin() + nr);
-                this->GetInventory().push_back(&I);
+                nr = (nr - 1) % this->GetInventory()->size();
+                this->GetInventory()->erase(this->GetInventory()->begin() + nr);
+                this->GetInventory()->push_back(&I);
                 std::cout <<  "Consumable \"" << I.GetName() << "\" added to " << Name << "\'s inventory successfully!" << std::endl;
                 break;
             }
@@ -149,13 +149,13 @@ std::vector<Consumable*>& Playable::AddConsumableToInventory(Consumable& I) {
         }
     }
     else {
-        this->GetInventory().push_back(&I);
+        this->GetInventory()->push_back(&I);
     }
-    return Inventory;
+    return *Inventory;
 }
 
 std::vector<Consumable*>& Playable::UseConsumable(const int i) {
-    const auto I = Inventory[i - 1];
+    const auto I = Inventory->at(i-1);
     SetHPCurrent(this->GetHPCurrent() + I->GetPlusHP());
     if (this->GetHPCurrent() < 0)
         SetHPCurrent(0);
@@ -167,7 +167,7 @@ std::vector<Consumable*>& Playable::UseConsumable(const int i) {
     else
         std::cout << "gained " << I->GetPlusHP();
     std::cout << " HP!" << std::endl;
-    Inventory.erase(Inventory.begin() + i - 1);
+    Inventory->erase(Inventory->begin() + i - 1);
     if (this->GetHPCurrent() == 0){}
-    return Inventory;
+    return *Inventory;
 }

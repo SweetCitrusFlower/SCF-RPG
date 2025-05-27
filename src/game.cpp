@@ -58,25 +58,27 @@ void Game::ReceiveAction(){
 
 void Game::Fight(){
     const auto ET = std::make_unique<Team<Enemy*>>();
-    std::vector<Playable*> AuxTeam;
-    AuxTeam.assign(this->GetTeam().GetTeam().begin(), this->GetTeam().GetTeam().end());
+    const auto AuxTeam = new Team<Playable*>;
+    auto AuxTeamVect = new std::vector<Playable*>;
+    AuxTeamVect->assign(this->GetTeam().GetTeam()->begin(), this->GetTeam().GetTeam()->end());
+    AuxTeam->SetTeam(AuxTeamVect);
     for (int i = 0; i < 3; i++) {
         switch (rand() % 3) {
             case 0: {
-                const auto EC = std::make_unique<GoblinCreator>();
-                ET->SetMember(i, EC->FactoryMethod());
+                const auto EC = new GoblinCreator;
+                ET->GetTeam()->push_back(EC->FactoryMethod());
                 EC->ConfirmCreation();
                 break;
             }
             case 1: {
-                const auto OC = std::make_unique<OgreCreator>();
-                ET->SetMember(i, OC->FactoryMethod());
+                const auto OC = new OgreCreator;
+                ET->GetTeam()->push_back(OC->FactoryMethod());
                 OC->ConfirmCreation();
                 break;
             }
             default: {
-                const auto BC = std::make_unique<BeastCreator>();
-                ET->SetMember(i, BC->FactoryMethod());
+                const auto BC = new BeastCreator;
+                ET->GetTeam()->push_back(BC->FactoryMethod());
                 BC->ConfirmCreation();
                 break;
             }
@@ -84,11 +86,11 @@ void Game::Fight(){
     }
     int turn = 0;
     int fleeing = false;
-    while (!AuxTeam.empty() && !ET->GetTeam().empty() && !fleeing) {
+    while (!AuxTeam->GetTeam()->empty() && !ET->GetTeam()->empty() && !fleeing) {
         std::vector<Entity*> OrderOfAttack;
-        for (const auto& ally : AuxTeam)
+        for (const auto& ally : *AuxTeam->GetTeam())
             OrderOfAttack.push_back(ally);
-        for (const auto& enemy : ET->GetTeam())
+        for (const auto& enemy : *ET->GetTeam())
             OrderOfAttack.push_back(enemy);
         std::ranges::sort(OrderOfAttack, [](const Entity* a, const Entity* b) {
                                                                             return a->GetSpeed() > b->GetSpeed();
@@ -97,14 +99,14 @@ void Game::Fight(){
         for (auto*& ent : OrderOfAttack)
             std::cout << ent->GetName() << " " << ent->GetHPCurrent() << "/" << ent->GetHPMAX() << std::endl;
         for (auto& ent: OrderOfAttack) {
-            if (AuxTeam.empty() || ET->GetTeam().empty() || fleeing)
+            if (AuxTeam->GetTeam()->empty() || ET->GetTeam()->empty() || fleeing)
                 break;
             if (ent->GetAlive()) {
                 std::cout << std::endl;
                 bool TurnOver = false;
                 while (!TurnOver) {
                     if (auto itAlly =
-                    std::ranges::find(AuxTeam, ent); itAlly < AuxTeam.end()) {
+                    std::ranges::find(*AuxTeam->GetTeam(), ent); itAlly < AuxTeam->GetTeam()->end()) {
                         std::cout << "What will " << ent->GetName() << " do?" << std::endl;
                         std::cout << "1. Attack an Enemy" << std::endl << "2. Use a consumable" << std::endl << "3. Flee" << std::endl << "> ";
                         int resp1;
@@ -113,12 +115,12 @@ void Game::Fight(){
                             if (resp1 == 1) {
                                 std::cout << "Which enemy?" << std::endl;
                                 int resp2 = 0;
-                                for (auto* const& enemy : ET->GetTeam())
+                                for (auto* const& enemy : *ET->GetTeam())
                                     std::cout << ++resp2 << ". " << enemy->GetName() << std::endl;
                                 std::cout << "> ";
                                 std::cin >> resp1;
                                 if (std::cin) {
-                                    const auto& enemy = ET->GetTeam()[resp1 - 1];
+                                    const auto& enemy = ET->GetTeam()->at(resp1 - 1);
                                     const int ActualDMG = static_cast<int>(50.0 * ent->GetAD() / (enemy->GetDEF() + 50.0));
                                     enemy->SetHPCurrent(enemy->GetHPCurrent() - ActualDMG);
                                     std::cout << enemy->GetName() << " lost " << ActualDMG << "HP!" << std::endl;
@@ -128,7 +130,7 @@ void Game::Fight(){
                                         ent->SetGold(ent->GetGold() + enemy->GetGold());
                                         ent->SetXP(ent->GetXP() + enemy->GetXP());
                                         enemy->Kill();
-                                        ET->GetTeam().erase(std::ranges::find(ET->GetTeam(), enemy));
+                                        ET->GetTeam()->erase(std::ranges::find(*ET->GetTeam(), enemy));
                                     }
                                 }
                                 else {
@@ -138,7 +140,7 @@ void Game::Fight(){
                                 TurnOver = true;
                             }
                             else if (resp1 == 2) {
-                                if (dynamic_cast<Playable*>(ent)->GetInventory().empty())
+                                if (dynamic_cast<Playable*>(ent)->GetInventory()->empty())
                                     std::cout << ent->GetName() << " has no items!" << std::endl;
                                 else
                                     TurnOver = true, dynamic_cast<Playable*>(ent)->CheckInventory();
@@ -153,16 +155,16 @@ void Game::Fight(){
                     }
                     else {
                         TurnOver = true;
-                        if (AuxTeam.empty())
+                        if (AuxTeam->GetTeam()->empty())
                             break;
-                        Entity* enemy = AuxTeam.at(rand() % AuxTeam.size());
+                        Entity* enemy = AuxTeam->GetTeam()->at(rand() % AuxTeam->GetTeam()->size());
                         const int ActualDMG = static_cast<int>(50.0 * ent->GetAD() / (enemy->GetDEF() + 50.0));
                         enemy->SetHPCurrent(enemy->GetHPCurrent() - ActualDMG);
                         std::cout << ent->GetName() << " attacked " << enemy->GetName() << " and they lost " << ActualDMG << "HP!" << std::endl;
                         if (enemy->GetHPCurrent() <= 0) {
                             std::cout << enemy->GetName() << " has passed away..." << std::endl;
                             enemy->Kill();
-                            AuxTeam.erase(std::ranges::find(AuxTeam, enemy));
+                            AuxTeam->GetTeam()->erase(std::ranges::find(*AuxTeam->GetTeam(), enemy));
                         }
                     }
                 }
@@ -170,14 +172,14 @@ void Game::Fight(){
         }
         std::cout << std::endl;
     }
-    if (!AuxTeam.empty()) {
-        if (!ET->GetTeam().empty())
+    if (!AuxTeam->GetTeam()->empty()) {
+        if (!ET->GetTeam()->empty())
             std::cout << "Your team ran away." << std::endl;
         else
             std::cout << "YOUR TEAM WON!!!" << std::endl;
-        for (auto*& OrigTM : this->GetTeam().GetTeam()) {
+        for (auto*& OrigTM : *this->GetTeam().GetTeam()) {
             OrigTM->Revive(), OrigTM->SetHPCurrent(std::max(OrigTM->GetHPCurrent(), 1));
-            for (auto*& CopyTM : AuxTeam)
+            for (auto*& CopyTM : *AuxTeam->GetTeam())
                 if (CopyTM->GetName() == OrigTM->GetName())
                     OrigTM->SetGold(CopyTM->GetGold()), OrigTM->SetXP(CopyTM->GetXP());
         }
@@ -209,13 +211,13 @@ void Game::TeamEditor() {
             switch (i) {
                 case 1: {
                     unsigned long i1 = 0;
-                    for (const auto* tm : this->GetTeam().GetTeam())
+                    for (const auto* tm : *this->GetTeam().GetTeam())
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     break;
                 }
                 case 2: {
                     unsigned long i1 = 0;
-                    for (const auto* tm : this->GetTeam().GetTeam())
+                    for (const auto* tm : *this->GetTeam().GetTeam())
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     unsigned long i3 = 0;
                     std::cout << "Pick a number between 1 and 3.\n> ";
@@ -223,12 +225,12 @@ void Game::TeamEditor() {
                     i3--;
                     if (i3 == 0 || i3 == 1 || i3 == 2) {
                         std::cout << *this->GetTeam().GetMember(static_cast<int>(i3));
-                        if (this->GetTeam().GetMember(static_cast<int>(i3))->GetInventory().empty())
+                        if (this->GetTeam().GetMember(static_cast<int>(i3))->GetInventory()->empty())
                             std::cout << "Empty inventory." << std::endl;
                         else {
                             std::cout << "Inventory:" << std::endl;
                             unsigned long j3 = 0;
-                            for (Item* cons: this->GetTeam().GetMember(static_cast<int>(i3))->GetInventory())
+                            for (Item* cons: *this->GetTeam().GetMember(static_cast<int>(i3))->GetInventory())
                                 std::cout << ++j3 << ". " << cons->GetName() << std::endl;
                         }
                         break;
@@ -238,7 +240,7 @@ void Game::TeamEditor() {
                 }
                 case 3: {
                     unsigned long i1 = 0;
-                    for (const auto* tm : this->GetTeam().GetTeam())
+                    for (const auto* tm : *this->GetTeam().GetTeam())
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     unsigned long i2 = 0;
                     std::cout << "Which teammate would you like to change? Pick a number between 1 and 3.\n> ";
@@ -265,7 +267,7 @@ void Game::TeamEditor() {
                 }
                 case 4: {
                     unsigned long i1 = 0;
-                    for (const auto* tm : this->GetTeam().GetTeam())
+                    for (const auto* tm : *this->GetTeam().GetTeam())
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     unsigned long i4 = 0;
                     std::cout << "Pick a number between 1 and 3.\n> ";
@@ -297,7 +299,7 @@ void Game::TeamEditor() {
                 }
                 case 5: {
                     unsigned long i1 = 0;
-                    for (const auto* tm : this->GetTeam().GetTeam())
+                    for (const auto* tm : *this->GetTeam().GetTeam())
                         std::cout << ++i1 << ". " << tm->GetName() << std::endl;
                     unsigned long i5 = 0;
                     std::cout << "Pick a number between 1 and 3.\n> ";
@@ -352,7 +354,7 @@ void Game::TeamEditor() {
     if (changed) {
         std::cout << "Your final team is:" << std::endl;
         unsigned long ig = 0;
-        for (const auto* pl : PlayerTeam.GetTeam()) {
+        for (const auto* pl : *PlayerTeam.GetTeam()) {
             std::cout << ++ig << ". " << pl->GetName() << std::endl;
         }
     }
@@ -404,9 +406,9 @@ void Game::Shop() {
             {
                 if (PlayerTeam.GetMember(static_cast<int>(i))->GetGold() >= AllConsumables[j].second)
                 {
-                    auto AuxTeam = PlayerTeam.GetTeam();
-                    AuxTeam[i]->AddConsumableToInventory(*AllConsumables[j].first);
-                    AuxTeam[i]->SetGold(AuxTeam[i]->GetGold() - AllConsumables[j].second);
+                    std::vector<Playable *> *AuxTeam = PlayerTeam.GetTeam();
+                    AuxTeam->at(i)->AddConsumableToInventory(*AllConsumables[j].first);
+                    AuxTeam->at(i)->SetGold(AuxTeam->at(i)->GetGold() - AllConsumables[j].second);
                     PlayerTeam.SetTeam(AuxTeam);
                     std::cout << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << " bought " << AllConsumables[j].first->GetName() << "." << std::endl;
                 }

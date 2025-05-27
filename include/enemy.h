@@ -32,10 +32,7 @@ public:
     Ogre(): Enemy("Ogre", 30 + std::rand() % 6, 13 + std::rand() % 5, 58 + std::rand() % 10, 44, 50,
               3 + std::rand() % 3, "A fearsome oger, grumpy mostly because you woke him up.",
               new Weapon("Ogre Club", 40, "Made of the bones of its ancestors."), new Skin) {}
-    ~Ogre() override {
-        SetWeapon(nullptr);
-        SetArmor(nullptr);
-    }
+    ~Ogre() override = default;
     void ShowEntity() const override {
         std::cout << this->GetName() << std::endl << this->GetDesc() << std::endl;
         std::cout << this->GetAD() << " AD, " << this->GetHPCurrent() << "/" << this->GetHPMAX() << " HP, " << this->GetDEF() << " DEF, " << this->GetSpeed() << " Speed" << std::endl;
@@ -49,10 +46,7 @@ public:
     Goblin() : Enemy("Goblin", 7 + std::rand() % 4,  6 + std::rand() % 3, 22 + std::rand() % 8, 8, 10,
             8 + std::rand() % 4, "It screams, for the Void screams louder.",
             new Weapon("Goblin Bone", 10, "A wish bone that didn't crack properly."), new Skin) {}
-    ~Goblin() override {
-        SetWeapon(nullptr);
-        SetArmor(nullptr);
-    }
+    ~Goblin() override = default;
     void ShowEntity() const override {};
 };
 
@@ -61,10 +55,7 @@ public:
     ArmoredBeast() : Enemy("Armored Beast", 4 + std::rand() % 2, 13 + std::rand() % 3, 30 + std::rand() % 10, 44, 50,
                            2 + std::rand() % 2, "Heavy and slow, like the flow of time.", new Fists,
                            new Armor("Skeletal Armor", 140, 60, "A plated chestmail of great strength.")) {}
-    ~ArmoredBeast() override {
-        SetWeapon(nullptr);
-        SetArmor(nullptr);
-    }
+    ~ArmoredBeast() override = default;
     void ShowEntity() const override {};
 };
 
@@ -73,32 +64,33 @@ public:
 class EnemyCreator{
 public:
     virtual ~EnemyCreator() = default;
-    [[nodiscard]] virtual Enemy* FactoryMethod() const = 0;
-    void ConfirmCreation() const{
-        const Enemy* E = this->FactoryMethod();
-        if (E == nullptr)
+    [[nodiscard]] virtual Enemy *FactoryMethod() = 0;
+    void ConfirmCreation() {
+        if (const Enemy* E = FactoryMethod(); E == nullptr)
             std::cout << "Enemy unable to be created.\n";
         else
             std::cout << "Enemy " << E->GetName() << " created.\n";
-        delete E;
     }
 };
 
 class OgreCreator final : public EnemyCreator {
 public:
-    [[nodiscard]] Enemy* FactoryMethod() const override {
+    [[nodiscard]] Enemy* FactoryMethod() override {
+        std::cout << "1";
         return new Ogre;
     }
 };
 class GoblinCreator final : public EnemyCreator {
 public:
-    [[nodiscard]] Enemy* FactoryMethod() const override {
+    [[nodiscard]] Enemy* FactoryMethod() override {
+        std::cout << "2";
         return new Goblin;
     }
 };
 class BeastCreator final : public EnemyCreator {
 public:
-    [[nodiscard]] Enemy* FactoryMethod() const override {
+    [[nodiscard]] Enemy* FactoryMethod() override {
+        std::cout << "3";
         return new ArmoredBeast;
     }
 };

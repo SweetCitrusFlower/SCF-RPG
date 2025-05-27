@@ -10,22 +10,22 @@
 
 class Playable : public Entity {
 protected:
-    std::vector<Consumable*> Inventory {};
+    std::vector<Consumable*> *Inventory = {};
     std::vector<Consumable*>& UseConsumable(int);
 
 public:
 
-    Playable(const char*, int, int, int, int, int, const char*, Weapon*, Armor*, const std::vector<Consumable*>&);
+    Playable(const char*, int, int, int, int, int, const char*, Weapon*, Armor*, std::vector<Consumable*>*);
     Playable();
     ~Playable() override = default;
 
-    std::vector<Consumable*>& SetInventory(const std::vector<Consumable*> &I) {Inventory = I; return Inventory;}
-    [[nodiscard]] std::vector<Consumable*>& GetInventory() {return Inventory;}
+    std::vector<Consumable*>* SetInventory(std::vector<Consumable*> *&I) {Inventory = I; return Inventory;}
+    [[nodiscard]] std::vector<Consumable*>* GetInventory() const {return Inventory;}
 
     Playable& ChangeWeapon(Weapon&);
     Playable& ChangeArmor(Armor&);
     void CheckInventory();
-    std::vector<Consumable*>& AddConsumableToInventory(Consumable&);
+    std::vector<Consumable*>& AddConsumableToInventory(Consumable&) const;
 
     void ShowEntity() const override {
         std::cout << this->GetName() << std::endl << this->GetDesc() << std::endl;
@@ -43,19 +43,19 @@ public:
 
 class Mera final: public Playable {
 public:
-    Mera() : Playable("Mera", 5, 2, 30, 46, 3, "He loves playing League", new Fists, new Skin, {new Vodka}) {}
+    Mera() : Playable("Mera", 5, 2, 30, 46, 3, "He loves playing League", new Fists, new Skin, new std::vector<Consumable*> {new Vodka}) {}
     ~Mera() override = default;
 };
 
 class Dragos final: public Playable {
 public:
-    Dragos() : Playable("Dragos", 15, 1, 115, 5, 11, "A beautiful feller", new Cigarette, new LanaTShirt, {new Apple()}) {}
+    Dragos() : Playable("Dragos", 15, 1, 115, 5, 11, "A beautiful feller", new Cigarette, new LanaTShirt, new std::vector<Consumable*> {new Apple}) {}
     ~Dragos() override = default;
 };
 
 class sans final : public Playable {
 public:
-    sans() : Playable("sans.", 1, 1, 1, 43, 1, "erererererer", new Fists, new Skin, {}) {}
+    sans() : Playable("sans.", 1, 1, 1, 43, 1, "erererererer", new Fists, new Skin, new std::vector<Consumable*> {new PlateOfSpaghetti}) {}
     ~sans() override = default;
 };
 
