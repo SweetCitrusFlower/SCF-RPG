@@ -17,6 +17,9 @@ public:
     [[nodiscard]] int& GetPlusDef() {return PlusDef;}
     [[nodiscard]] int& GetPlusHP(){return PlusHP;}
 
+    void ShowItem() override {
+        std::cout << this;
+    }
 };
 
 class Skin final : public Armor {

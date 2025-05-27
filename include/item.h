@@ -18,6 +18,8 @@ public:
     [[nodiscard]] const char*& GetName() {return Name;}
     [[nodiscard]] const char*& GetDescription() {return Description;}
 
+    virtual void ShowItem() = 0;
+
 };
 
 #endif //ITEM_H

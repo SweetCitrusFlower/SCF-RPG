@@ -3,7 +3,6 @@
 #include <memory>
 #include <ostream>
 #include <algorithm>
-#include <memory>
 
 void Game::ReceiveAction(){
     std::cout << std::endl << "Welcome to SCF RPG! Select an option:\n";
@@ -259,9 +258,6 @@ void Game::TeamEditor() {
                         PlayerTeam.ChangeMember(static_cast<int>(i2) + 1, static_cast<int>(k));
                         changed = true;
                         std::cout << "Teammate nr. " << static_cast<int>(i2) + 1 << " replaced with " << AllPlayables[k - 1]->GetName() << "." << std::endl;
-                        for (unsigned long l = AllPlayables.size(); l > 0; --l) {
-                            delete AllPlayables[l - 1];
-                        }
                         break;
                     }
                     std::cout << "invalid input." << std::endl;
@@ -293,9 +289,6 @@ void Game::TeamEditor() {
                         k--;
                         if (std::cin && k < AllWeapons.size()) {
                             PlayerTeam.SetMember(static_cast<int>(i4), &PlayerTeam.GetMember(static_cast<int>(i4))->ChangeWeapon(*AllWeapons[k]));
-                        }
-                        for (unsigned long l = AllWeapons.size(); l > 0; --l) {
-                            delete AllWeapons[l - 1];
                         }
                         break;
                     }
@@ -332,9 +325,6 @@ void Game::TeamEditor() {
                         if (std::cin && k < AllArmors.size()) {
                             PlayerTeam.SetMember(static_cast<int>(i5), &PlayerTeam.GetMember(static_cast<int>(i5))->ChangeArmor(*AllArmors[k]));
                         }
-                        for (unsigned long l = AllArmors.size(); l > 0; --l) {
-                            delete AllArmors[l - 1];
-                        }
                         break;
                     }
                     std::cout << "invalid input." << std::endl;
@@ -370,24 +360,21 @@ void Game::TeamEditor() {
 
 void Game::ShowPlayables() {
     const std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
-    for (unsigned long k = 0; const auto pl: AllPlayables) {
+    for (unsigned long k = 0; const auto& pl: AllPlayables) {
         std::cout << ++k << ". " << *pl << std::endl;
-        delete pl;
     }
 }
 
 void Game::ShowWeaponsArmors() {
     std::cout << "Weapons:" << std::endl;
     unsigned long j = 0;
-    for (const std::vector<Weapon*> &AllWeapons = {new Plate, new Cigarette, new FlipPhone}; const auto w : AllWeapons) {
+    for (const std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone}; auto* w : AllWeapons) {
         std::cout << ++j << ". " << w;
-        delete w;
     }
     std::cout << std::endl << "Armors:" << std::endl;
     j = 0;
-    for (const std::vector<Armor*> &AllArmors = {new SoulJacket, new LanaTShirt}; const auto a : AllArmors) {
+    for (const std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt}; auto* a : AllArmors) {
         std::cout << ++j << ". " << a;
-        delete a;
     }
     std::cout << std::endl;
 }

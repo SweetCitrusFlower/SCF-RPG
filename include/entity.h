@@ -24,7 +24,6 @@ public:
 
     virtual ~Entity() = default;
     virtual void ShowEntity() const = 0;
-    virtual std::ostream& operator<<(std::ostream& os) const = delete;
 
     [[nodiscard]] int GetAD() const {return AttackDamageBase;}
     [[nodiscard]] int GetDEF() const {return DefenseBase;}

@@ -15,27 +15,32 @@ public:
     ~Consumable() override = default;
 
     [[nodiscard]] int& GetPlusHP() { return PlusHP;}
+
+    void ShowItem() override {
+        std::cout << this;
+    }
+
 };
 
-class McPuisor : public Consumable {
+class McPuisor final : public Consumable {
 public:
     McPuisor() : Consumable("McPuisor", -40, "This item makes you a bit fatter.") {}
     ~McPuisor() override = default;
 };
 
-class Apple : public Consumable {
+class Apple final : public Consumable {
 public:
     Apple() : Consumable("Apple", 5, "Keeps the doctors away!") {}
     ~Apple() override = default;
 };
 
-class Vodka : public Consumable {
+class Vodka final : public Consumable {
 public:
     Vodka() : Consumable("Vodka", 300, "Russian wisdom cyka blyat") {}
     ~Vodka() override = default;
 };
 
-class PlateOfSpaghetti : public Consumable {
+class PlateOfSpaghetti final : public Consumable {
 public:
     PlateOfSpaghetti() : Consumable("Plate of spaghetti", 300, "To forgetti your regretti.") {}
     ~PlateOfSpaghetti() override = default;
@@ -50,4 +55,3 @@ inline std::ostream& operator<<(std::ostream& c, Consumable*& C){
     c << std::endl;
     return c;
 }
-

@@ -17,6 +17,9 @@ public:
 
     [[nodiscard]] int& GetPlusAD() {return PlusAD;}
 
+    void ShowItem() override {
+        std::cout << this;
+    }
 };
 
 class Fists final : public Weapon {
