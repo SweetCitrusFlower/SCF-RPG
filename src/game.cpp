@@ -288,7 +288,8 @@ void Game::TeamEditor() {
                         std::cin >> k;
                         k--;
                         if (std::cin && k < AllWeapons.size()) {
-                            PlayerTeam.SetMember(static_cast<int>(i4), &PlayerTeam.GetMember(static_cast<int>(i4))->ChangeWeapon(*AllWeapons[k]));
+                            auto AuxPl = PlayerTeam.GetMember(static_cast<int>(i4))->ChangeWeapon(*AllWeapons[k]);
+                            PlayerTeam.SetMember(static_cast<int>(i4), &AuxPl);
                         }
                         break;
                     }
@@ -322,7 +323,8 @@ void Game::TeamEditor() {
                         std::cin >> k;
                         k--;
                         if (std::cin && k < AllArmors.size()) {
-                            PlayerTeam.SetMember(static_cast<int>(i5), &PlayerTeam.GetMember(static_cast<int>(i5))->ChangeArmor(*AllArmors[k]));
+                            auto AuxPl = PlayerTeam.GetMember(static_cast<int>(i5))->ChangeArmor(*AllArmors[k]);
+                            PlayerTeam.SetMember(static_cast<int>(i5), &AuxPl);
                         }
                         break;
                     }
@@ -405,7 +407,6 @@ void Game::Shop() {
                     AuxTeam->at(i)->SetGold(AuxTeam->at(i)->GetGold() - AllConsumables[j]->second);
                     PlayerTeam.SetTeam(AuxTeam);
                     std::cout << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << " bought " << AllConsumables[j]->first->GetName() << "." << std::endl;
-                    delete AuxTeam;
                 }
                 else
                     std::cout << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << " has only " << PlayerTeam.GetMember(static_cast<int>(i))->GetGold() << " Gold, which isn't enough." << std::endl;

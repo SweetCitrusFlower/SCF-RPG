@@ -168,6 +168,6 @@ std::vector<Consumable*>& Playable::UseConsumable(const int i) {
         std::cout << "gained " << I->GetPlusHP();
     std::cout << " HP!" << std::endl;
     Inventory->erase(Inventory->begin() + i - 1);
-    if (this->GetHPCurrent() == 0){}
+    delete I;
     return *Inventory;
 }
