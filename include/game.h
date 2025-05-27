@@ -6,16 +6,22 @@
 #define GAME_H
 
 class Game {
-protected:
+private:
     static Game* GameInstancePointer;
     Game() = default;
     Team<Playable*> PlayerTeam = Team<Playable*>(new Mera, new Dragos, new sans);
 
     void Fight();
     void TeamEditor();
-    static void ShowPlayables();
-    static void ShowWeaponsArmors();
+    void ShowPlayables() const;
+    void ShowWeaponsArmors() const;
     void Shop();
+
+    const std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
+    const std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone};
+    const std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt};
+    const std::vector<std::pair<Consumable*, int>*> AllConsumables = {new std::pair<Consumable*, int>(new McPuisor, 2), new std::pair<Consumable*, int>(new Apple, 1),
+                                                                new std::pair<Consumable*, int>(new Vodka, 10), new std::pair<Consumable*, int>(new PlateOfSpaghetti, 15)};
 
 public:
 
@@ -33,5 +39,7 @@ public:
 
     void ReceiveAction();
 };
+
+const std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
 
 #endif //GAME_H

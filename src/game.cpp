@@ -5,6 +5,8 @@
 #include <algorithm>
 
 void Game::ReceiveAction(){
+
+
     std::cout << std::endl << "Welcome to SCF RPG! Select an option:\n";
     unsigned long x = 0;
     while (true) {
@@ -248,8 +250,7 @@ void Game::TeamEditor() {
                     i2--;
                     if (i2 == 0 || i2 == 1 || i2 == 2) {
                         unsigned long k = 0;
-                        std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
-                        for (auto* &pl: AllPlayables)
+                        for (auto* const &pl: AllPlayables)
                             std::cout << ++k << ". " << pl->GetName() << std::endl;
                         std::cout << "With what playable would you like to change " << PlayerTeam.GetMember(static_cast<int>(i2))->GetName() << "? Pick a number between 1 and " << AllPlayables.size() << "." << std::endl;
                         do {
@@ -276,8 +277,7 @@ void Game::TeamEditor() {
                     if (i4 == 0 || i4 == 1 || i4 == 2) {
                         std::cout << "Which weapon would you like to choose?" << std::endl;
                         unsigned long j = 0;
-                        std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone};
-                        for (auto* w : AllWeapons) {
+                        for (auto* const& w : AllWeapons) {
                             std::cout << ++j << ". " << w->GetName();
                             if (strcmp(w->GetName(), "Fists") == 0) std::cout << "(~unequip)";
                             std::cout << ", ";
@@ -308,8 +308,7 @@ void Game::TeamEditor() {
                     if (i5 == 0 || i5 == 1 || i5 == 2) {
                         std::cout << "Which armor would you like to choose?" << std::endl;
                         unsigned long j = 0;
-                        std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt};
-                        for (auto* w : AllArmors) {
+                        for (auto* const &w : AllArmors) {
                             std::cout << ++j << ". " << w->GetName();
                             if (strcmp(w->GetName(), "Skin") == 0) std::cout << "(a.k.a. unequip)" << std::endl;
                             std::cout << ", ";
@@ -360,33 +359,30 @@ void Game::TeamEditor() {
     }
 }
 
-void Game::ShowPlayables() {
-    const std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
-    for (unsigned long k = 0; const auto& pl: AllPlayables) {
+void Game::ShowPlayables() const {
+    for (unsigned long k = 0; auto* const& pl: AllPlayables) {
         std::cout << ++k << ". " << *pl << std::endl;
     }
 }
 
-void Game::ShowWeaponsArmors() {
+void Game::ShowWeaponsArmors() const {
     std::cout << "Weapons:" << std::endl;
     unsigned long j = 0;
-    for (const std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone}; auto* w : AllWeapons) {
+    for (auto* const& w : AllWeapons) {
         std::cout << ++j << ". " << w;
     }
     std::cout << std::endl << "Armors:" << std::endl;
-    j = 0;
-    for (const std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt}; auto* a : AllArmors) {
+    for (j = 0; auto* const& a : AllArmors) {
         std::cout << ++j << ". " << a;
     }
     std::cout << std::endl;
 }
 
 void Game::Shop() {
-    std::vector<std::pair<Consumable*, int>> AllConsumables = {{new McPuisor, 2}, {new Apple, 1}, {new Vodka, 10}, {new PlateOfSpaghetti, 15}};
     std::cout << "The Shop(TM) has " << AllConsumables.size() << " consumables:" << std::endl;
     unsigned long k = 0;
-    for (const auto &[cons, cost]: AllConsumables) {
-        std::cout << ++k << ". " << cons->GetName() << " - " << cost << " Gold" << std::endl;
+    for (auto* const& produs: AllConsumables) {
+        std::cout << ++k << ". " << produs->first->GetName() << " - " << produs->second << " Gold" << std::endl;
     }
     std::cout << "Who are you buying for?" << std::endl;
     unsigned long i = 0;
@@ -404,13 +400,13 @@ void Game::Shop() {
             j--;
             if (std::cin && j < AllConsumables.size())
             {
-                if (PlayerTeam.GetMember(static_cast<int>(i))->GetGold() >= AllConsumables[j].second)
+                if (PlayerTeam.GetMember(static_cast<int>(i))->GetGold() >= AllConsumables[j]->second)
                 {
                     std::vector<Playable *> *AuxTeam = PlayerTeam.GetTeam();
-                    AuxTeam->at(i)->AddConsumableToInventory(*AllConsumables[j].first);
-                    AuxTeam->at(i)->SetGold(AuxTeam->at(i)->GetGold() - AllConsumables[j].second);
+                    AuxTeam->at(i)->AddConsumableToInventory(*AllConsumables[j]->first);
+                    AuxTeam->at(i)->SetGold(AuxTeam->at(i)->GetGold() - AllConsumables[j]->second);
                     PlayerTeam.SetTeam(AuxTeam);
-                    std::cout << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << " bought " << AllConsumables[j].first->GetName() << "." << std::endl;
+                    std::cout << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << " bought " << AllConsumables[j]->first->GetName() << "." << std::endl;
                 }
                 else
                     std::cout << PlayerTeam.GetMember(static_cast<int>(i))->GetName() << " has only " << PlayerTeam.GetMember(static_cast<int>(i))->GetGold() << " Gold, which isn't enough." << std::endl;
