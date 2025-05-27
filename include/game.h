@@ -6,7 +6,6 @@
 #define GAME_H
 
 class Game {
-private:
     static Game* GameInstancePointer;
     Game() = default;
     Team<Playable*> PlayerTeam = Team<Playable*>(new Mera, new Dragos, new sans);
@@ -17,10 +16,10 @@ private:
     void ShowWeaponsArmors() const;
     void Shop();
 
-    const std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
-    const std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone};
-    const std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt};
-    const std::vector<std::pair<Consumable*, int>*> AllConsumables = {new std::pair<Consumable*, int>(new McPuisor, 2), new std::pair<Consumable*, int>(new Apple, 1),
+    std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
+    std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone};
+    std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt};
+    std::vector<std::pair<Consumable*, int>*> AllConsumables = {new std::pair<Consumable*, int>(new McPuisor, 2), new std::pair<Consumable*, int>(new Apple, 1),
                                                                 new std::pair<Consumable*, int>(new Vodka, 10), new std::pair<Consumable*, int>(new PlateOfSpaghetti, 15)};
 
 public:
@@ -35,11 +34,17 @@ public:
         return GameInstancePointer;
     }
 
-    ~Game() = default;
+    ~Game() {
+        for(; !PlayerTeam.GetTeam()->empty(); PlayerTeam.GetTeam()->pop_back()) {}
+        for(; !AllPlayables.empty(); AllPlayables.pop_back()) {}
+        for(; !AllWeapons.empty(); AllWeapons.pop_back()) {}
+        for(; !AllArmors.empty(); AllArmors.pop_back()) {}
+        for(const auto i: AllConsumables)
+            delete i;
+        for (; !AllConsumables.empty(); AllConsumables.pop_back()) {}
+    }
 
     void ReceiveAction();
 };
-
-const std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
 
 #endif //GAME_H

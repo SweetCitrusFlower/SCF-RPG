@@ -5,8 +5,6 @@
 #include <algorithm>
 
 void Game::ReceiveAction(){
-
-
     std::cout << std::endl << "Welcome to SCF RPG! Select an option:\n";
     unsigned long x = 0;
     while (true) {
@@ -258,7 +256,7 @@ void Game::TeamEditor() {
                             std::cout << "> ";
                             std::cin >> k;
                         }while (!std::cin || k > AllPlayables.size());
-                        PlayerTeam.ChangeMember(static_cast<int>(i2) + 1, static_cast<int>(k));
+                        PlayerTeam.GetTeam()->at(static_cast<int>(i2) + 1) = AllPlayables[static_cast<int>(k) - 1];
                         changed = true;
                         std::cout << "Teammate nr. " << static_cast<int>(i2) + 1 << " replaced with " << AllPlayables[k - 1]->GetName() << "." << std::endl;
                         break;

@@ -31,10 +31,6 @@ public:
         else
             team->at(i) = NewM;
     }
-    void ChangeMember(const int i, const int k) {
-        std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
-        team->at(i) = AllPlayables[k - 1];
-    }
 };
 
 #endif //TEAM_H
