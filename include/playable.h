@@ -37,7 +37,7 @@ public:
 
 class Weakling final : public Playable {
 public:
-    Weakling() : Playable("Weakling", 0, 0, 1, 0, 1, "-", new Fists, new Skin, {}) {}
+    Weakling() : Playable("Weakling", 0, 0, 1, 0, 1, "-", new Fists, new Skin, new std::vector<Consumable*> {}) {}
     ~Weakling() override = default;
 };
 

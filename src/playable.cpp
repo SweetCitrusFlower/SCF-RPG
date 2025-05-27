@@ -34,13 +34,11 @@ Playable& Playable::ChangeWeapon(Weapon &W){
     SetAD(this->GetAD() - this->GetWeapon()->GetPlusAD() + W.GetPlusAD());
     if (strcmp(W.GetName(), "Fists") == 0) {
         std::cout << this->GetName() << " has unequipped \"" << this->GetWeapon()->GetName() << "\"."  << std::endl << std::endl;
-        WeaponSlot.~Weapon();
-        SetWeapon(&W);
+        this->SetWeapon(&W);
         return *this;
     }
     if (strcmp(this->GetWeapon()->GetName(), "Fists") == 0) {
         std::cout << this->GetName() << " has equipped \"" << W.GetName() << "\"!" << std::endl << std::endl;
-        WeaponSlot.~Weapon();
         this->SetWeapon(&W);
         return *this;
     }
@@ -48,7 +46,6 @@ Playable& Playable::ChangeWeapon(Weapon &W){
         std::cout << this->GetName() << " already has this weapon equipped." << std::endl << std::endl;
         return *this;
     }
-    WeaponSlot.~Weapon();
     this->SetWeapon(&W);
     std::cout << this->GetName() << "'s weapon has been changed to \"" << W.GetName() << "\"!" << std::endl << std::endl;
     return *this;
@@ -68,13 +65,11 @@ Playable& Playable::ChangeArmor(Armor &A){
     SetHPCurrent(std::min(this->GetHPMAX(), this->GetHPCurrent()));
     if (strcmp(A.GetName(), "Skin") == 0) {
         std::cout << this->GetName() << " has unequipped \"" << this->GetArmor()->GetName() << "\"."  << std::endl << std::endl;
-        ArmorSlot.~Armor();
         this->SetArmor(&A);
         return *this;
     }
     if (strcmp(this->GetArmor()->GetName(), "Skin") == 0) {
         std::cout << this->GetName() << " has equipped \"" << A.GetName() << "\"!" << std::endl << std::endl;
-        ArmorSlot.~Armor();
         this->SetArmor(&A);
         return *this;
     }
@@ -82,7 +77,6 @@ Playable& Playable::ChangeArmor(Armor &A){
         std::cout << this->GetName() << " already has this armor equipped." << std::endl << std::endl;
         return *this;
     }
-    ArmorSlot.~Armor();
     this->SetArmor(&A);
     std::cout << this->GetName() << "'s armor has been changed to \"" << A.GetName() << "\"!" << std::endl << std::endl;
     return *this;

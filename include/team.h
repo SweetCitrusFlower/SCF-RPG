@@ -17,14 +17,7 @@ public:
         team->push_back(m3);
     }
     Team() {}
-    ~Team() {
-        for (auto& m : *team) {
-            m.~Member();
-            m = nullptr;
-        }
-        while (!team->empty()) {team->pop_back();}
-        team = nullptr;
-    }
+    ~Team() = default;
     std::vector<Member>*& GetTeam() {return team;}
     Member& GetMember(const int i) {return team->at(i);}
 
