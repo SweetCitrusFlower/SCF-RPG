@@ -289,7 +289,8 @@ void Game::TeamEditor() {
                         std::cin >> k;
                         k--;
                         if (std::cin && k < AllWeapons.size()) {
-                            PlayerTeam.GetMember(static_cast<int>(i4)).ChangeWeapon(AllWeapons[k]);
+                            std::cout << "slayyy";
+                            //PlayerTeam.SetMember(static_cast<int>(i4), PlayerTeam.GetMember(static_cast<int>(i4)).ChangeWeapon(AllWeapons[k]));
                         }
                         break;
                     }
