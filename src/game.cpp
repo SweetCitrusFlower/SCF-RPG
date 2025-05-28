@@ -285,7 +285,7 @@ void Game::TeamEditor() {
                             std::cout << w->GetPlusAD() - PlayerTeam.GetMember(static_cast<int>(i4)).GetWeapon()->GetPlusAD() << " AD" << std::endl;
                         }
                         std::cout << "Pick a number between 1 and " << AllWeapons.size() << ".\n> ";
-                        int k = 0;
+                        unsigned long k = 0;
                         std::cin >> k;
                         k--;
                         if (std::cin && k < AllWeapons.size()) {
