@@ -53,23 +53,6 @@ public:
     Weapon*& SetWeapon(Weapon *W) {WeaponSlot = W; return this->WeaponSlot;}
     Armor*& SetArmor(Armor *A) {ArmorSlot = A; return this->ArmorSlot;}
 
-    Entity& operator=(const Entity &other) {
-        if (this == &other)
-            return *this;
-        Name = other.Name;
-        AttackDamageBase = other.AttackDamageBase;
-        DefenseBase = other.DefenseBase;
-        HitPointsMax = other.HitPointsMax;
-        HitPointsCurrent = other.HitPointsCurrent;
-        Gold = other.Gold;
-        Speed = other.Speed;
-        XP = other.XP;
-        alive = other.alive;
-        Description = other.Description;
-        WeaponSlot = other.WeaponSlot;
-        ArmorSlot = other.ArmorSlot;
-        return *this;
-    }
 };
 
 

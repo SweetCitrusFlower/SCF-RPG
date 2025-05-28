@@ -8,7 +8,7 @@
 class Game {
     static Game* GameInstancePointer;
     Game() = default;
-    Team<Playable*> PlayerTeam = Team<Playable*>{new Mera, new Dragos, new sans};
+    Team<Playable> PlayerTeam = {static_cast<Playable>(Mera()), static_cast<Playable>(Dragos()), static_cast<Playable>(sans())};
 
     void Fight();
     void TeamEditor();
@@ -24,8 +24,8 @@ class Game {
 
 public:
 
-    [[nodiscard]] Team<Playable*>& GetTeam() {return PlayerTeam;}
-    Team<Playable*>& SetTeam(const Team<Playable*> &TEAM) {PlayerTeam = TEAM; return PlayerTeam;}
+    [[nodiscard]] Team<Playable>& GetTeam() {return PlayerTeam;}
+    Team<Playable>& SetTeam(const Team<Playable> &TEAM) {PlayerTeam = TEAM; return PlayerTeam;}
 
     Game(const Game&) = delete;
     static Game* GetInstance(){

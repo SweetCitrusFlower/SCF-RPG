@@ -16,7 +16,7 @@ public:
         team->push_back(m2);
         team->push_back(m3);
     }
-    Team() {}
+    Team() = default;
     ~Team() = default;
     std::vector<Member>*& GetTeam() {return team;}
     Member GetMember(const int i) {return team->at(i);}
@@ -29,7 +29,6 @@ public:
             team->push_back(NewM);
         }
         else {
-            delete team->at(i);
             team->at(i) = NewM;
         }
     }
