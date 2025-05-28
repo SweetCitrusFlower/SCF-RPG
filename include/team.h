@@ -24,7 +24,7 @@ public:
     void SetTeam(std::vector<Member>*& TEAM) {
         team->assign(TEAM->begin(), TEAM->end());
     }
-    void SetMember(const int i, Member NewM) {
+    void SetMember(const int i, Member &NewM) {
         if (team->empty()) {
             team->push_back(NewM);
         }
