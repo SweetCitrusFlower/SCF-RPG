@@ -34,16 +34,7 @@ public:
         return GameInstancePointer;
     }
 
-    ~Game() {
-        /*for(; !PlayerTeam.GetTeam()->empty(); PlayerTeam.GetTeam()->pop_back()) {}
-        for(; !AllPlayables.empty(); AllPlayables.pop_back()) {}
-        for(; !AllWeapons.empty(); AllWeapons.pop_back()) {}
-        for(; !AllArmors.empty(); AllArmors.pop_back()) {}
-        for(auto i: AllConsumables)
-            i = nullptr, delete i;
-        for (; !AllConsumables.empty(); AllConsumables.pop_back()) {}
-        delete GameInstancePointer;*/
-    }
+    ~Game() = default;
 
     void ReceiveAction();
 };
