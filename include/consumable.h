@@ -19,7 +19,6 @@ public:
     void ShowItem() override {
         std::cout << this;
     }
-
 };
 
 class McPuisor final : public Consumable {

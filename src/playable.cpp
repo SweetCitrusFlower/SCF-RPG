@@ -22,63 +22,63 @@ Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const i
 
 Playable::Playable() : Playable("MissingNo"){}
 
-Playable Playable::ChangeWeapon(Weapon &W){
+Playable Playable::ChangeWeapon(Weapon *W){
     if (this->GetWeapon() == nullptr) {
         std::cout << "how did you do this." << std::endl;
         return *this;
     }
-    if (strcmp(W.GetName(), "Fists") == 0 && strcmp(this->GetWeapon()->GetName(), "Fists") == 0) {
+    if (strcmp(W->GetName(), "Fists") == 0 && strcmp(this->GetWeapon()->GetName(), "Fists") == 0) {
         std::cout << "Changing fists for fists? Very funny." << std::endl;
         return *this;
     }
-    SetAD(this->GetAD() - this->GetWeapon()->GetPlusAD() + W.GetPlusAD());
-    if (strcmp(W.GetName(), "Fists") == 0) {
+    this->SetAD(this->GetAD() - this->GetWeapon()->GetPlusAD() + W->GetPlusAD());
+    if (strcmp(W->GetName(), "Fists") == 0) {
         std::cout << this->GetName() << " has unequipped \"" << this->GetWeapon()->GetName() << "\"."  << std::endl << std::endl;
-        this->SetWeapon(&W);
+        this->SetWeapon(W);
         return *this;
     }
     if (strcmp(this->GetWeapon()->GetName(), "Fists") == 0) {
-        std::cout << this->GetName() << " has equipped \"" << W.GetName() << "\"!" << std::endl << std::endl;
-        this->SetWeapon(&W);
+        std::cout << this->GetName() << " has equipped \"" << W->GetName() << "\"!" << std::endl << std::endl;
+        this->SetWeapon(W);
         return *this;
     }
-    if (strcmp(this->GetWeapon()->GetName(), W.GetName()) == 0) {
+    if (strcmp(this->GetWeapon()->GetName(), W->GetName()) == 0) {
         std::cout << this->GetName() << " already has this weapon equipped." << std::endl << std::endl;
         return *this;
     }
-    this->SetWeapon(&W);
-    std::cout << this->GetName() << "'s weapon has been changed to \"" << W.GetName() << "\"!" << std::endl << std::endl;
+    this->SetWeapon(W);
+    std::cout << this->GetName() << "'s weapon has been changed to \"" << W->GetName() << "\"!" << std::endl << std::endl;
     return *this;
 }
 
-Playable Playable::ChangeArmor(Armor &A){
+Playable Playable::ChangeArmor(Armor* A){
     if (this->GetArmor() == nullptr) {
         std::cout << "how did you do this." << std::endl;
         return *this;
     }
-    if (strcmp(A.GetName(), "Skin") == 0 && strcmp(this->GetArmor()->GetName(), "Skin") == 0) {
+    if (strcmp(A->GetName(), "Skin") == 0 && strcmp(this->GetArmor()->GetName(), "Skin") == 0) {
         std::cout << "Changing skin for skin? Very funny." << std::endl;
         return *this;
     }
-    SetHPMAX(this->GetHPMAX() - this->GetArmor()->GetPlusHP() + A.GetPlusHP());
-    SetDEF(this->GetDEF() - this->GetArmor()->GetPlusDef() + A.GetPlusDef());
-    SetHPCurrent(std::min(this->GetHPMAX(), this->GetHPCurrent()));
-    if (strcmp(A.GetName(), "Skin") == 0) {
+    this->SetHPMAX(this->GetHPMAX() - this->GetArmor()->GetPlusHP() + A->GetPlusHP());
+    this->SetDEF(this->GetDEF() - this->GetArmor()->GetPlusDef() + A->GetPlusDef());
+    this->SetHPCurrent(std::min(this->GetHPMAX(), this->GetHPCurrent()));
+    if (strcmp(A->GetName(), "Skin") == 0) {
         std::cout << this->GetName() << " has unequipped \"" << this->GetArmor()->GetName() << "\"."  << std::endl << std::endl;
-        this->SetArmor(&A);
+        this->SetArmor(A);
         return *this;
     }
     if (strcmp(this->GetArmor()->GetName(), "Skin") == 0) {
-        std::cout << this->GetName() << " has equipped \"" << A.GetName() << "\"!" << std::endl << std::endl;
-        this->SetArmor(&A);
+        std::cout << this->GetName() << " has equipped \"" << A->GetName() << "\"!" << std::endl << std::endl;
+        this->SetArmor(A);
         return *this;
     }
-    if (strcmp(this->GetArmor()->GetName(), A.GetName()) == 0) {
+    if (strcmp(this->GetArmor()->GetName(), A->GetName()) == 0) {
         std::cout << this->GetName() << " already has this armor equipped." << std::endl << std::endl;
         return *this;
     }
-    this->SetArmor(&A);
-    std::cout << this->GetName() << "'s armor has been changed to \"" << A.GetName() << "\"!" << std::endl << std::endl;
+    this->SetArmor(A);
+    std::cout << this->GetName() << "'s armor has been changed to \"" << A->GetName() << "\"!" << std::endl << std::endl;
     return *this;
 }
 
