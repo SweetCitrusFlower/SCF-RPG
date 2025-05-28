@@ -22,7 +22,7 @@ Playable::Playable(const char* N, const int ADB = 0, const int DEFB = 0, const i
 
 Playable::Playable() : Playable("MissingNo"){}
 
-Playable Playable::ChangeWeapon(Weapon *W){
+Playable Playable::ChangeWeapon(Weapon *&W){
     if (this->GetWeapon() == nullptr) {
         std::cout << "how did you do this." << std::endl;
         return *this;
@@ -34,24 +34,24 @@ Playable Playable::ChangeWeapon(Weapon *W){
     this->SetAD(this->GetAD() - this->GetWeapon()->GetPlusAD() + W->GetPlusAD());
     if (strcmp(W->GetName(), "Fists") == 0) {
         std::cout << this->GetName() << " has unequipped \"" << this->GetWeapon()->GetName() << "\"."  << std::endl << std::endl;
-        this->SetWeapon(W);
+        this->WeaponSlot = W;
         return *this;
     }
     if (strcmp(this->GetWeapon()->GetName(), "Fists") == 0) {
         std::cout << this->GetName() << " has equipped \"" << W->GetName() << "\"!" << std::endl << std::endl;
-        this->SetWeapon(W);
+        this->WeaponSlot = W;
         return *this;
     }
     if (strcmp(this->GetWeapon()->GetName(), W->GetName()) == 0) {
         std::cout << this->GetName() << " already has this weapon equipped." << std::endl << std::endl;
         return *this;
     }
-    this->SetWeapon(W);
+    this->WeaponSlot = W;
     std::cout << this->GetName() << "'s weapon has been changed to \"" << W->GetName() << "\"!" << std::endl << std::endl;
     return *this;
 }
 
-Playable Playable::ChangeArmor(Armor* A){
+Playable Playable::ChangeArmor(Armor *&A){
     if (this->GetArmor() == nullptr) {
         std::cout << "how did you do this." << std::endl;
         return *this;

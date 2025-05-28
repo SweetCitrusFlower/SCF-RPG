@@ -289,8 +289,7 @@ void Game::TeamEditor() {
                         std::cin >> k;
                         k--;
                         if (std::cin && k < AllWeapons.size()) {
-                            std::cout << "slayyy";
-                            //PlayerTeam.SetMember(static_cast<int>(i4), PlayerTeam.GetMember(static_cast<int>(i4)).ChangeWeapon(AllWeapons[k]));
+                            PlayerTeam.SetMember(static_cast<int>(i4), PlayerTeam.GetMember(static_cast<int>(i4)).ChangeWeapon(AllWeapons[k]));
                         }
                         break;
                     }
@@ -324,8 +323,7 @@ void Game::TeamEditor() {
                         std::cin >> k;
                         k--;
                         if (std::cin && k < AllArmors.size()) {
-                            std::cout << "nice";
-                            //PlayerTeam.SetMember(static_cast<int>(i5), PlayerTeam.GetMember(static_cast<int>(i5)).ChangeArmor(AllArmors[k]));
+                            PlayerTeam.SetMember(static_cast<int>(i5), PlayerTeam.GetMember(static_cast<int>(i5)).ChangeArmor(AllArmors[k]));
                         }
                         break;
                     }
