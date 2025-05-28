@@ -307,7 +307,7 @@ void Game::TeamEditor() {
                     if (i5 == 0 || i5 == 1 || i5 == 2) {
                         std::cout << "Which armor would you like to choose?" << std::endl;
                         unsigned long j = 0;
-                        for (auto* const &w : AllArmors) {
+                        for (auto const &w : AllArmors) {
                             std::cout << ++j << ". " << w->GetName();
                             if (strcmp(w->GetName(), "Skin") == 0) std::cout << "(a.k.a. unequip)" << std::endl;
                             std::cout << ", ";
@@ -323,7 +323,8 @@ void Game::TeamEditor() {
                         std::cin >> k;
                         k--;
                         if (std::cin && k < AllArmors.size()) {
-                            PlayerTeam.GetMember(static_cast<int>(i5)).ChangeArmor(AllArmors[k]);
+                            std::cout << "nice";
+                            //PlayerTeam.SetMember(static_cast<int>(i5), PlayerTeam.GetMember(static_cast<int>(i5)).ChangeArmor(AllArmors[k]));
                         }
                         break;
                     }
