@@ -17,7 +17,13 @@ public:
 
     Playable(const char*, int, int, int, int, int, const char*, Weapon*, Armor*, std::vector<Consumable*>*);
     Playable();
-    ~Playable() override = default;
+    ~Playable() override {
+        if (!Inventory->empty())
+            for (const auto i : *Inventory) {
+                delete i;
+            }
+        Inventory->clear();
+    }
 
     std::vector<Consumable*>* SetInventory(std::vector<Consumable*> *&I) {Inventory = I; return Inventory;}
     [[nodiscard]] std::vector<Consumable*>* GetInventory() const {return Inventory;}
@@ -43,7 +49,7 @@ public:
 
 class Mera final: public Playable {
 public:
-    Mera() : Playable("Mera", 5, 2, 30, 46, 3, "He loves playing League", new Fists, new Skin, new std::vector<Consumable*> {new Vodka}) {}
+    Mera() : Playable("Mera", 5, 2, 30, 46, 3, "He loves playing League", new Fists, new Skin, new std::vector<Consumable*> {}) {}
     ~Mera() override = default;
 };
 
