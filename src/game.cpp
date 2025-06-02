@@ -58,25 +58,22 @@ void Game::ReceiveAction(){
 
 void Game::Fight(){
     const auto ET = std::make_unique<Team<Enemy*>>();
-    const auto BC = new BeastCreator;
-    const auto OC = new OgreCreator;
-    const auto GC = new GoblinCreator;
+    auto BC = new BeastCreator();
+    auto OC = new OgreCreator();
+    auto GC = new GoblinCreator();
     auto AuxTeam = new Team(&this->GetTeam().GetMember(0),&this->GetTeam().GetMember(1),&this->GetTeam().GetMember(2));
     for (int i = 0; i < 3; i++) {
         switch (rand() % 3) {
             case 0: {
                 ET->GetTeam()->push_back(GC->FactoryMethod());
-                GC->ConfirmCreation();
                 break;
             }
             case 1: {
                 ET->GetTeam()->push_back(OC->FactoryMethod());
-                OC->ConfirmCreation();
                 break;
             }
             default: {
                 ET->GetTeam()->push_back(BC->FactoryMethod());
-                BC->ConfirmCreation();
                 break;
             }
         }
@@ -186,8 +183,8 @@ void Game::Fight(){
     else
         std::cout << "Your team lost..." << std::endl;
     std::cout << std::endl;
-    delete OC;
     delete BC;
+    delete OC;
     delete GC;
 }
 
