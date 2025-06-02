@@ -131,7 +131,6 @@ void Game::Fight(){
                                         ent->SetGold(ent->GetGold() + enemy->GetGold());
                                         ent->SetXP(ent->GetXP() + enemy->GetXP());
                                         enemy->Kill();
-                                        delete enemy;
                                         ET->GetTeam()->erase(std::ranges::find(*ET->GetTeam(), enemy));
                                     }
                                 }
