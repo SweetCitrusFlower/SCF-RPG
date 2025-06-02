@@ -58,32 +58,25 @@ void Game::ReceiveAction(){
 
 void Game::Fight(){
     const auto ET = std::make_unique<Team<Enemy*>>();
-    const auto AuxTeam = new Team<Playable*>;
-    auto AuxTeamVect = new std::vector<Playable*>;
-    for (Playable& tm : *this->GetTeam().GetTeam())
-        AuxTeamVect->push_back(&tm);
-    AuxTeam->SetTeam(AuxTeamVect);
+    const auto BC = new BeastCreator;
+    const auto OC = new OgreCreator;
+    const auto EC = new GoblinCreator;
+    auto AuxTeam = new Team(&this->GetTeam().GetMember(0),&this->GetTeam().GetMember(1),&this->GetTeam().GetMember(2));
     for (int i = 0; i < 3; i++) {
         switch (rand() % 3) {
             case 0: {
-                const auto EC = new GoblinCreator;
                 ET->GetTeam()->push_back(EC->FactoryMethod());
                 EC->ConfirmCreation();
-                delete EC;
                 break;
             }
             case 1: {
-                const auto OC = new OgreCreator;
                 ET->GetTeam()->push_back(OC->FactoryMethod());
                 OC->ConfirmCreation();
-                delete OC;
                 break;
             }
             default: {
-                const auto BC = new BeastCreator;
                 ET->GetTeam()->push_back(BC->FactoryMethod());
                 BC->ConfirmCreation();
-                delete BC;
                 break;
             }
         }
