@@ -40,6 +40,15 @@ public:
         std::cout << "Weapon: " << this->GetWeapon()->GetName() << std::endl;
         std::cout << "Armor: " << this->GetArmor()->GetName() << std::endl;
     }
+
+    friend std::ostream& operator<<(std::ostream& c, const Playable& P){
+        P.ShowEntity();
+        const int LVL = ceil(log2(1 + P.GetXP()));
+        c << "LVL: " << LVL << ", XP: " << P.GetXP() << std::endl;
+        c << "Next LVL threshold at " << pow(2, LVL) << " XP" << std::endl;
+        c << "Has " << P.GetGold() << " Gold to their name." << std::endl;
+        return c;
+    }
 };
 
 class Weakling final : public Playable {
@@ -66,13 +75,10 @@ public:
     ~sans() override = default;
 };
 
-#endif //PLAYABLE_H
+class GOD final : public Playable {
+public:
+    GOD() : Playable("GOD", 99999, 999999, 99999, 99999, 99999, "god", new Fists, new Skin, new std::vector<Consumable*> {}) {}
+    ~GOD() override = default;
+};
 
-inline std::ostream& operator<<(std::ostream& c, const Playable& P){
-    P.ShowEntity();
-    const int LVL = ceil(log2(1 + P.GetXP()));
-    c << "LVL: " << LVL << ", XP: " << P.GetXP() << std::endl;
-    c << "Next LVL threshold at " << pow(2, LVL) << " XP" << std::endl;
-    c << "Has " << P.GetGold() << " Gold to their name." << std::endl;
-    return c;
-}
+#endif //PLAYABLE_H

@@ -3,7 +3,6 @@
 Game* Game::GameInstancePointer = nullptr;
 
 int main() {
-    const auto game = Game::GetInstance();
-    game->ReceiveAction();
+    Game::GetInstance()->ReceiveAction();
     return 0;
 }

@@ -16,6 +16,16 @@ public:
 
     [[nodiscard]] int& GetPlusHP() { return PlusHP;}
 
+    friend std::ostream& operator<<(std::ostream& c, Consumable*& C){
+        C->ShowItem();
+        c << "HP: ";
+        if(C->GetPlusHP() < 0) c << "-" << -C->GetPlusHP();
+        else if(C->GetPlusHP() == 0) c << "0";
+        else c << "+" << C->GetPlusHP();
+        c << std::endl;
+        return c;
+    }
+
     void ShowItem() override {
         std::cout << this;
     }
@@ -45,13 +55,3 @@ public:
     ~PlateOfSpaghetti() override = default;
 };
 #endif //CONSUMABLE_H
-
-inline std::ostream& operator<<(std::ostream& c, Consumable*& C){
-    C->ShowItem();
-    c << "HP: ";
-    if(C->GetPlusHP() < 0) c << "-" << -C->GetPlusHP();
-    else if(C->GetPlusHP() == 0) c << "0";
-    else c << "+" << C->GetPlusHP();
-    c << std::endl;
-    return c;
-}

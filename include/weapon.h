@@ -20,6 +20,15 @@ public:
     void ShowItem() override {
         std::cout << this;
     }
+
+    friend std::ostream& operator<<(std::ostream& c, Weapon* W) {
+        W->ShowItem();
+        c << "AD: ";
+        if(W->GetPlusAD() < 0) c << "-" << -W->GetPlusAD();
+        else if (W->GetPlusAD() == 0) c << "0";
+        else c << "+" << W->GetPlusAD() << std::endl;
+        return c;
+    }
 };
 
 class Fists final : public Weapon {
@@ -47,12 +56,3 @@ public:
 };
 
 #endif //WEAPON_H
-
-inline std::ostream& operator<<(std::ostream& c, Weapon* W) {
-    W->ShowItem();
-    c << "AD: ";
-    if(W->GetPlusAD() < 0) c << "-" << -W->GetPlusAD();
-    else if (W->GetPlusAD() == 0) c << "0";
-    else c << "+" << W->GetPlusAD() << std::endl;
-    return c;
-}

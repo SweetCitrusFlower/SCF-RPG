@@ -17,6 +17,23 @@ public:
     [[nodiscard]] int& GetPlusDef() {return PlusDef;}
     [[nodiscard]] int& GetPlusHP(){return PlusHP;}
 
+    friend std::ostream& operator<<(std::ostream &c, Armor* A){
+        A->ShowItem();
+        c << "DEF: ";
+        if(A->GetPlusDef() < 0) c << "-" << -A->GetPlusDef();
+        else if(A->GetPlusDef() == 0) c << "0";
+        else c << "+" << A->GetPlusDef();
+
+        c << std::endl << "HPMax: ";
+        if(A->GetPlusHP() < 0) c << "-" << -A->GetPlusHP();
+        else if(A->GetPlusHP() == 0) c << "0";
+        else c << "+" << A->GetPlusHP();
+        c << std::endl;
+
+        return c;
+    }
+
+
     void ShowItem() override {
         std::cout << this;
     }
@@ -41,19 +58,3 @@ class LanaTShirt final : public Armor {
 };
 
 #endif //ARMOR_H
-
-inline std::ostream& operator<<(std::ostream &c, Armor* A){
-    A->ShowItem();
-    c << "DEF: ";
-    if(A->GetPlusDef() < 0) c << "-" << -A->GetPlusDef();
-    else if(A->GetPlusDef() == 0) c << "0";
-    else c << "+" << A->GetPlusDef();
-
-    c << std::endl << "HPMax: ";
-    if(A->GetPlusHP() < 0) c << "-" << -A->GetPlusHP();
-    else if(A->GetPlusHP() == 0) c << "0";
-    else c << "+" << A->GetPlusHP();
-    c << std::endl;
-
-    return c;
-}

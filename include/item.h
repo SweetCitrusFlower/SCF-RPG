@@ -20,11 +20,11 @@ public:
 
     virtual void ShowItem() = 0;
 
+    friend std::ostream& operator<<(std::ostream &c, Item* I){
+        c << I->GetName() << std::endl << I->GetDescription() << std::endl;
+        return c;
+    }
+
 };
 
 #endif //ITEM_H
-
-inline std::ostream& operator<<(std::ostream &c, Item* I){
-    c << I->GetName() << std::endl << I->GetDescription() << std::endl;
-    return c;
-}

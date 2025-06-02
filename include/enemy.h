@@ -22,6 +22,12 @@ public:
         this->Revive();
     }
 
+    friend std::ostream& operator<<(std::ostream& c, const Enemy& E) {
+        E.ShowEntity();
+        c << "Gives " << E.GetXP() << " XP and " << E.GetGold() << " Gold when slain." << std::endl;
+        return c;
+    }
+
     ~Enemy() override = default;
 
     void ShowEntity() const override {std::cout << std::endl;}
@@ -93,9 +99,3 @@ public:
 };
 
 #endif //ENEMY_H
-
-inline std::ostream& operator<<(std::ostream& c, const Enemy& E){
-    E.ShowEntity();
-    c << "Gives " << E.GetXP() << " XP and " << E.GetGold() << " Gold when slain." << std::endl;
-    return c;
-}

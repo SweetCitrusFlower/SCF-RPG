@@ -8,7 +8,7 @@
 class Game {
     static Game* GameInstancePointer;
     Game() = default;
-    Team<Playable> PlayerTeam = {static_cast<Playable>(Mera()), static_cast<Playable>(Dragos()), static_cast<Playable>(sans())};
+    Team<Playable> PlayerTeam = {static_cast<Playable>(GOD()), static_cast<Playable>(GOD()), static_cast<Playable>(GOD())};
 
     void Fight();
     void TeamEditor();
@@ -16,7 +16,7 @@ class Game {
     void ShowWeaponsArmors() const;
     void Shop();
 
-    std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans};
+    std::vector<Playable*> AllPlayables = {new Mera, new Dragos, new sans, new GOD};
     std::vector<Weapon*> AllWeapons = {new Plate, new Cigarette, new FlipPhone};
     std::vector<Armor*> AllArmors = {new SoulJacket, new LanaTShirt};
     std::vector<std::pair<Consumable*, int>*> AllConsumables = {new std::pair<Consumable*, int>(new McPuisor, 2), new std::pair<Consumable*, int>(new Apple, 1),
