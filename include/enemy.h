@@ -71,30 +71,27 @@ class EnemyCreator{
 public:
     virtual ~EnemyCreator() = default;
     [[nodiscard]] virtual Enemy *FactoryMethod() = 0;
-    void ConfirmCreation() {
-        if (const Enemy* E = FactoryMethod(); E == nullptr)
-            std::cout << "Enemy unable to be created.\n";
-        else
-            std::cout << "Enemy " << E->GetName() << " created.\n";
-    }
 };
 
 class OgreCreator final : public EnemyCreator {
 public:
     [[nodiscard]] Enemy* FactoryMethod() override {
-        return new Ogre;
+        auto* i = new Ogre;
+        return i;
     }
 };
 class GoblinCreator final : public EnemyCreator {
 public:
     [[nodiscard]] Enemy* FactoryMethod() override {
-        return new Goblin;
+        auto* i = new Goblin;
+        return i;
     }
 };
 class BeastCreator final : public EnemyCreator {
 public:
     [[nodiscard]] Enemy* FactoryMethod() override {
-        return new ArmoredBeast;
+        auto* i = new ArmoredBeast;
+        return i;
     }
 };
 
