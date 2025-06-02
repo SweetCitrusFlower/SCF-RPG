@@ -174,6 +174,10 @@ void Game::Fight(){
     if (!AuxTeam->GetTeam()->empty()) {
         if (!ET->GetTeam()->empty()) {
             std::cout << "Your team ran away." << std::endl;
+            for (const auto i : *ET->GetTeam())
+                delete i;
+            ET->GetTeam()->clear();
+            delete ET;
         }
         else
             std::cout << "YOUR TEAM WON!!!" << std::endl;
@@ -184,11 +188,13 @@ void Game::Fight(){
                     OrigTM.SetGold(CopyTM->GetGold()), OrigTM.SetXP(CopyTM->GetXP());
         }
     }
-    else
+    else {
         std::cout << "Your team lost..." << std::endl;
-    for (auto i : *ET->GetTeam())
-        delete i;
-    ET->GetTeam()->clear();
+        for (const auto i : *ET->GetTeam())
+            delete i;
+        ET->GetTeam()->clear();
+        delete ET;
+    }
     std::cout << std::endl;
     delete BC;
     delete OC;
