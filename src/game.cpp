@@ -69,18 +69,21 @@ void Game::Fight(){
                 const auto EC = new GoblinCreator;
                 ET->GetTeam()->push_back(EC->FactoryMethod());
                 EC->ConfirmCreation();
+                delete EC;
                 break;
             }
             case 1: {
                 const auto OC = new OgreCreator;
                 ET->GetTeam()->push_back(OC->FactoryMethod());
                 OC->ConfirmCreation();
+                delete OC;
                 break;
             }
             default: {
                 const auto BC = new BeastCreator;
                 ET->GetTeam()->push_back(BC->FactoryMethod());
                 BC->ConfirmCreation();
+                delete BC;
                 break;
             }
         }
