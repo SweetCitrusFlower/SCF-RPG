@@ -38,7 +38,10 @@ public:
     Ogre(): Enemy("Ogre", 30 + std::rand() % 6, 13 + std::rand() % 5, 58 + std::rand() % 10, 44, 50,
               3 + std::rand() % 3, "A fearsome oger, grumpy mostly because you woke him up.",
               new Weapon("Ogre Club", 40, "Made of the bones of its ancestors."), new Skin) {}
-    ~Ogre() override = default;
+    ~Ogre() override {
+        delete WeaponSlot;
+        delete ArmorSlot;
+    };
     void ShowEntity() const override {
         std::cout << this->GetName() << std::endl << this->GetDesc() << std::endl;
         std::cout << this->GetAD() << " AD, " << this->GetHPCurrent() << "/" << this->GetHPMAX() << " HP, " << this->GetDEF() << " DEF, " << this->GetSpeed() << " Speed" << std::endl;
