@@ -57,7 +57,7 @@ void Game::ReceiveAction(){
 }
 
 void Game::Fight(){
-    const auto ET = std::make_unique<Team<Enemy*>>();
+    const auto ET = new Team<Enemy*>();
     const auto BC = new BeastCreator();
     const auto OC = new OgreCreator();
     const auto GC = new GoblinCreator();
@@ -172,8 +172,9 @@ void Game::Fight(){
         std::cout << std::endl;
     }
     if (!AuxTeam->GetTeam()->empty()) {
-        if (!ET->GetTeam()->empty())
+        if (!ET->GetTeam()->empty()) {
             std::cout << "Your team ran away." << std::endl;
+        }
         else
             std::cout << "YOUR TEAM WON!!!" << std::endl;
         for (auto& OrigTM : *this->GetTeam().GetTeam()) {
@@ -185,6 +186,9 @@ void Game::Fight(){
     }
     else
         std::cout << "Your team lost..." << std::endl;
+    for (auto i : *ET->GetTeam())
+        delete i;
+    ET->GetTeam()->clear();
     std::cout << std::endl;
     delete BC;
     delete OC;
