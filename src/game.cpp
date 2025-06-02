@@ -58,22 +58,25 @@ void Game::ReceiveAction(){
 
 void Game::Fight(){
     const auto ET = std::make_unique<Team<Enemy*>>();
-    auto BC = new BeastCreator();
-    auto OC = new OgreCreator();
-    auto GC = new GoblinCreator();
+    const auto BC = new BeastCreator();
+    const auto OC = new OgreCreator();
+    const auto GC = new GoblinCreator();
     auto AuxTeam = new Team(&this->GetTeam().GetMember(0),&this->GetTeam().GetMember(1),&this->GetTeam().GetMember(2));
     for (int i = 0; i < 3; i++) {
         switch (rand() % 3) {
             case 0: {
-                ET->GetTeam()->push_back(GC->FactoryMethod());
+                auto x = GC->FactoryMethod();
+                ET->GetTeam()->push_back(x);
                 break;
             }
             case 1: {
-                ET->GetTeam()->push_back(OC->FactoryMethod());
+                auto x = OC->FactoryMethod();
+                ET->GetTeam()->push_back(x);
                 break;
             }
             default: {
-                ET->GetTeam()->push_back(BC->FactoryMethod());
+                auto x = OC->FactoryMethod();
+                ET->GetTeam()->push_back(x);
                 break;
             }
         }
