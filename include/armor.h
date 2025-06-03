@@ -52,7 +52,7 @@ public:
 };
 
 class LanaTShirt final : public Armor {
-    public:
+public:
     LanaTShirt() : Armor("Lana del Rey T-Shirt", 20, 500, "Given with love. Kinda want it back tho ngl") {}
     ~LanaTShirt() override = default;
 };
