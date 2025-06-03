@@ -19,6 +19,7 @@ public:
     Team() = default;
     ~Team() {
         team->clear();
+        delete team;
     }
     std::vector<Member>*& GetTeam() {return team;}
     Member& GetMember(const int i) {return team->at(i);}
