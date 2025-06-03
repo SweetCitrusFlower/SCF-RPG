@@ -173,7 +173,7 @@ std::vector<Consumable*>& Playable::UseConsumable(const int i) {
     else
         std::cout << "gained " << I->GetPlusHP();
     std::cout << " HP!" << std::endl;
-    Inventory->erase(Inventory->begin() + i - 1);
     delete I;
+    Inventory->erase(Inventory->begin() + i - 1);
     return *Inventory;
 }
