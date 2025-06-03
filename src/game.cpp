@@ -95,7 +95,7 @@ void Game::Fight(){
         std::cout << std::endl << "Turn " << ++turn << ". Order of attack:" << std::endl;
         for (auto*& ent : OrderOfAttack)
             std::cout << ent->GetName() << " " << ent->GetHPCurrent() << "/" << ent->GetHPMAX() << std::endl;
-        for (auto& ent: OrderOfAttack) {
+        for (auto ent: OrderOfAttack) {
             if (AuxTeam.GetTeam()->empty() || ET.GetTeam()->empty() || fleeing)
                 break;
             if (ent->GetAlive()) {
@@ -127,8 +127,8 @@ void Game::Fight(){
                                         ent->SetGold(ent->GetGold() + enemy->GetGold());
                                         ent->SetXP(ent->GetXP() + enemy->GetXP());
                                         enemy->Kill();
-                                        delete enemy;
                                         ET.GetTeam()->erase(std::ranges::find(*ET.GetTeam(), enemy));
+                                        break;
                                     }
                                 }
                                 else {
@@ -162,8 +162,8 @@ void Game::Fight(){
                         if (enemy->GetHPCurrent() <= 0) {
                             std::cout << enemy->GetName() << " has passed away..." << std::endl;
                             enemy->Kill();
-                            delete enemy;
                             AuxTeam.GetTeam()->erase(std::ranges::find(*AuxTeam.GetTeam(), enemy));
+                            break;
                         }
                     }
                 }

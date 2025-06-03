@@ -18,7 +18,7 @@ public:
     [[nodiscard]] int& GetPlusAD() {return PlusAD;}
 
     void ShowItem() override {
-        std::cout << this;
+        std::cout << static_cast<Item*>(this);
     }
 
     friend std::ostream& operator<<(std::ostream& c, Weapon* W) {

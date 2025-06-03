@@ -33,9 +33,8 @@ public:
         return c;
     }
 
-
     void ShowItem() override {
-        std::cout << this;
+        std::cout << static_cast<Item*>(this);
     }
 };
 
