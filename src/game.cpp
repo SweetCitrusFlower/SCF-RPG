@@ -127,6 +127,7 @@ void Game::Fight(){
                                         ent->SetGold(ent->GetGold() + enemy->GetGold());
                                         ent->SetXP(ent->GetXP() + enemy->GetXP());
                                         enemy->Kill();
+                                        delete enemy;
                                         ET.GetTeam()->erase(std::ranges::find(*ET.GetTeam(), enemy));
                                         break;
                                     }
@@ -162,6 +163,7 @@ void Game::Fight(){
                         if (enemy->GetHPCurrent() <= 0) {
                             std::cout << enemy->GetName() << " has passed away..." << std::endl;
                             enemy->Kill();
+                            delete enemy;
                             AuxTeam.GetTeam()->erase(std::ranges::find(*AuxTeam.GetTeam(), enemy));
                             break;
                         }
