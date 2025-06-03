@@ -10,7 +10,7 @@
 
 class Playable : public Entity {
 protected:
-    std::vector<Consumable*> *Inventory = new std::vector<Consumable*>(5, nullptr);
+    std::vector<Consumable*> *Inventory = {};
     std::vector<Consumable*>& UseConsumable(int);
 
 public:
