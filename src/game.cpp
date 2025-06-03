@@ -57,37 +57,37 @@ void Game::ReceiveAction(){
 }
 
 void Game::Fight(){
-    const auto ET = new Team<Enemy*>();
+    auto ET = Team<Enemy*>();
     const auto BC = new BeastCreator();
     const auto OC = new OgreCreator();
     const auto GC = new GoblinCreator();
-    auto AuxTeam = new Team(&this->GetTeam().GetMember(0),&this->GetTeam().GetMember(1),&this->GetTeam().GetMember(2));
+    auto AuxTeam = Team(&this->GetTeam().GetMember(0),&this->GetTeam().GetMember(1),&this->GetTeam().GetMember(2));
     for (int i = 0; i < 3; i++) {
         switch (rand() % 3) {
             case 0: {
                 auto x = GC->FactoryMethod();
-                ET->GetTeam()->push_back(x);
+                ET.GetTeam()->push_back(x);
                 break;
             }
             case 1: {
                 auto x = OC->FactoryMethod();
-                ET->GetTeam()->push_back(x);
+                ET.GetTeam()->push_back(x);
                 break;
             }
             default: {
                 auto x = OC->FactoryMethod();
-                ET->GetTeam()->push_back(x);
+                ET.GetTeam()->push_back(x);
                 break;
             }
         }
     }
     int turn = 0;
     int fleeing = false;
-    while (!AuxTeam->GetTeam()->empty() && !ET->GetTeam()->empty() && !fleeing) {
+    while (!AuxTeam.GetTeam()->empty() && !ET.GetTeam()->empty() && !fleeing) {
         std::vector<Entity*> OrderOfAttack;
-        for (const auto& ally : *AuxTeam->GetTeam())
+        for (const auto& ally : *AuxTeam.GetTeam())
             OrderOfAttack.push_back(ally);
-        for (const auto& enemy : *ET->GetTeam())
+        for (const auto& enemy : *ET.GetTeam())
             OrderOfAttack.push_back(enemy);
         std::ranges::sort(OrderOfAttack, [](const Entity* a, const Entity* b) {
                                                                             return a->GetSpeed() > b->GetSpeed();
@@ -96,14 +96,14 @@ void Game::Fight(){
         for (auto*& ent : OrderOfAttack)
             std::cout << ent->GetName() << " " << ent->GetHPCurrent() << "/" << ent->GetHPMAX() << std::endl;
         for (auto& ent: OrderOfAttack) {
-            if (AuxTeam->GetTeam()->empty() || ET->GetTeam()->empty() || fleeing)
+            if (AuxTeam.GetTeam()->empty() || ET.GetTeam()->empty() || fleeing)
                 break;
             if (ent->GetAlive()) {
                 std::cout << std::endl;
                 bool TurnOver = false;
                 while (!TurnOver) {
                     if (auto itAlly =
-                    std::ranges::find(*AuxTeam->GetTeam(), ent); itAlly < AuxTeam->GetTeam()->end()) {
+                    std::ranges::find(*AuxTeam.GetTeam(), ent); itAlly < AuxTeam.GetTeam()->end()) {
                         std::cout << "What will " << ent->GetName() << " do?" << std::endl;
                         std::cout << "1. Attack an Enemy" << std::endl << "2. Use a consumable" << std::endl << "3. Flee" << std::endl << "> ";
                         int resp1;
@@ -112,12 +112,12 @@ void Game::Fight(){
                             if (resp1 == 1) {
                                 std::cout << "Which enemy?" << std::endl;
                                 int resp2 = 0;
-                                for (auto* const& enemy : *ET->GetTeam())
+                                for (auto* const& enemy : *ET.GetTeam())
                                     std::cout << ++resp2 << ". " << enemy->GetName() << std::endl;
                                 std::cout << "> ";
                                 std::cin >> resp1;
                                 if (std::cin) {
-                                    const auto& enemy = ET->GetTeam()->at(resp1 - 1);
+                                    const auto& enemy = ET.GetTeam()->at(resp1 - 1);
                                     const int ActualDMG = static_cast<int>(50.0 * ent->GetAD() / (enemy->GetDEF() + 50.0));
                                     enemy->SetHPCurrent(enemy->GetHPCurrent() - ActualDMG);
                                     std::cout << enemy->GetName() << " lost " << ActualDMG << "HP!" << std::endl;
@@ -128,7 +128,7 @@ void Game::Fight(){
                                         ent->SetXP(ent->GetXP() + enemy->GetXP());
                                         enemy->Kill();
                                         delete enemy;
-                                        ET->GetTeam()->erase(std::ranges::find(*ET->GetTeam(), enemy));
+                                        ET.GetTeam()->erase(std::ranges::find(*ET.GetTeam(), enemy));
                                     }
                                 }
                                 else {
@@ -153,9 +153,9 @@ void Game::Fight(){
                     }
                     else {
                         TurnOver = true;
-                        if (AuxTeam->GetTeam()->empty())
+                        if (AuxTeam.GetTeam()->empty())
                             break;
-                        Entity* enemy = AuxTeam->GetTeam()->at(rand() % AuxTeam->GetTeam()->size());
+                        Entity* enemy = AuxTeam.GetTeam()->at(rand() % AuxTeam.GetTeam()->size());
                         const int ActualDMG = static_cast<int>(50.0 * ent->GetAD() / (enemy->GetDEF() + 50.0));
                         enemy->SetHPCurrent(enemy->GetHPCurrent() - ActualDMG);
                         std::cout << ent->GetName() << " attacked " << enemy->GetName() << " and they lost " << ActualDMG << "HP!" << std::endl;
@@ -163,7 +163,7 @@ void Game::Fight(){
                             std::cout << enemy->GetName() << " has passed away..." << std::endl;
                             enemy->Kill();
                             delete enemy;
-                            AuxTeam->GetTeam()->erase(std::ranges::find(*AuxTeam->GetTeam(), enemy));
+                            AuxTeam.GetTeam()->erase(std::ranges::find(*AuxTeam.GetTeam(), enemy));
                         }
                     }
                 }
@@ -171,29 +171,27 @@ void Game::Fight(){
         }
         std::cout << std::endl;
     }
-    if (!AuxTeam->GetTeam()->empty()) {
-        if (!ET->GetTeam()->empty()) {
+    if (!AuxTeam.GetTeam()->empty()) {
+        if (!ET.GetTeam()->empty()) {
             std::cout << "Your team ran away." << std::endl;
-            for (const auto i : *ET->GetTeam())
+            for (const auto i : *ET.GetTeam())
                 delete i;
-            ET->GetTeam()->clear();
-            delete ET;
+            ET.GetTeam()->clear();
         }
         else
             std::cout << "YOUR TEAM WON!!!" << std::endl;
         for (auto& OrigTM : *this->GetTeam().GetTeam()) {
             OrigTM.Revive(), OrigTM.SetHPCurrent(std::max(OrigTM.GetHPCurrent(), 1));
-            for (auto*& CopyTM : *AuxTeam->GetTeam())
+            for (auto*& CopyTM : *AuxTeam.GetTeam())
                 if (CopyTM->GetName() == OrigTM.GetName())
                     OrigTM.SetGold(CopyTM->GetGold()), OrigTM.SetXP(CopyTM->GetXP());
         }
     }
     else {
         std::cout << "Your team lost..." << std::endl;
-        for (const auto i : *ET->GetTeam())
+        for (const auto i : *ET.GetTeam())
             delete i;
-        ET->GetTeam()->clear();
-        delete ET;
+        ET.GetTeam()->clear();
     }
     std::cout << std::endl;
     delete BC;
